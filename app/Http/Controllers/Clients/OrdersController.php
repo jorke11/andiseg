@@ -9,6 +9,7 @@ use App\Models\Administration\SchedulesDetail;
 use App\Models\Administration\Parameters;
 use App\Models\Administration\Cities;
 use App\Models\Administration\Department;
+use Mail;
 
 class OrdersController extends Controller {
 
@@ -17,6 +18,14 @@ class OrdersController extends Controller {
     }
 
     public function index() {
+        $input = array();
+        Mail::send("Notifications.order", $input, function($msj) {
+            $msj->subject("notificacion");
+            $msj->to("jpinedom@hotmail.com");
+        });
+
+        echo "asd";
+        exit;
         $esquemas = Schedules::all();
 
         $type_document = Parameters::where("group", "type_document")->get();
