@@ -21,7 +21,24 @@ Route::get('/home', 'HomeController@index');
 Route::resource('/courses', 'Administration\CoursesController');
 Route::resource('/parameters', 'Administration\ParametersController');
 Route::resource('/schedules', 'Administration\SchedulesController');
+
 Route::resource('/traicing', 'Clients\TraicingController');
+Route::put('/traicing/biografic/{id}', 'Clients\TraicingController@updateBiografic');
+Route::get('/traicing/academic/{id}', 'Clients\TraicingController@editAcademic');
+Route::post('/traicing/academic', 'Clients\TraicingController@storeAcademic');
+
+Route::get('/traicing/juridic/{id}', 'Clients\TraicingController@editJuridic');
+Route::post('/traicing/juridic', 'Clients\TraicingController@storeJuridic');
+
+Route::get('/traicing/anotations/{id}', 'Clients\TraicingController@editAnotations');
+Route::post('/traicing/anotations', 'Clients\TraicingController@storeAnotations');
+
+Route::get('/traicing/laboral/{id}', 'Clients\TraicingController@editLaboral');
+Route::post('/traicing/laboral', 'Clients\TraicingController@storeLaboral');
+
+Route::get('/traicing/domicile/{id}', 'Clients\TraicingController@editDomicile');
+Route::put('/traicing/domicile/{id}', 'Clients\TraicingController@updateDomicile');
+
 Route::resource('/cities', 'Administration\CitiesController');
 Route::resource('/department', 'Administration\DepartmentController');
 
@@ -54,6 +71,10 @@ Route::get('/api/listCity', function() {
 
 Route::get('/api/listDepartment', function() {
     return Datatables::eloquent(\App\Models\Administration\Department::query())->make(true);
+});
+Route::get('/api/listOrders', function() {
+    $sql = DB::table("vorders");
+    return Datatables::queryBuilder($sql)->make(true);
 });
 
 

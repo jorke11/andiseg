@@ -1,13 +1,13 @@
 function Orders() {
     var table;
     this.init = function () {
-        
         $("#btnNew").click(this.new);
         $("#btnSave").click(this.save);
+        table = obj.table();
     }
 
     this.new = function () {
-        $(".input-parameters").cleanFields();
+        $(".input-orders").cleanFields();
     }
 
     this.save = function () {
@@ -18,16 +18,16 @@ function Orders() {
         var id = $("#frm #id").val();
         var msg = '';
 
-        var validate = $(".input-parameters").validate();
+        var validate = $(".input-orders").validate();
 
         if (validate.length == 0) {
             if (id == '') {
                 method = 'POST';
-                url = "parameters";
+                url = "orders";
                 msg = "Created Record";
             } else {
                 method = 'PUT';
-                url = "parameters/" + id;
+                url = "orders/" + id;
                 msg = "Edited Record";
             }
 
@@ -39,7 +39,7 @@ function Orders() {
                 success: function (data) {
                     if (data.success == true) {
                         $("#modalNew").modal("hide");
-                        $(".input-parameters").setFields({data: data});
+                        $(".input-orders").setFields({data: data});
                         table.ajax.reload();
                         toastr.success(msg);
                     }
@@ -53,7 +53,7 @@ function Orders() {
     this.showModal = function (id) {
         var frm = $("#frmEdit");
         var data = frm.serialize();
-        var url = "/parameters/" + id + "/edit";
+        var url = "/orders/" + id + "/edit";
         $("#modalNew").modal("show");
         $.ajax({
             url: url,
@@ -61,7 +61,7 @@ function Orders() {
             data: data,
             dataType: 'JSON',
             success: function (data) {
-                $(".input-parameters").setFields({data: data});
+                $(".input-orders").setFields({data: data});
             }
         })
     }
@@ -70,7 +70,7 @@ function Orders() {
         toastr.remove();
         if (confirm("Deseas eliminar")) {
             var token = $("input[name=_token]").val();
-            var url = "/parameters/" + id;
+            var url = "/orders/" + id;
             $.ajax({
                 url: url,
                 headers: {'X-CSRF-TOKEN': token},
@@ -92,32 +92,47 @@ function Orders() {
         return $('#tbl').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "/api/listParameter",
+            ajax: "/api/listOrders",
             columns: [
                 {data: "id"},
-                {data: "description"},
-                {data: "code"},
-                {data: "value"},
-                {data: "group"},
+                {data: "name"},
+                {data: "last_name"},
+                {data: "document"},
+                {data: "phone"},
+                {data: "movil"},
+                {data: "address"},
+                {data: "type_document"},
+                {data: "city"},
+                {data: "department"},
+                {data: "status"},
             ],
-            order: [[1, 'ASC']],
+
             aoColumnDefs: [
                 {
-                    aTargets: [0, 1, 2, 3,4],
+                    aTargets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
                     mRender: function (data, type, full) {
-                        return '<a href="#" onclick="obj.showModal(' + full.id + ')">' + data + '</a>';
-                    }
-                },
-                {
-                    targets: [5],
-                    searchable: false,
-                    mData: null,
-                    mRender: function (data, type, full) {
-                        return '<button class="btn btn-danger btn-xs" onclick="obj.delete(' + data.id + ')"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>';
+                        return '<a href="#" onclick="obj.show(' + full.id + ')">' + data + '</a>';
                     }
                 }
             ],
         });
+    }
+
+    this.show = function (id) {
+        var frm = $("#frm");
+        var data = frm.serialize();
+        var url = "/orders/" + id + "/edit";
+
+        $.ajax({
+            url: url,
+            method: "GET",
+            data: data,
+            dataType: 'JSON',
+            success: function (data) {
+                $('#myTabs a[href="#manager"]').tab('show');
+                $(".input-orders").setFields({data: data});
+            }
+        })
     }
 
 }
