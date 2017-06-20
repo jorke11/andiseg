@@ -11,6 +11,8 @@ CREATE OR REPLACE FUNCTION orders() RETURNS trigger AS $orders$
 	END;
 $orders$ LANGUAGE plpgsql;
 
+
+DROP TRIGGER  IF EXISTS orders ON orders;
 CREATE TRIGGER orders BEFORE INSERT ON orders
     FOR EACH ROW EXECUTE PROCEDURE orders();
 
@@ -25,5 +27,6 @@ CREATE OR REPLACE FUNCTION biografic() RETURNS trigger AS $biografic$
 $biografic$ LANGUAGE plpgsql;
 
 
+DROP TRIGGER  IF EXISTS biografic ON biografic;
 CREATE TRIGGER biografic BEFORE UPDATE ON biografic
     FOR EACH ROW EXECUTE PROCEDURE biografic();

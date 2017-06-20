@@ -23,8 +23,13 @@ class CreateOrdersTable extends Migration {
             $table->string('last_name');
             $table->text('address');
             $table->text('neighborhood');
+            $table->text('cost_center');
+            $table->text('position');
             $table->string('phone');
-            $table->string('movil');
+            $table->string('mobil');
+            $table->integer('insert_id')->nullable();
+            $table->integer('update_id')->nullable();
+            $table->integer('schema_id')->nullable();
             $table->timestamps();
         });
     }

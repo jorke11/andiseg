@@ -15,15 +15,35 @@ function Traicing() {
         $("#btnSaveAnotations").click(this.saveAnotations);
 
         $("#tabLaboral").click(this.loadLaboral)
-        $("#btnSaveLoboral").click(this.saveLaboral);
+        $("#btnSaveLaboral").click(this.saveLaboral);
 
         $("#tabDomicile").click(this.loadDomicile)
         $("#btnSaveDomicile").click(this.saveDomicile);
+
+        $("#tabPhoto").click(this.loadPhoto)
+        $("#btnSavePhoto").click(this.savePhoto);
+
         table = obj.table();
     }
 
     this.new = function () {
         $(".input-traicing").cleanFields();
+    }
+
+
+   
+
+
+    this.loadPhoto = function () {
+        $.ajax({
+            url: 'traicing/photo/' + $("#frmBiografic #order_id").val(),
+            method: "GET",
+            dataType: 'JSON',
+            success: function (data) {
+                $(".input-photo").setFields({data: data.header});
+                obj.tablePhoto(data.detail)
+            }
+        })
     }
 
     this.loadDomicile = function () {
@@ -86,6 +106,49 @@ function Traicing() {
         })
     }
 
+    this.tablePhoto = function (data) {
+        var html = "";
+        $("#listPhotos").empty();
+        var cont = 0;
+        html += '<div class="row">';
+        $.each(data, function (i, val) {
+
+            html += '<div class="col-lg-4" id="tumb_' + val.id + '"><div class="thumbnail"><img src="' + val.img + '" alt=""><div class="caption"><h3>' + val.type_photo + '</h3>'
+            html += '<p><a href="#" class="btn btn-danger" role="button" onclick=obj.deleteImg(' + val.id + ')>Borrar</a></p></div></div></div>';
+            cont++;
+
+            if (cont == 3) {
+                html += '</div><div class="row">'
+                cont = 0;
+            }
+        })
+
+        $("#listPhotos").html(html);
+    }
+
+    this.deleteImg = function (id) {
+
+        toastr.remove();
+        if (confirm("Deseas eliminar")) {
+            var token = $("input[name=_token]").val();
+            var url = "/traicing/photo/" + id;
+            $.ajax({
+                url: url,
+                headers: {'X-CSRF-TOKEN': token},
+                method: "DELETE",
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.success == true) {
+                        $("#tumb_" + id).remove();
+                        toastr.success("Ok");
+                    }
+                }, error: function (err) {
+                    toastr.error("No se puede borrra Este registro");
+                }
+            })
+        }
+    }
+
     this.tableLaboral = function (data) {
         var html = "";
         $("#tblLaboral tbody").empty();
@@ -122,6 +185,39 @@ function Traicing() {
             html += "<tr><td>" + val.question + "</td><td>" + val.si_no + "</td><td>" + val.description + "</td></tr>";
         })
         $("#tblJuridic tbody").html(html);
+    }
+
+    this.savePhoto = function () {
+        toastr.remove();
+        var url = "";
+        var msg = '';
+        $("#frmPhoto #order_id").val($("#frmBiografic #order_id").val());
+        var validate = $(".input-photo").validate();
+
+        if (validate.length == 0) {
+            method = 'POST';
+            url = "traicing/photo/";
+            msg = "Add Record";
+
+            var token = $("input[name=_token]").val();
+
+            var formData = new FormData($("#frmPhoto")[0]);
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: formData,
+                dataType: 'JSON',
+                processData: false,
+                cache: false,
+                contentType: false,
+                success: function (data) {
+                    obj.tablePhoto(data.detail);
+                }
+            })
+        } else {
+            toastr.error("Fields Required!");
+        }
     }
 
     this.saveLaboral = function () {
@@ -291,7 +387,7 @@ function Traicing() {
             toastr.error("Fields Required!");
         }
     }
-    
+
     this.saveDomicile = function () {
         toastr.remove();
         var frm = $("#frmDomicile");
@@ -412,7 +508,7 @@ function Traicing() {
                 {data: "last_name"},
                 {data: "document"},
                 {data: "phone"},
-                {data: "movil"},
+                {data: "mobil"},
                 {data: "address"},
                 {data: "type_document"},
                 {data: "city"},

@@ -2,6 +2,9 @@
     <div class="panel-heading">
         <div class="row">
             <div class="col-lg-12 text-right">
+                <button class="btn btn-warning btn-sm" type="button" id="btnOkAcademic">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"> Terminar</span>
+                </button>
                 <button class="btn btn-success btn-sm" type="button" id="btnSaveAcademic">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"> Save</span>
                 </button>

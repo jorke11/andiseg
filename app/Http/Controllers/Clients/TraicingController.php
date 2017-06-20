@@ -17,9 +17,19 @@ use App\Models\Clients\AnotationsDetail;
 use App\Models\Clients\Laboral;
 use App\Models\Clients\LaboralDetail;
 use App\Models\Clients\Domicile;
+use App\Models\Clients\Photo;
 use DB;
+use Illuminate\Support\Facades\Input;
 
 class TraicingController extends Controller {
+
+    public $name;
+    public $path;
+
+    public function __construct() {
+        $this->name = '';
+        $this->path = '';
+    }
 
     public function index() {
         $type_document = Parameters::where("group", "type_document")->get();
@@ -27,9 +37,13 @@ class TraicingController extends Controller {
         $questions = Parameters::where("group", "questions")->get();
         $entities = Parameters::where("group", "anotations")->get();
         $results = Parameters::where("group", "results")->get();
+        $category = Parameters::where("group", "category")->get();
+        $civil_status = Parameters::where("group", "civil_status")->get();
+        $class_military = Parameters::where("group", "class_military")->get();
+        $photo = Parameters::where("group", "photo")->get();
 
         $cities = Cities::all();
-        return view("Clients.Traicing.init", compact("type_document", "cities", "type_study", "questions", "entities", "results"));
+        return view("Clients.Traicing.init", compact("type_document", "cities", "type_study", "questions", "entities", "results", "category", "civil_status", "class_military", "photo"));
     }
 
     public function create() {
@@ -51,12 +65,58 @@ class TraicingController extends Controller {
         }
     }
 
+    public function storeExcel(Request $request) {
+        if ($request->ajax()) {
+
+            $input = $request->all();
+            $this->name = '';
+            $this->path = '';
+            $file = array_get($input, 'file_excel');
+            $this->name = $file->getClientOriginalName();
+            $this->name = str_replace(" ", "_", $this->name);
+            $this->path = "uploads/products/" . date("Y-m-d") . "/" . $this->name;
+            $file->move("uploads/products/" . date("Y-m-d") . "/", $this->name);
+
+            return response()->json(["success" => true]);
+        }
+    }
+
+    public function storePhoto(Request $request) {
+        if ($request->ajax()) {
+            $input = $request->all();
+
+//            dd($input);
+
+            $file = Input::file('photo');
+
+            $image = \Image::make(Input::file('photo'));
+            $path = public_path() . '/uploads/' . $input["photo_id"] . "/";
+
+            \File::makeDirectory($path, $mode = 0777, true, true);
+
+            $input["img"] = 'uploads/' . $input["photo_id"] . '/' . $file->getClientOriginalName();
+            $image->save($path . $file->getClientOriginalName());
+
+            $image->resize(240, 200);
+            $input["thumbnail"] = 'uploads/' . $input["photo_id"] . '/thumb_' . $file->getClientOriginalName();
+            $image->save($path . 'thumb_' . $file->getClientOriginalName());
+
+            $input["status_id"] = 1;
+            $result = Photo::create($input);
+
+            if ($result) {
+                $detail = $this->getDetailPhoto($input["order_id"]);
+                return response()->json(['success' => true, "detail" => $detail]);
+            } else {
+                return response()->json(['success' => false]);
+            }
+        }
+    }
+
     public function storeAcademic(Request $request) {
         if ($request->ajax()) {
             $input = $request->all();
             $input["academic_id"] = $input["id"];
-            unset($input["id"]);
-
             unset($input["id"]);
 //            $user = Auth::User();
 
@@ -140,6 +200,18 @@ class TraicingController extends Controller {
         return response()->json($row);
     }
 
+    public function editPhoto($id) {
+        $detail = $this->getDetailPhoto($id);
+        return response()->json(["detail" => $detail]);
+    }
+
+    public function deletePhoto($id) {
+        $photo = Photo::find($id);
+        \File::delete(array($photo->img, $photo->thumbnail));
+        $photo->delete();
+        return response()->json(["success" => true]);
+    }
+
     public function editAcademic($id) {
         $header = Academic::where("order_id", $id)->first();
         $detail = $this->getDetailAcademic($header->id);
@@ -176,6 +248,12 @@ class TraicingController extends Controller {
                         ->join(DB::raw("parameters as p"), "p.code", DB::raw("laboral_detail.result_id and p.group='results'"))
                         ->where("laboral_detail.laboral_id", $id_laboral)
                         ->get();
+    }
+
+    public function getDetailPhoto($order_id) {
+        return Photo::select("photo.id", "p.description as type_photo", "photo.img")
+                        ->join(DB::raw("parameters as p"), "p.code", DB::raw("photo.photo_id and p.group='photo'"))
+                        ->where("order_id", $order_id)->get();
     }
 
     public function getDetailAnotations($id_anotation) {

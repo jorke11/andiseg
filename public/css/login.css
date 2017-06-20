@@ -1,0 +1,42 @@
+.btn-login{
+    background-color:#ef8002; color:white;border-color: #ef8002
+}
+
+.titles{
+    color:#005d96;
+}
+.title-login{
+    color:#005d96;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.panel-default>.panel-heading{
+    background-color:white;
+    border-color:white;
+}
+
+.panel-login{
+    /*border-color:#005d96;*/
+    border-color:#ef8002;
+}
+
+.img-login{
+    height: auto;
+    object-fit: contain;
+    position:fixed;
+    z-index: 10000;
+    left: 16%;
+    top: 20%
+}
+
+
+@media (max-width: 1180px) { 
+    #logo{
+        display: none;
+    }
+
+    #logo-small{
+        display: block;
+    }
+}

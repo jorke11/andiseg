@@ -15,7 +15,7 @@
                         <span class="badge">5</span></a></li>
                 <li role="presentation" id="tabDomicile"><a href="#domicile" aria-controls="special" role="tab" data-toggle="tab">Visita Domicialiaria
                         <span class="badge">6</span></a></li>
-                <li role="presentation" id="tabUplod"><a href="#photo" aria-controls="special" role="tab" data-toggle="tab">Album Fotografico
+                <li role="presentation" id="tabPhoto"><a href="#photo" aria-controls="special" role="tab" data-toggle="tab">Album Fotografico
                         <span class="badge">7</span>
                     </a></li>
             </ul>

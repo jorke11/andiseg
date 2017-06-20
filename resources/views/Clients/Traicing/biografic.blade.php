@@ -3,8 +3,11 @@
     <div class="panel-heading">
         <div class="row">
             <div class="col-lg-12 text-right">
+                <button class="btn btn-warning btn-sm" type="button" id="btnOkBiografic">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"> Terminar</span>
+                </button>
                 <button class="btn btn-success btn-sm" type="button" id="btnSaveBiografic">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"> Save</span>
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"> Guardar</span>
                 </button>
             </div>
         </div>
@@ -79,10 +82,14 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Estado Civil</label>
-                    <input type="text" class="form-control input-biografic" id="civil_status_id" name='civil_status_id' required>
+                    <select class="form-control input-orders input-sm" id="civil_status_id" name="civil_status_id">
+                        <option value="0">Seleccione</option>
+                        @foreach($civil_status as $val)
+                        <option value="{{$val->id}}">{{$val->description}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
-
         </div>
         <div class="row">
             <div class="col-lg-3">
@@ -94,7 +101,12 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Libreta Militar</label>
-                    <input type="text" class="form-control input-biografic" id="militar_card" name='militar_card' required>
+                    <select class="form-control input-orders input-sm" id="militar_card_id" name="militar_card_id">
+                        <option value="0">Seleccione</option>
+                        @foreach($class_military as $val)
+                        <option value="{{$val->code}}">{{$val->description}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -151,7 +163,12 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Categoria</label>
-                    <input type="text" class="form-control input-biografic" id="category_id" name='category_id' required>
+                    <select class="form-control input-academic input-sm" id="category_id" name="category_id">
+                        <option value="0">Seleccione</option>
+                        @foreach($category as $val)
+                        <option value="{{$val->code}}">{{$val->description}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 

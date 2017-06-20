@@ -16,12 +16,12 @@ class CreateBiograficTable extends Migration {
             $table->increments('id');
             $table->integer('order_id');
             $table->integer('status_id');
-            $table->integer('city_expedition_id');
-            $table->integer('city_birth_id');
-            $table->integer('age');
-            $table->integer('civil_status_id');
+            $table->integer('city_expedition_id')->nullable();
+            $table->integer('city_birth_id')->nullable();
+            $table->integer('age')->nullable();
+            $table->integer('civil_status_id')->nullable();
             $table->integer('passport')->nullable();
-            $table->integer('militar_card')->nullable();
+            $table->integer('militar_card_id')->nullable();
             $table->integer('classes')->nullable();
             $table->integer('district')->nullable();
             $table->integer('category_id')->nullable();
@@ -29,8 +29,8 @@ class CreateBiograficTable extends Migration {
             $table->string('driving_licence')->nullable();
             $table->integer('professional_card')->nullable();
             $table->string('email')->nullable();
-            $table->string('eps');
-            $table->string('pensiones');
+            $table->string('eps')->nullable();
+            $table->string('pensiones')->nullable();
             $table->string('phone2')->nullable();
             $table->timestamps();
         });

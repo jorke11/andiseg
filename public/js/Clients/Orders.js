@@ -12,42 +12,52 @@ function Orders() {
 
     this.save = function () {
         toastr.remove();
-        var frm = $("#frm");
+        var frm = $("#frm"), schem = 0;
         var data = frm.serialize();
         var url = "", method = "";
         var id = $("#frm #id").val();
         var msg = '';
-
+      
         var validate = $(".input-orders").validate();
-
-        if (validate.length == 0) {
-            if (id == '') {
-                method = 'POST';
-                url = "orders";
-                msg = "Created Record";
-            } else {
-                method = 'PUT';
-                url = "orders/" + id;
-                msg = "Edited Record";
-            }
-
-            $.ajax({
-                url: url,
-                method: method,
-                data: data,
-                dataType: 'JSON',
-                success: function (data) {
-                    if (data.success == true) {
-                        $("#modalNew").modal("hide");
-                        $(".input-orders").setFields({data: data});
-                        table.ajax.reload();
-                        toastr.success(msg);
-                    }
+        
+        if ($("#frm #schema_id").val() != "0") {
+            if (validate.length == 0) {
+                if (id == '') {
+                    method = 'POST';
+                    url = "orders";
+                    msg = "Created Record";
+                } else {
+                    method = 'PUT';
+                    url = "orders/" + id;
+                    msg = "Edited Record";
                 }
-            })
+
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data: data,
+                    dataType: 'JSON',
+                    success: function (data) {
+                        if (data.success == true) {
+                            $("#modalNew").modal("hide");
+                            $(".input-orders").setFields({data: data});
+                            table.ajax.reload();
+                            toastr.success(msg);
+                        }
+                    }
+                })
+            } else {
+                toastr.error("Fields Required!");
+            }
         } else {
-            toastr.error("Fields Required!");
+            toastr.error("Plan no seleccionado");
         }
+    }
+
+    this.selectionProduct = function (id) {
+        $(".thumbnail").removeClass("selectedItem");
+        $("#item_" + id).toggleClass("selectedItem");
+         $("#frm #schema_id").val(id);
     }
 
     this.showModal = function (id) {
@@ -99,7 +109,7 @@ function Orders() {
                 {data: "last_name"},
                 {data: "document"},
                 {data: "phone"},
-                {data: "movil"},
+                {data: "mobil"},
                 {data: "address"},
                 {data: "type_document"},
                 {data: "city"},

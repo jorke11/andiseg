@@ -21,6 +21,16 @@ Route::get('/home', 'HomeController@index');
 Route::resource('/courses', 'Administration\CoursesController');
 Route::resource('/parameters', 'Administration\ParametersController');
 Route::resource('/schedules', 'Administration\SchedulesController');
+Route::resource('/clients', 'Clients\ClientsController');
+Route::resource('/email', 'Administration\EmailController');
+
+Route::post('/email/detail', 'Administration\EmailController@storeDetail');
+Route::put('/email/detail/{id}', 'Administration\EmailController@updateDetail');
+Route::get('/email/detail/{id}/edit', 'Administration\EmailController@editDetail');
+Route::delete('/email/detail/{id}', 'Administration\EmailController@destroyDetail');
+
+
+Route::resource('/users', 'Security\UsersController');
 
 Route::resource('/traicing', 'Clients\TraicingController');
 Route::put('/traicing/biografic/{id}', 'Clients\TraicingController@updateBiografic');
@@ -39,6 +49,11 @@ Route::post('/traicing/laboral', 'Clients\TraicingController@storeLaboral');
 Route::get('/traicing/domicile/{id}', 'Clients\TraicingController@editDomicile');
 Route::put('/traicing/domicile/{id}', 'Clients\TraicingController@updateDomicile');
 
+Route::get('/traicing/photo/{id}', 'Clients\TraicingController@editPhoto');
+Route::delete('/traicing/photo/{id}', 'Clients\TraicingController@deletePhoto');
+Route::post('/traicing/photo', 'Clients\TraicingController@storePhoto');
+
+
 Route::resource('/cities', 'Administration\CitiesController');
 Route::resource('/department', 'Administration\DepartmentController');
 
@@ -47,6 +62,11 @@ Route::get('/schedules/{id}/editDetail', 'Administration\SchedulesController@get
 Route::delete('/schedules/detail/{id}', 'Administration\SchedulesController@destroyItem');
 
 Route::resource('/orders', 'Clients\OrdersController');
+
+
+Route::get('/api/listEmail', function() {
+    return Datatables::eloquent(App\Models\Administration\Email::query())->make(true);
+});
 
 
 Route::get('/api/listParameter', function() {
@@ -66,6 +86,15 @@ Route::get('/api/listSchedules', function(Request $request) {
 
 Route::get('/api/listCity', function() {
     $query = DB::table("vcities");
+    return Datatables::queryBuilder($query)->make(true);
+});
+
+Route::get('/api/listClients', function() {
+    $query = DB::table("vclient");
+    return Datatables::queryBuilder($query)->make(true);
+});
+Route::get('/api/listUsers', function() {
+    $query = DB::table("vusers");
     return Datatables::queryBuilder($query)->make(true);
 });
 

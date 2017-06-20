@@ -57,7 +57,8 @@
 
         {!!Html::style('/vendor/select2/css/select2.min.css')!!}
         {!!Html::script('/vendor/select2/js/select2.js')!!}
-
+        {!!Html::style('/css/edited.css')!!}
+        {!!Html::style('/css/home.css')!!}
         <!-- Scripts -->
         <script>
             window.Laravel = <?php
@@ -68,8 +69,9 @@ echo json_encode([
         </script>
         <!--<link href="/css/app.css" rel="stylesheet">-->
     </head>
+    <!--<body style="background-color: #ef8002;">-->
     <body>
-        <div id="app">
+        <div id="app" >
             <nav class="navbar navbar-default navbar-static-top">
                 <div class="container">
                     <div class="navbar-header">
@@ -93,14 +95,14 @@ echo json_encode([
                         <ul class="nav navbar-nav">
     <!--                            <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>-->
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administración <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{{url('/parameters') }}">Parametros</a></li>
-                                    <li><a href="{{url('/courses') }}">Courses</a></li>
-                                    <li><a href="{{url('/schedules') }}">Schedules</a></li>
-                                    <li><a href="{{url('/cities') }}">Cities</a></li>
-                                    <li><a href="{{url('/department') }}">Department</a></li>
-                                    <li><a href="{{url('/orders') }}">Order</a></li>
+                                    <li><a href="{{url('/courses') }}">Servicios</a></li>
+                                    <li><a href="{{url('/schedules') }}">Paquetes</a></li>
+                                    <li><a href="{{url('/cities') }}">Ciudades</a></li>
+                                    <li><a href="{{url('/email') }}">Correos</a></li>
+                                    <li><a href="{{url('/department') }}">Departamentos</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -109,7 +111,18 @@ echo json_encode([
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Operación <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
+                                    <li><a href="{{url('/clients') }}">Clientes</a></li>
+                                    <li><a href="{{url('/orders') }}">Ordenes</a></li>
                                     <li><a href="{{url('/traicing') }}">Seguimiento</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav">
+    <!--                            <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>-->
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Seguridad <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{url('/users') }}">Usuarios</a></li>
                                 </ul>
                             </li>
                         </ul>

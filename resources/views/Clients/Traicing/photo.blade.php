@@ -1,185 +1,45 @@
-{!! Form::open(['id'=>'frm']) !!}
-<input type="hidden" id="id" name="id" class="input-courses">
-<div class="row">
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Primer Apellido</label>
-            <input type="text" class="form-control input-courses" id="description" name='description' required="">
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-lg-12 text-right">
+                <button class="btn btn-warning btn-sm" type="button" id="btnOkPhoto">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"> Terminar</span>
+                </button>
+                <button class="btn btn-success btn-sm" type="button" id="btnSavePhoto">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"> Save</span>
+                </button>
+            </div>
         </div>
     </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Segundo Apellido</label>
-            <input type="text" class="form-control input-courses" id="description" name='description' required="">
+    <div class="panel-body">
+
+        {!! Form::open(['id'=>'frmPhoto','files'=>true]) !!}
+        <input type="hidden" id="order_id" name="order_id" class="input-courses">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email">Tipo Album</label>
+                    <select class="form-control input-photo input-sm" id="photo_id" name="photo_id">
+                        <option value="0">Seleccione</option>
+                        @foreach($photo as $val)
+                        <option value="{{$val->code}}">{{$val->description}}</option>
+                        @endforeach
+                    </select>
+
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email">Archivo</label>
+                    <input type="file" class="form-control input-photo" id="photo" name='photo'>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Primer Nombre</label>
-            <input type="text" class="form-control input-courses" id="description" name='description' required="">
+        <div class="row">
+            <div id="listPhotos">
+            </div>
         </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Segundo Nombre</label>
-            <input type="text" class="form-control input-courses" id="description" name='description' required="">
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Tipo Documento</label>
-            <input type="text" class="form-control input-courses" id="value" name='value' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Documento</label>
-            <input type="text" class="form-control input-courses" id="value" name='value' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Ciudad Expedicion</label>
-            <input type="text" class="form-control input-courses" id="value" name='value' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Pasaporte</label>
-            <input type="text" class="form-control input-courses" id="value" name='value' required>
-        </div>
+        {!!Form::close()!!}   
     </div>
 </div>
-<div class="row">
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Libreta Militar</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Clase</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Distrito</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Lugar de Nacimiento</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Edad</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Estado Civil</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Ocupación o profesion</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Tarjeta Profesional</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Tarjeta Profesional</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Dirección de residencia</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Barrio</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Ciudad</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Telefono 1</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Telefono 2</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Celular</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Correo electronico</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Licencia de conducción</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Categoria</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">EPS</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="form-group">
-            <label for="email">Pensiones</label>
-            <input type="text" class="form-control input-courses" id="order" name='order' required>
-        </div>
-    </div>
-</div>
-{!!Form::close()!!}

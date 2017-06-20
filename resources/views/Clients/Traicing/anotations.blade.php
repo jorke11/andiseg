@@ -2,6 +2,9 @@
     <div class="panel-heading">
         <div class="row">
             <div class="col-lg-12 text-right">
+                <button class="btn btn-warning btn-sm" type="button" id="btnOkAnotations">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"> Terminar</span>
+                </button>
                 <button class="btn btn-success btn-sm" type="button" id="btnSaveAnotations">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"> Save</span>
                 </button>
@@ -36,7 +39,7 @@
                     <input type="text" class="form-control input-anotations" id="certificate" name="certificate">
                 </div>
             </div>
-            
+
             <div class="col-lg-5">
                 <div class="form-group">
                     <label for="email">Anotacion</label>
