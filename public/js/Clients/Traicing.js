@@ -195,13 +195,13 @@ function Traicing() {
 
         if (validate.length == 0) {
             method = 'POST';
-            url = "traicing/photo/";
+            url = "traicing/photo";
             msg = "Add Record";
 
             var token = $("input[name=_token]").val();
 
             var formData = new FormData($("#frmPhoto")[0]);
-
+            console.log(url);
             $.ajax({
                 url: url,
                 method: 'POST',
@@ -211,6 +211,7 @@ function Traicing() {
                 cache: false,
                 contentType: false,
                 success: function (data) {
+                    console.log(data);
                     obj.tablePhoto(data.detail);
                 }
             })
