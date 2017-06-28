@@ -53,6 +53,9 @@ class TraicingController extends Controller {
     public function create() {
         return "create";
     }
+    public function show() {
+        return "create";
+    }
 
     public function store(Request $request) {
         if ($request->ajax()) {
