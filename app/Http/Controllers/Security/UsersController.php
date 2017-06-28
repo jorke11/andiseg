@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Clients\Client;
 use App\Models\Administration\Parameters;
 use App\Models\Security\Users;
+use Auth;
 
 class UsersController extends Controller {
 
@@ -44,12 +45,13 @@ class UsersController extends Controller {
     }
 
     public function edit($id) {
-        $row = Client::FindOrFail($id);
+        $row = Users::FindOrFail($id);
+        unset($row->password);
         return response()->json($row);
     }
 
     public function update(Request $request, $id) {
-        $row = Client::FindOrFail($id);
+        $row = Users::FindOrFail($id);
         $input = $request->all();
         $result = $row->fill($input)->save();
         if ($result) {
@@ -60,7 +62,7 @@ class UsersController extends Controller {
     }
 
     public function destroy($id) {
-        $row = Client::FindOrFail($id);
+        $row = Users::FindOrFail($id);
         $result = $row->delete();
         if ($result) {
             return response()->json(['success' => true]);

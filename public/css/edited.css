@@ -68,6 +68,8 @@ table>thead>tr{
 }
 .selectedItem{
     border: 1px solid #33a1c1;
+    -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,.3);
+    box-shadow: 2px 2px 2px rgba(0,0,0,.3);
 }
 
 .color-pending{
@@ -127,4 +129,6 @@ tr.shown td.details-control {
     line-height: 18px;
     font-size: 12px;
 }
+
+
 

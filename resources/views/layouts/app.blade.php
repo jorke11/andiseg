@@ -94,6 +94,7 @@ echo json_encode([
                         <!-- Left Side Of Navbar -->
                         <ul class="nav navbar-nav">
     <!--                            <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>-->
+                            @if(Auth::user()->role_id==1)
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administración <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
@@ -105,14 +106,17 @@ echo json_encode([
                                     <li><a href="{{url('/department') }}">Departamentos</a></li>
                                 </ul>
                             </li>
+                            @endif
                         </ul>
                         <ul class="nav navbar-nav">
     <!--                            <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>-->
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Operación <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
+                                    @if(Auth::user()->role_id==1 ||Auth::user()->role_id==2)
                                     <li><a href="{{url('/clients') }}">Clientes</a></li>
                                     <li><a href="{{url('/orders') }}">Ordenes</a></li>
+                                    @endif
                                     <li><a href="{{url('/traicing') }}">Seguimiento</a></li>
                                 </ul>
                             </li>
@@ -125,6 +129,7 @@ echo json_encode([
                                     <li><a href="{{url('/users') }}">Usuarios</a></li>
                                 </ul>
                             </li>
+
                         </ul>
 
                         <!-- Right Side Of Navbar -->

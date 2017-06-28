@@ -3,11 +3,37 @@ function Orders() {
     this.init = function () {
         $("#btnNew").click(this.new);
         $("#btnSave").click(this.save);
+        $("#btnAssociate").click(this.associateUser);
         table = obj.table();
     }
 
     this.new = function () {
         $(".input-orders").cleanFields();
+    }
+
+    this.associateUser = function () {
+        var param = {};
+        param.user_id = $("#frmAssociate #user_id").val();
+        var token = $("input[name=_token]").val();
+        $.ajax({
+            url: 'orders/associate/' + $("#frmAssociate #order_id").val(),
+            method: 'put',
+            data: param,
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: 'JSON',
+            success: function (data) {
+                if (data.success == true) {
+                    $("#modalAssociate").modal("hide");
+                    table.ajax.reload();
+                    toastr.success("Usuario asignado");
+                }
+            }
+        })
+    }
+
+    this.associate = function (id) {
+        $("#modalAssociate").modal("show");
+        $("#frmAssociate #order_id").val(id);
     }
 
     this.save = function () {
@@ -17,9 +43,9 @@ function Orders() {
         var url = "", method = "";
         var id = $("#frm #id").val();
         var msg = '';
-      
+
         var validate = $(".input-orders").validate();
-        
+
         if ($("#frm #schema_id").val() != "0") {
             if (validate.length == 0) {
                 if (id == '') {
@@ -57,7 +83,7 @@ function Orders() {
     this.selectionProduct = function (id) {
         $(".thumbnail").removeClass("selectedItem");
         $("#item_" + id).toggleClass("selectedItem");
-         $("#frm #schema_id").val(id);
+        $("#frm #schema_id").val(id);
     }
 
     this.showModal = function (id) {
@@ -114,19 +140,37 @@ function Orders() {
                 {data: "type_document"},
                 {data: "city"},
                 {data: "department"},
+                {data: "responsible"},
+                {data: "event"},
                 {data: "status"},
             ],
 
             aoColumnDefs: [
                 {
-                    aTargets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                    aTargets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
                     mRender: function (data, type, full) {
                         return '<a href="#" onclick="obj.show(' + full.id + ')">' + data + '</a>';
                     }
+                },
+                {
+                    targets: [13],
+                    searchable: false,
+                    mData: null,
+                    mRender: function (data, type, full) {
+                        if (data.event_id == 1) {
+                            return '<button class="btn btn-success btn-xs" onclick="obj.associate(' + data.id + ')"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></button>';
+s                        } else {
+                            return '';
+                        }
+
+                    }
                 }
             ],
+
         });
     }
+
+
 
     this.show = function (id) {
         var frm = $("#frm");

@@ -19,6 +19,8 @@ class CreateOrdersTable extends Migration {
             $table->integer('department_id');
             $table->integer('document');
             $table->integer('status_id');
+            $table->integer('event_id')->nullable();
+            $table->integer('responsible_id')->nullable();
             $table->string('name');
             $table->string('last_name');
             $table->text('address');

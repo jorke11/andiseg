@@ -19,19 +19,19 @@
             <div class="col-lg-6">
                 <div class="form-group">
                     <label for="email">Nombre Empresa</label>
-                    <input type="text" class="form-control input-laboral" id="business" name="business">
+                    <input type="text" class="form-control input-laboral" id="business" name="business" required="">
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Actividad</label>
-                    <input type="text" class="form-control input-laboral" id="activity" name="activity">
+                    <input type="text" class="form-control input-laboral" id="activity" name="activity" required>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Telefono</label>
-                    <input type="text" class="form-control input-laboral" id="phone" name="phone">
+                    <input type="text" class="form-control input-laboral" id="phone" name="phone" required>
                 </div>
             </div>
            
@@ -40,19 +40,19 @@
              <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Cargo Desempeñado</label>
-                    <input type="text" class="form-control input-laboral" id="position" name="position">
+                    <input type="text" class="form-control input-laboral" id="position" name="position" required>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Fecha Ingreso</label>
-                    <input type="text" class="form-control input-laboral" id="fentry" name="fentry" value="<?php echo date("Y-m-d") ?>">
+                    <input type="text" class="form-control input-laboral" id="fentry" name="fentry" value="<?php echo date("Y-m-d") ?>" required>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Fecha Retiro</label>
-                    <input type="text" class="form-control input-laboral" id="fdeparture" name="fdeparture" value="<?php echo date("Y-m-d") ?>">
+                    <input type="text" class="form-control input-laboral" id="fdeparture" name="fdeparture" value="<?php echo date("Y-m-d") ?>" required>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -73,7 +73,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Resultado</label>
-                    <select class="form-control input-academic input-sm" id="result_id" name="result_id">
+                    <select class="form-control input-laboral input-sm" id="result_id" name="result_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($results as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>

@@ -12,7 +12,8 @@
  */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
+//    return view('welcome');
 });
 
 Auth::routes();
@@ -34,6 +35,9 @@ Route::resource('/users', 'Security\UsersController');
 
 Route::resource('/traicing', 'Clients\TraicingController');
 Route::put('/traicing/biografic/{id}', 'Clients\TraicingController@updateBiografic');
+
+Route::put('/traicing/biograficOk/{id}', 'Clients\TraicingController@updateBiograficOk');
+
 Route::get('/traicing/academic/{id}', 'Clients\TraicingController@editAcademic');
 Route::post('/traicing/academic', 'Clients\TraicingController@storeAcademic');
 
@@ -62,6 +66,7 @@ Route::get('/schedules/{id}/editDetail', 'Administration\SchedulesController@get
 Route::delete('/schedules/detail/{id}', 'Administration\SchedulesController@destroyItem');
 
 Route::resource('/orders', 'Clients\OrdersController');
+Route::put('/orders/associate/{order_id}', 'Clients\OrdersController@updateAssociate');
 
 
 Route::get('/api/listEmail', function() {
@@ -95,6 +100,11 @@ Route::get('/api/listClients', function() {
 });
 Route::get('/api/listUsers', function() {
     $query = DB::table("vusers");
+
+    if (Auth::user()->role_id != 1) {
+        $query->where("id", Auth::user()->id);
+    }
+
     return Datatables::queryBuilder($query)->make(true);
 });
 
@@ -103,6 +113,21 @@ Route::get('/api/listDepartment', function() {
 });
 Route::get('/api/listOrders', function() {
     $sql = DB::table("vorders");
+
+
+    if (Auth::user()->role_id == 2) {
+        $sql->where("client_id", Auth::user()->client_id);
+    }
+
+    return Datatables::queryBuilder($sql)->make(true);
+});
+Route::get('/api/listTraicing', function() {
+    $sql = DB::table("vtraicing");
+
+    if (Auth::user()->role_id == 2) {
+        $sql->where("responsible_id", Auth::user()->id);
+    }
+
     return Datatables::queryBuilder($sql)->make(true);
 });
 

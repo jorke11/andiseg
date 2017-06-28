@@ -6,12 +6,14 @@
                     <div class="row">
                         <div class="col-lg-3"></div>
                         <div class="col-lg-9 text-right">
+                            @if(Auth::user()->role_id==1)
                             <button class="btn btn-success btn-sm" type="button" id="btnNew">
-                                <span class="glyphicon glyphicon-plus" aria-hidden="true"> New</span>
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"> Nuevo</span>
                             </button>
                             <button class="btn btn-success btn-sm" type="button" id="btnSave">
-                                <span class="glyphicon glyphicon-plus" aria-hidden="true"> Save</span>
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"> Guardar</span>
                             </button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -28,7 +30,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="email">Tipo de Documento</label>
-                                <select class="form-control input-clients input-sm" id="document_id" name="document_id">
+                                <select class="form-control input-clients input-sm" id="document_id" name="document_id" required>
                                     <option value="0">Seleccione</option>
                                     @foreach($type_document as $val)
                                     <option value="{{$val->code}}">{{$val->description}}</option>
@@ -41,13 +43,13 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="email">Documento</label>
-                                <input type="text" class="form-control input-clients input-sm" id="document" name='document' required="">
+                                <input type="text" class="form-control input-clients input-sm" id="document" name='document' required="" data-type="number">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="email">Verificacion</label>
-                                <input type="text" class="form-control input-clients input-sm" id="verification" name='verification' required="">
+                                <input type="text" class="form-control input-clients input-sm" id="verification" name='verification' required="" data-type="number">
                             </div>
                         </div>
                     </div>
@@ -55,7 +57,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="email">Tipo Persona</label>
-                                <select class="form-control input-clients input-sm" id="person_id" name="person_id">
+                                <select class="form-control input-clients input-sm" id="person_id" name="person_id" required>
                                     <option value="0">Seleccione</option>
                                     @foreach($person_id as $val)
                                     <option value="{{$val->code}}">{{$val->description}}</option>
@@ -66,7 +68,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="email">Tipo Regimen</label>
-                                <select class="form-control input-clients input-sm" id="regimen_id" name="regimen_id">
+                                <select class="form-control input-clients input-sm" id="regimen_id" name="regimen_id" required>
                                     <option value="0">Seleccione</option>
                                     @foreach($regimen_id as $val)
                                     <option value="{{$val->code}}">{{$val->description}}</option>
@@ -80,7 +82,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="email">Departamento</label>
-                                <select class="form-control input-clients input-sm" id="department_id" name="department_id">
+                                <select class="form-control input-clients input-sm" id="department_id" name="department_id" required>
                                     <option value="0">Seleccione</option>
                                     @foreach($department as $val)
                                     <option value="{{$val->id}}">{{$val->description}}</option>
@@ -91,7 +93,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="email">Ciudad</label>
-                                <select class="form-control input-clients input-sm" id="city_id" name="city_id">
+                                <select class="form-control input-clients input-sm" id="city_id" name="city_id" required>
                                     <option value="0">Seleccione</option>
                                     @foreach($cities as $val)
                                     <option value="{{$val->id}}">{{$val->description}}</option>
@@ -104,7 +106,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="email">Direccion</label>
-                                <input type="text" class="form-control input-clients input-sm" id="address" name='address' required="">
+                                <input type="text" class="form-control input-clients input-sm" id="address" name='address' required="" >
                             </div>
                         </div>
                         <div class="col-lg-6">

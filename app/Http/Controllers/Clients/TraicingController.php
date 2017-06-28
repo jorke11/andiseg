@@ -41,9 +41,11 @@ class TraicingController extends Controller {
         $civil_status = Parameters::where("group", "civil_status")->get();
         $class_military = Parameters::where("group", "class_military")->get();
         $photo = Parameters::where("group", "photo")->get();
+        $eps = Parameters::where("group", "eps_id")->get();
+        $pensiones = Parameters::where("group", "pension_id")->get();
 
         $cities = Cities::all();
-        return view("Clients.Traicing.init", compact("type_document", "cities", "type_study", "questions", "entities", "results", "category", "civil_status", "class_military", "photo"));
+        return view("Clients.Traicing.init", compact("type_document", "cities", "type_study", "questions", "entities", "results", "category", "civil_status", "class_military", "photo", "eps", "pensiones"));
     }
 
     public function create() {
@@ -193,7 +195,7 @@ class TraicingController extends Controller {
 
     public function edit($id) {
         $row = Biografic::
-                        select("biografic.id", "o.name", "o.last_name", "o.document", "o.document_id", "o.address", "o.phone", "o.mobil", "o.city_id", DB::raw("biografic.*"))
+                        select("biografic.id", "o.name", "o.last_name", "o.document", "o.document_id", "o.address", "o.phone", "o.mobil", "o.city_id", DB::raw("biografic.*"), "o.neighborhood")
                         ->join(DB::raw("orders o"), "o.id", "biografic.order_id")
                         ->where("order_id", $id)->first();
 
@@ -294,6 +296,19 @@ class TraicingController extends Controller {
 
         $input = $request->all();
         $result = $row->fill($input)->save();
+        if ($result) {
+            return response()->json(['success' => true]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
+
+    public function updateBiograficOk(Request $request, $id) {
+        $row = Biografic::FindOrFail($id);
+        $input = $request->all();
+        $input["status_id"] = 3;
+        $result = $row->fill($input)->save();
+
         if ($result) {
             return response()->json(['success' => true]);
         } else {

@@ -11,6 +11,24 @@ class ParametersTableSeeder extends Seeder {
      */
     public function run() {
         DB::table('parameters')->insert([
+            'description' => "Creado",
+            'value' => null,
+            'group' => "events",
+            'code' => 1,
+        ]);
+        DB::table('parameters')->insert([
+            'description' => "Asignado",
+            'value' => null,
+            'group' => "events",
+            'code' => 2,
+        ]);
+        DB::table('parameters')->insert([
+            'description' => "Revision Biografica",
+            'value' => null,
+            'group' => "events",
+            'code' => 3,
+        ]);
+        DB::table('parameters')->insert([
             'description' => "cedula",
             'value' => null,
             'group' => "type_document",
@@ -21,6 +39,12 @@ class ParametersTableSeeder extends Seeder {
             'value' => null,
             'group' => "status_order",
             'code' => 1,
+        ]);
+        DB::table('parameters')->insert([
+            'description' => "En proceso",
+            'value' => null,
+            'group' => "status_order",
+            'code' => 2,
         ]);
 
         DB::table('parameters')->insert([
@@ -102,6 +126,31 @@ class ParametersTableSeeder extends Seeder {
             'description' => "administrador",
             'value' => null,
             'group' => "role_id",
+            'code' => 1,
+        ]);
+        DB::table('parameters')->insert([
+            'description' => "operador",
+            'value' => null,
+            'group' => "role_id",
+            'code' => 2,
+        ]);
+        DB::table('parameters')->insert([
+            'description' => "cliente",
+            'value' => null,
+            'group' => "role_id",
+            'code' => 3,
+        ]);
+
+        DB::table('parameters')->insert([
+            'description' => "cruz blanca",
+            'value' => null,
+            'group' => "eps_id",
+            'code' => 1,
+        ]);
+        DB::table('parameters')->insert([
+            'description' => "porvenir",
+            'value' => null,
+            'group' => "pension_id",
             'code' => 1,
         ]);
     }

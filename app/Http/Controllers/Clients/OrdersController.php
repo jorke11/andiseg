@@ -12,6 +12,7 @@ use App\Models\Administration\Department;
 use App\Models\Clients\Orders;
 use App\Models\Administration\Email;
 use App\Models\Administration\EmailDetail;
+use App\Models\Security\Users;
 use Mail;
 use Auth;
 use DB;
@@ -30,6 +31,7 @@ class OrdersController extends Controller {
         $esquemas = Schedules::all();
 
         $type_document = Parameters::where("group", "type_document")->get();
+        $users = Users::all();
         $cities = Cities::all();
         $department = Department::all();
 
@@ -41,11 +43,36 @@ class OrdersController extends Controller {
 
 //        dd($esquemas);
 
-        return view("Clients.Orders.init", compact("esquemas", "type_document", "department", "cities"));
+        return view("Clients.Orders.init", compact("esquemas", "type_document", "department", "cities", "users"));
     }
 
     public function create() {
         return "create";
+    }
+
+    public function updateAssociate(Request $req, $id) {
+        $in = $req->all();
+
+        $user = Users::find($in["user_id"]);
+
+        $in["name"] = $user->name;
+        $in["last_name"] = $user->last_name;
+        $this->email[] = $user->email;
+
+        $in = (array) DB::table("vorders")->where("id", $id)->first();
+        
+        Mail::send("Notifications.associate", $in, function($msj) {
+            $msj->subject("notificacion");
+            $msj->to($this->email);
+        });
+
+        $order = Orders::find($id);
+        $order->responsible_id = $user->id;
+        $order->status_id = 2;
+        $order->event_id = 2;
+        $order->save();
+        
+        return response()->json(['success' => true]);
     }
 
     public function store(Request $request) {
@@ -54,9 +81,12 @@ class OrdersController extends Controller {
             unset($input["id"]);
 
             $input["status_id"] = 1;
+            $input["event_id"] = 1;
             $input["insert_id"] = Auth::User()->id;
 
             $send = Email::where("description", "orders")->first();
+
+            $this->email[] = Auth::user()->email;
 
             if ($send) {
                 $det = EmailDetail::where("email_id", $send->id)->get();
@@ -67,9 +97,11 @@ class OrdersController extends Controller {
 
             $result = Orders::create($input);
             if ($result) {
+
                 $in = (array) DB::table("vorders")->where("id", $result->id)->first();
 
                 if (count($this->email) > 0) {
+
                     Mail::send("Notifications.order", $in, function($msj) {
                         $msj->subject("notificacion");
                         $msj->to($this->email);

@@ -21,7 +21,7 @@ CREATE TRIGGER orders BEFORE INSERT ON orders
 
 CREATE OR REPLACE FUNCTION biografic() RETURNS trigger AS $biografic$
 	BEGIN
-		UPDATE orders set status_id=2,updated_at=now() where id=NEW.order_id;
+		UPDATE orders set status_id=2 , event_id=3 , updated_at=now() where id=NEW.order_id;
 	return NEW;
 	END;
 $biografic$ LANGUAGE plpgsql;
@@ -30,3 +30,4 @@ $biografic$ LANGUAGE plpgsql;
 DROP TRIGGER  IF EXISTS biografic ON biografic;
 CREATE TRIGGER biografic BEFORE UPDATE ON biografic
     FOR EACH ROW EXECUTE PROCEDURE biografic();
+

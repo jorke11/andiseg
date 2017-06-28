@@ -3,10 +3,8 @@
 @section('content')
 
 <div class="container">
-    <br>
-    <br>
-    <br>
-    <br>
+    <div style="width: 100%;height: 100px">
+    </div>
     <div id="logo-small" style="display: none">
         <img src="{!!asset('img/65-01.png')!!}" width="280px">
     </div>

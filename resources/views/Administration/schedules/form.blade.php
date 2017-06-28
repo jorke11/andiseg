@@ -6,10 +6,10 @@
                     <div class="row">
                         <div class="col-lg-12 text-right">
                             <button class="btn btn-success btn-sm" id='btnNew'>
-                                <span class="glyphicon glyphicon-plus" aria-hidden="true"> New</span>
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"> NUevo</span>
                             </button>
                             <button class="btn btn-success btn-sm" id='btnSave'>
-                                <span class="glyphicon glyphicon-ok" aria-hidden="true"> Save</span>
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"> Guardar</span>
                             </button>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                     <div class="row">
                         <div class="col-lg-12 text-right">
                             <button class="btn btn-info btn-sm" id='btnNewDetail'>
-                                <span class="glyphicon glyphicon-plus" aria-hidden="true"> Detail</span>
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"> Detalle</span>
                             </button>
                         </div>
                     </div>
@@ -48,8 +48,8 @@
                             <table class="table table-condensed table-bordered" id="tblDetail">
                                 <thead>
                                     <tr>
-                                        <th>Course</th>
-                                        <th>Actions</th>
+                                        <th>Servicio</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -67,7 +67,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
+                <h4 class="modal-title">Agrega</h4>
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
@@ -79,9 +79,9 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label for="email">Courses</label>
+                                    <label for="email">Servicios</label>
                                     <select class="form-control input-detail" name="course_id" id="course_id">
-                                        <option value="0">Selection</option>
+                                        <option value="0">Seleccionar</option>
                                         @foreach($courses as $i=>$val)
                                         <option value="{{$val->id}}">{{$val->description}}</option>
                                         @endforeach
@@ -94,8 +94,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btnAddDetail">Save changes</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnAddDetail">Guardar</button>
             </div>
         </div>
     </div>

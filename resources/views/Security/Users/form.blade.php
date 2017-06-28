@@ -6,11 +6,13 @@
                     <div class="row">
                         <div class="col-lg-3">Petición</div>
                         <div class="col-lg-9 text-right">
+                            @if(Auth::user()->role_id==1)
                             <button class="btn btn-success btn-sm" type="button" id="btnNew">
-                                <span class="glyphicon glyphicon-plus" aria-hidden="true"> New</span>
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"> Nuevo</span>
                             </button>
+                            @endif
                             <button class="btn btn-success btn-sm" type="button" id="btnSave">
-                                <span class="glyphicon glyphicon-plus" aria-hidden="true"> Save</span>
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"> Guardar</span>
                             </button>
                         </div>
                     </div>
@@ -34,7 +36,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="email">Documento</label>
-                                <input type="text" class="form-control input-users input-sm" id="document" name='document' required="">
+                                <input type="text" class="form-control input-users input-sm" id="document" name='document' required="" data-type="number">
                             </div>
                         </div>
 
@@ -74,13 +76,13 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="email">Clave</label>
-                                <input type="password" class="form-control input-users input-sm" id="password" name='password' required="">
+                                <input type="password" class="form-control input-users input-sm" id="password" name='password'>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="email">Confirmación</label>
-                                <input type="password" class="form-control input-users input-sm" id="confirmation" name='confirmation' required="">
+                                <input type="password" class="form-control input-users input-sm" id="confirmation" name='confirmation'>
                             </div>
                         </div>
                     </div>

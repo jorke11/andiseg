@@ -17,15 +17,15 @@ class Biografic extends Model {
         "civil_status_id",
         "passport",
         "militar_card",
-        "classes",
+        "classes_id",
         "district",
         "category_id",
         "profession",
         "driving_licence",
         "professional_card",
         "email",
-        "eps",
-        "pensiones",
+        "eps_id",
+        "pensiones_id",
         "phone2"
     ];
 

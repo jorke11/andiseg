@@ -32,7 +32,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Tipo Documento</label>
-                    <select class="form-control input-biografic input-sm" id="document_id" name="document_id">
+                    <select class="form-control input-biografic input-sm" id="document_id" name="document_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($type_document as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>
@@ -54,7 +54,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Ciudad Expedicion</label>
-                    <select class="form-control input-biografic input-sm" id="city_expedition_id" name="city_expedition_id">
+                    <select class="form-control input-biografic input-sm" id="city_expedition_id" name="city_expedition_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($cities as $val)
                         <option value="{{$val->id}}">{{$val->description}}</option>
@@ -65,7 +65,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Lugar de Nacimiento</label>
-                    <select class="form-control input-biografic input-sm" id="city_birth_id" name="city_birth_id">
+                    <select class="form-control input-biografic input-sm" id="city_birth_id" name="city_birth_id" required>
                         <option value="0">Seleccione</option>
                         @foreach($cities as $val)
                         <option value="{{$val->id}}">{{$val->description}}</option>
@@ -76,13 +76,13 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Edad</label>
-                    <input type="text" class="form-control input-biografic" id="age" name='age' required>
+                    <input type="text" class="form-control input-biografic" id="age" name='age' required data-type="number">
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Estado Civil</label>
-                    <select class="form-control input-orders input-sm" id="civil_status_id" name="civil_status_id">
+                    <select class="form-control input-biografic input-sm" id="civil_status_id" name="civil_status_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($civil_status as $val)
                         <option value="{{$val->id}}">{{$val->description}}</option>
@@ -95,30 +95,31 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Pasaporte</label>
-                    <input type="text" class="form-control input-biografic" id="passport" name='passport' required>
+                    <input type="text" class="form-control input-biografic" id="passport" name='passport' data-type="number" required="">
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Libreta Militar</label>
-                    <select class="form-control input-orders input-sm" id="militar_card_id" name="militar_card_id">
-                        <option value="0">Seleccione</option>
-                        @foreach($class_military as $val)
-                        <option value="{{$val->code}}">{{$val->description}}</option>
-                        @endforeach
-                    </select>
+                    <input type="text" class="form-control input-biografic" id="militar_card" name='militar_card' required data-type="number">
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Clase</label>
-                    <input type="text" class="form-control input-biografic" id="classes" name='classes' required>
+                    <select class="form-control input-biografic input-sm" id="classes_id" name="classes_id" required="">
+                        <option value="0">Seleccione</option>
+                        @foreach($class_military as $val)
+                        <option value="{{$val->code}}">{{$val->description}}</option>
+                        @endforeach
+                    </select>
+
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Distrito</label>
-                    <input type="text" class="form-control input-biografic" id="district" name='district' required>
+                    <input type="text" class="form-control input-biografic" id="district" name='district' required data-type="number">
                 </div>
             </div>
 
@@ -135,7 +136,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Tarjeta Profesional</label>
-                    <input type="text" class="form-control input-biografic" id="professional_card" name='professional_card' required>
+                    <input type="text" class="form-control input-biografic" id="professional_card" name='professional_card' required data-type="number">
                 </div>
             </div>
 
@@ -157,13 +158,13 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Licencia de conducción</label>
-                    <input type="text" class="form-control input-biografic" id="driving_licence" name='driving_licence'>
+                    <input type="text" class="form-control input-biografic" id="driving_licence" name='driving_licence' >
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Categoria</label>
-                    <select class="form-control input-academic input-sm" id="category_id" name="category_id">
+                    <select class="form-control input-biografic input-sm" id="category_id" name="category_id" >
                         <option value="0">Seleccione</option>
                         @foreach($category as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>
@@ -175,7 +176,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Ciudad</label>
-                    <select class="form-control input-biografic input-sm" id="city_id" name="city_id">
+                    <select class="form-control input-biografic input-sm" id="city_id" name="city_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($cities as $val)
                         <option value="{{$val->id}}">{{$val->description}}</option>
@@ -187,7 +188,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Dirección de residencia</label>
-                    <input type="text" class="form-control input-biografic" id="address" name='address'>
+                    <input type="text" class="form-control input-biografic" id="address" name='address' required="">
                 </div>
             </div>
 
@@ -216,7 +217,12 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">EPS</label>
-                    <input type="text" class="form-control input-biografic" id="eps" name='eps' required>
+                    <select class="form-control input-biografic input-sm" id="eps_id" name="eps_id" required="">
+                        <option value="0">Seleccione</option>
+                        @foreach($eps as $val)
+                        <option value="{{$val->code}}">{{$val->description}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 
@@ -225,7 +231,13 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Pensiones</label>
-                    <input type="text" class="form-control input-biografic" id="pension" name='pension' required>
+                    <select class="form-control input-biografic input-sm" id="pension_id" name="pension_id" required="">
+                        <option value="0">Seleccione</option>
+                        @foreach($pensiones as $val)
+                        <option value="{{$val->code}}">{{$val->description}}</option>
+                        @endforeach
+                    </select>
+                    
                 </div>
             </div>
         </div>

@@ -6,10 +6,10 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-lg-3">List Courses</div>
+                    <div class="col-lg-3">Lista Servicios</div>
                     <div class="col-lg-9 text-right">
                         <button class="btn btn-success btn-sm" type="button" id="btnNew">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"> New</span>
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"> Nuevo</span>
                         </button>
                     </div>
                 </div>

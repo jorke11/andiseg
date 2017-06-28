@@ -7,15 +7,37 @@ join departments d ON d.id=c.department_id;
 
 create view vorders as 
 select o.id,o.name,o.last_name,o.document,o.address,o.phone,o.mobil,c.description city,d.description department,
-p.description type_document,est.description status,cli.business_name as client,o.cost_center,sch.description as schema
+p.description type_document,est.description status,cli.business_name as client,o.cost_center,sch.description as schema,
+ev.description as event,coalesce((aso.name || ' ' ||aso.last_name),'') as responsible,o.event_id,cli.id as client_id
 from orders o 
 JOIN cities c ON c.id=o.city_id
 JOIN users u ON u.id=o.insert_id
+LEFT JOIN users aso ON aso.id=o.responsible_id
 JOIN clients cli ON cli.id=u.client_id
 JOIN schedules sch ON sch.id=o.schema_id
 JOIN departments d ON d.id=o.department_id
 JOIN parameters p ON p.code=o.document_id and p.group='type_document'
-LEFT JOIN parameters est ON est.code=o.status_id and est.group='status_order';
+JOIN parameters est ON est.code=o.status_id and est.group='status_order'
+JOIN parameters ev ON ev.code=o.event_id and ev.group='events';
+
+
+create view vtraicing as 
+select o.id,o.name,o.last_name,o.document,o.address,o.phone,o.mobil,c.description city,d.description department,
+p.description type_document,est.description status,cli.business_name as client,o.cost_center,sch.description as schema,
+ev.description as event,aso.name || ' ' ||aso.last_name responsible,o.event_id,responsible_id
+from orders o 
+JOIN cities c ON c.id=o.city_id
+JOIN users u ON u.id=o.insert_id
+LEFT JOIN users aso ON aso.id=o.responsible_id
+JOIN clients cli ON cli.id=u.client_id
+JOIN schedules sch ON sch.id=o.schema_id
+JOIN departments d ON d.id=o.department_id
+JOIN parameters p ON p.code=o.document_id and p.group='type_document'
+JOIN parameters est ON est.code=o.status_id and est.group='status_order'
+JOIN parameters ev ON ev.code=o.event_id and ev.group='events'
+WHERE o.status_id<>1;
+
+
 
 
 create view vclient as

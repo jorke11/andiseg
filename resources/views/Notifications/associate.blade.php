@@ -1,9 +1,10 @@
 <html>
-
-    <style>
-        #main {border:#0471b4 1px solid;border-radius: 5px;}
-        .title{color:#005b94;font-weight: bold;}
-    </style>
+    <head>
+        <style type="text/css">
+            #main {border:#0471b4 1px solid;border-radius: 5px;}
+            .title{color:#005b94;font-weight: bold;}
+        </style>
+    </head>
 
     <body>
 
@@ -23,7 +24,7 @@
                             <td width='30%' >
                                 <img src="{!!asset('img/65-01.png')!!}" width="100">
                             </td> 
-                            <td rowspan="2"><h2 class="title">Generación de Orden #{{$id}}<br>de {{ucwords($client)}}</h2></td> 
+                            <td rowspan="2"><h2 class="title">Hola,{{$name . " ".$last_name }} la Orden #{{$id}} te ha sido asociada<br>Cliente {{ucwords($client)}}</h2></td> 
                         </tr>
                         <tr>
 
