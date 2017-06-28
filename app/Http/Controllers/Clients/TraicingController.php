@@ -20,6 +20,8 @@ use App\Models\Clients\Domicile;
 use App\Models\Clients\Photo;
 use DB;
 use Illuminate\Support\Facades\Input;
+use Image;
+use File;
 
 class TraicingController extends Controller {
 
@@ -91,10 +93,10 @@ class TraicingController extends Controller {
 
             $file = Input::file('photo');
 
-            $image = \Image::make(Input::file('photo'));
+            $image = Image::make(Input::file('photo'));
             $path = public_path() . '/uploads/' . $input["photo_id"] . "/";
 
-            \File::makeDirectory($path, $mode = 0777, true, true);
+            File::makeDirectory($path, $mode = 0777, true, true);
 
             $input["img"] = 'uploads/' . $input["photo_id"] . '/' . $file->getClientOriginalName();
             $image->save($path . $file->getClientOriginalName());
