@@ -13,6 +13,7 @@ use App\Models\Clients\Orders;
 use App\Models\Administration\Email;
 use App\Models\Administration\EmailDetail;
 use App\Models\Security\Users;
+use App\Models\Clients\Client;
 use Mail;
 use Auth;
 use DB;
@@ -31,7 +32,7 @@ class OrdersController extends Controller {
         $esquemas = Schedules::all();
 
         $type_document = Parameters::where("group", "type_document")->get();
-        $users = Users::all();
+        $users = Users::where("role_id", 3)->get();
         $cities = Cities::all();
         $department = Department::all();
 
@@ -60,7 +61,7 @@ class OrdersController extends Controller {
         $this->email[] = $user->email;
 
         $in = (array) DB::table("vorders")->where("id", $id)->first();
-        
+
         Mail::send("Notifications.associate", $in, function($msj) {
             $msj->subject("notificacion");
             $msj->to($this->email);
@@ -71,7 +72,7 @@ class OrdersController extends Controller {
         $order->status_id = 2;
         $order->event_id = 2;
         $order->save();
-        
+
         return response()->json(['success' => true]);
     }
 
@@ -85,7 +86,11 @@ class OrdersController extends Controller {
             $input["insert_id"] = Auth::User()->id;
 
             $send = Email::where("description", "orders")->first();
+            $client = Client::find(Auth::User()->client_id);
 
+            $executive = Users::find($client->executive_id);
+
+            $this->email[] = $executive->email;
             $this->email[] = Auth::user()->email;
 
             if ($send) {

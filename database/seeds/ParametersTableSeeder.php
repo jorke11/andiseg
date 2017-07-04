@@ -129,16 +129,22 @@ class ParametersTableSeeder extends Seeder {
             'code' => 1,
         ]);
         DB::table('parameters')->insert([
-            'description' => "operador",
+            'description' => "Ejecutivo",
             'value' => null,
             'group' => "role_id",
             'code' => 2,
         ]);
         DB::table('parameters')->insert([
-            'description' => "cliente",
+            'description' => "operador",
             'value' => null,
             'group' => "role_id",
             'code' => 3,
+        ]);
+        DB::table('parameters')->insert([
+            'description' => "cliente",
+            'value' => null,
+            'group' => "role_id",
+            'code' => 4,
         ]);
 
         DB::table('parameters')->insert([

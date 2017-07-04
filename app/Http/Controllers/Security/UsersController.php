@@ -7,13 +7,24 @@ use App\Http\Controllers\Controller;
 use App\Models\Clients\Client;
 use App\Models\Administration\Parameters;
 use App\Models\Security\Users;
+use DB;
 use Auth;
 
 class UsersController extends Controller {
 
     public function index() {
-        $client_id = Client::all();
-        $role_id = Parameters::where("group", "role_id")->get();
+
+        $client_q = DB::table("clients");
+
+        $role_q = Parameters::where("group", "role_id");
+
+        if (Auth::user()->role_id != 1) {
+            $client_q->where("id", Auth::user()->client_id);
+            $role_q->where("code", Auth::user()->role_id);
+        }
+
+        $client_id = $client_q->get();
+        $role_id = $role_q->get();
         return view("Security.Users.init", compact("client_id", "role_id"));
     }
 
@@ -52,7 +63,14 @@ class UsersController extends Controller {
 
     public function update(Request $request, $id) {
         $row = Users::FindOrFail($id);
+
         $input = $request->all();
+        if (empty($input["password"])) {
+            unset($input["password"]);
+        } else {
+            $input["password"] = bcrypt($input["password"]);
+        }
+
         $result = $row->fill($input)->save();
         if ($result) {
             return response()->json(['success' => true]);

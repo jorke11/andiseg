@@ -4,6 +4,7 @@ function Orders() {
         $("#btnNew").click(this.new);
         $("#btnSave").click(this.save);
         $("#btnAssociate").click(this.associateUser);
+
         table = obj.table();
     }
 
@@ -157,9 +158,14 @@ function Orders() {
                     searchable: false,
                     mData: null,
                     mRender: function (data, type, full) {
+                        var role = $("#role_id").val();
                         if (data.event_id == 1) {
-                            return '<button class="btn btn-success btn-xs" onclick="obj.associate(' + data.id + ')"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></button>';
-s                        } else {
+                            if (role == 1 || role == 2) {
+                                return '<button class="btn btn-success btn-xs" onclick="obj.associate(' + data.id + ')"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></button>';
+                            } else {
+                                return '';
+                            }
+                        } else {
                             return '';
                         }
 

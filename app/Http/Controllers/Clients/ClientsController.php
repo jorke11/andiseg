@@ -8,6 +8,7 @@ use App\Models\Administration\Parameters;
 use App\Models\Administration\Cities;
 use App\Models\Administration\Department;
 use App\Models\Clients\Client;
+use App\Models\Security\Users;
 use Auth;
 
 class ClientsController extends Controller {
@@ -23,8 +24,9 @@ class ClientsController extends Controller {
         $regimen_id = Parameters::where("group", "regimen_id")->get();
         $cities = Cities::all();
         $department = Department::all();
+        $executive = Users::where("role_id", 2)->get();
 
-        return view("Clients.Client.init", compact("type_document", "cities", "department", "person_id", "regimen_id"));
+        return view("Clients.Client.init", compact("type_document", "cities", "department", "person_id", "regimen_id", "executive"));
     }
 
     public function create() {
@@ -37,7 +39,7 @@ class ClientsController extends Controller {
             unset($input["id"]);
             $input["insert_id"] = Auth::User()->id;
             $input["status_id"] = 1;
-            
+
             $result = Client::create($input);
             if ($result) {
                 return response()->json(['success' => true, "data" => $result]);
@@ -48,6 +50,9 @@ class ClientsController extends Controller {
     }
 
     public function edit($id) {
+        
+        dd(Auth::user());
+        
         $row = Client::FindOrFail($id);
         return response()->json($row);
     }

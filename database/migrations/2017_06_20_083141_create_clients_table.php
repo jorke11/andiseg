@@ -28,6 +28,7 @@ class CreateClientsTable extends Migration {
             $table->string('business_name')->nullable();
             $table->integer("insert_id");
             $table->integer("update_id")->nullable();
+            $table->integer("executive_id");
             $table->timestamps();
         });
     }

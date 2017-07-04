@@ -21,8 +21,9 @@ class ClientTableSeeder extends Seeder {
             'verification' => 1,
             'address' => "testing addres",
             'mobil' => "2343243",
-            'business_name' => "razon social testing",
+            'business_name' => "Andiseg",
             'insert_id' => 1,
+            'executive_id' => 2,
         ]);
     }
 

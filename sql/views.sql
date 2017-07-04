@@ -42,7 +42,7 @@ WHERE o.status_id<>1;
 
 create view vclient as
 select  c.id,reg.description regimen,per.description person,ci.description city,doc.description as type_document
-,de.description department,c.document,c.verification,c.address,c.mobil,c.business_name,c.status_id
+,de.description department,c.document,c.verification,c.address,c.mobil,c.business_name,c.status_id,c.executive_id
 from clients c
 JOIN parameters reg ON reg.code=c.regimen_id and reg.group='regimen_id'
 JOIN parameters per ON per.code=c.person_id and per.group='person_id'

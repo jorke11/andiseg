@@ -96,6 +96,9 @@ Route::get('/api/listCity', function() {
 
 Route::get('/api/listClients', function() {
     $query = DB::table("vclient");
+    if (Auth::user()->role_id != 1) {
+        $query->where("executive_id", Auth::user()->id);
+    }
     return Datatables::queryBuilder($query)->make(true);
 });
 Route::get('/api/listUsers', function() {
@@ -114,9 +117,9 @@ Route::get('/api/listDepartment', function() {
 Route::get('/api/listOrders', function() {
     $sql = DB::table("vorders");
 
-
     if (Auth::user()->role_id == 2) {
-        $sql->where("client_id", Auth::user()->client_id);
+        
+        $sql->where("client_id", Auth::user()->id);
     }
 
     return Datatables::queryBuilder($sql)->make(true);
