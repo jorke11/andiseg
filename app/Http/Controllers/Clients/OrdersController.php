@@ -30,7 +30,6 @@ class OrdersController extends Controller {
     public function index() {
 
         $esquemas = Schedules::all();
-
         $type_document = Parameters::where("group", "type_document")->get();
         $users = Users::where("role_id", 3)->get();
         $cities = Cities::all();
@@ -41,8 +40,6 @@ class OrdersController extends Controller {
                             ->where("schedules_detail.schedule_id", $value->id)
                             ->join("courses", "courses.id", "schedules_detail.course_id")->get();
         }
-
-//        dd($esquemas);
 
         return view("Clients.Orders.init", compact("esquemas", "type_document", "department", "cities", "users"));
     }
