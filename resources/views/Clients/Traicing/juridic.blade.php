@@ -50,6 +50,7 @@
                             <th>Pregunta</th>
                             <th>SI/NO</th>
                             <th>Descripción</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody></tbody>

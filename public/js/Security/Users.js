@@ -3,11 +3,17 @@ function Users() {
     this.init = function () {
         $("#btnNew").click(this.new);
         $("#btnSave").click(this.save);
+
+        $("#tabManagement").click(function () {
+            $(".input-users").cleanFields({disabled: true});
+            $("#btnSave").attr("disabled", true);
+        })
         table = obj.table();
     }
 
     this.new = function () {
         $(".input-users").cleanFields();
+        $("#btnSave").attr("disabled", false);
     }
 
     this.save = function () {
@@ -17,7 +23,7 @@ function Users() {
         var url = "", method = "";
         var id = $("#frm #id").val();
         var msg = '';
-
+        var token = $("input[name=_token]").val();
         var validate = $(".input-users").validate();
 
         if (validate.length == 0) {
@@ -34,6 +40,7 @@ function Users() {
             $.ajax({
                 url: url,
                 method: method,
+                headers: {'X-CSRF-TOKEN': token},
                 data: data,
                 dataType: 'JSON',
                 success: function (data) {

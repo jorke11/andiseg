@@ -18,7 +18,7 @@ class CreateAcademicDetailTable extends Migration {
             $table->integer('study_id')->nullable();
             $table->string('obtained_title')->nullable();
             $table->string('institution')->nullable();
-            $table->string('concept')->nullable();
+            $table->integer('concept_id');
             $table->timestamps();
         });
     }

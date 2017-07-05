@@ -18,6 +18,7 @@
                 <li role="presentation" id="tabPhoto"><a href="#photo" aria-controls="special" role="tab" data-toggle="tab">Album Fotografico
                         <span class="badge">7</span>
                     </a></li>
+                <li role="presentation" id="finish"><a href="#photo" aria-controls="special" role="tab" data-toggle="tab">Finalizar</a></li>
             </ul>
         </div>
         <div class="col-lg-9">

@@ -32,7 +32,6 @@ function Traicing() {
         $(".input-traicing").cleanFields();
     }
 
-
     this.loadPhoto = function () {
         $.ajax({
             url: 'traicing/photo/' + $("#frmBiografic #order_id").val(),
@@ -57,40 +56,37 @@ function Traicing() {
         })
     }
 
-    this.loadAnotations = function () {
-        $.ajax({
-            url: 'traicing/anotations/' + $("#frmBiografic #order_id").val(),
-            method: "GET",
-            dataType: 'JSON',
-            success: function (data) {
-                $(".input-anotations").setFields({data: data.header});
-                obj.tableAnotations(data.detail)
-            }
-        })
-    }
+    this.saveAcademic = function () {
+        toastr.remove();
+        var frm = $("#frmAcademic");
+        var data = frm.serialize();
+        var url = "", method = "";
+        var id = $("#frmAcademic #id").val();
+        var msg = '';
 
-    this.loadLaboral = function () {
-        $.ajax({
-            url: 'traicing/laboral/' + $("#frmBiografic #order_id").val(),
-            method: "GET",
-            dataType: 'JSON',
-            success: function (data) {
-                $(".input-laboral").setFields({data: data.header});
-                obj.tableLaboral(data.detail)
-            }
-        })
-    }
+        var validate = $(".input-academic").validate();
 
-    this.loadJuridic = function () {
-        $.ajax({
-            url: 'traicing/juridic/' + $("#frmBiografic #order_id").val(),
-            method: "GET",
-            dataType: 'JSON',
-            success: function (data) {
-                $(".input-juridic").setFields({data: data.header});
-                obj.tableJuridic(data.detail)
-            }
-        })
+        if (validate.length == 0) {
+            url = "traicing/academic/";
+            msg = "Add Record";
+
+            var token = $("input[name=_token]").val();
+
+            $.ajax({
+                url: url,
+                method: "POST",
+                headers: {'X-CSRF-TOKEN': token},
+                data: data,
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.success == true) {
+                        obj.tableAcademic(data.detail);
+                    }
+                }
+            })
+        } else {
+            toastr.error("Fields Required!");
+        }
     }
 
     this.loadAcademic = function () {
@@ -101,6 +97,32 @@ function Traicing() {
             success: function (data) {
                 $(".input-academic").setFields({data: data.header});
                 obj.tableAcademic(data.detail)
+            }
+        })
+    }
+
+    this.tableAcademic = function (data) {
+        var html = "";
+        $("#tblAcademic tbody").empty();
+        $.each(data, function (i, val) {
+            html += "<tr><td>" + val.study + "</td><td>" + val.obtained_title + "</td><td>" + val.institution + "</td><td>" + val.concept;
+            html += '</td><td><span style="cursor:pointer" class="glyphicon glyphicon-remove" aria-hidden="true" onclick=obj.deleteAcademic(' + val.id + ')></span></td></tr>';
+        })
+        $("#tblAcademic tbody").html(html);
+    }
+
+    this.deleteAcademic = function (id) {
+        var token = $("input[name=_token]").val();
+        var param = {};
+        $.ajax({
+            url: 'traicing/academic/' + id,
+            method: "DELETE",
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: 'JSON',
+            success: function (data) {
+                if (data.success == true) {
+                    obj.tableAcademic(data.detail);
+                }
             }
         })
     }
@@ -153,72 +175,12 @@ function Traicing() {
         $("#tblLaboral tbody").empty();
         $.each(data, function (i, val) {
             html += "<tr><td>" + val.result + "</td><td>" + val.activity + "</td><td>" + val.phone + "</td><td>" + val.position + "</td>";
-            html += "<td>" + val.fentry + "</td><td>" + val.fdeparture + "</td><td>" + val.contact + "</td><td>" + val.concept + "</td><td>" + val.result + "</td></tr>";
+            html += "<td>" + val.fentry + "</td><td>" + val.fdeparture + "</td><td>" + val.contact + "</td><td>" + val.concept + "</td><td>" + val.result + "</td>";
+            html += '<td><span style="cursor:pointer" class="glyphicon glyphicon-remove" aria-hidden="true" onclick=obj.deleteLaboral(' + val.id + ')></span></td></tr>';
         })
         $("#tblLaboral tbody").html(html);
     }
 
-    this.tableAnotations = function (data) {
-        var html = "";
-        $("#tblAnotations tbody").empty();
-        $.each(data, function (i, val) {
-            html += "<tr><td>" + val.entity + "</td><td>" + val.verification_code + "</td><td>" + val.certificate + "</td><td>" + val.anotation + "</td></tr>";
-        })
-        $("#tblAnotations tbody").html(html);
-    }
-
-    this.tableAcademic = function (data) {
-        var html = "";
-        $("#tblAcademic tbody").empty();
-        $.each(data, function (i, val) {
-            html += "<tr><td>" + val.study + "</td><td>" + val.obtained_title + "</td><td>" + val.institution + "</td><td>" + val.concept + "</td></tr>";
-        })
-        $("#tblAcademic tbody").html(html);
-    }
-
-    this.tableJuridic = function (data) {
-        var html = "";
-        $("#tblJuridic tbody").empty();
-        $.each(data, function (i, val) {
-            val.si_no = (val.si_no == true) ? 'SI' : 'NO';
-            html += "<tr><td>" + val.question + "</td><td>" + val.si_no + "</td><td>" + val.description + "</td></tr>";
-        })
-        $("#tblJuridic tbody").html(html);
-    }
-
-    this.savePhoto = function () {
-        toastr.remove();
-        var url = "";
-        var msg = '';
-        $("#frmPhoto #order_id").val($("#frmBiografic #order_id").val());
-        var validate = $(".input-photo").validate();
-
-        if (validate.length == 0) {
-            method = 'POST';
-            url = "traicing/photo";
-            msg = "Add Record";
-
-            var token = $("input[name=_token]").val();
-
-            var formData = new FormData($("#frmPhoto")[0]);
-            console.log(url);
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: formData,
-                dataType: 'JSON',
-                processData: false,
-                cache: false,
-                contentType: false,
-                success: function (data) {
-                    console.log(data);
-                    obj.tablePhoto(data.detail);
-                }
-            })
-        } else {
-            toastr.error("Fields Required!");
-        }
-    }
 
     this.saveLaboral = function () {
         toastr.remove();
@@ -252,6 +214,35 @@ function Traicing() {
         } else {
             toastr.error("Fields Required!");
         }
+    }
+
+    this.loadLaboral = function () {
+        $.ajax({
+            url: 'traicing/laboral/' + $("#frmBiografic #order_id").val(),
+            method: "GET",
+            dataType: 'JSON',
+            success: function (data) {
+                $(".input-laboral").setFields({data: data.header});
+                obj.tableLaboral(data.detail)
+            }
+        })
+    }
+    
+    this.deleteLaboral = function (id) {
+        var token = $("input[name=_token]").val();
+        var param = {};
+        $.ajax({
+            url: 'traicing/laboral/' + id,
+            method: "DELETE",
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: 'JSON',
+            success: function (data) {
+                if (data.success == true) {
+                    obj.tableLaboral(data.detail);
+                }
+            }
+        })
+
     }
 
     this.saveAnotations = function () {
@@ -288,6 +279,88 @@ function Traicing() {
         }
     }
 
+    this.loadAnotations = function () {
+        $.ajax({
+            url: 'traicing/anotations/' + $("#frmBiografic #order_id").val(),
+            method: "GET",
+            dataType: 'JSON',
+            success: function (data) {
+                $(".input-anotations").setFields({data: data.header});
+                obj.tableAnotations(data.detail)
+            }
+        })
+    }
+
+
+    this.tableAnotations = function (data) {
+        var html = "";
+        $("#tblAnotations tbody").empty();
+        $.each(data, function (i, val) {
+            html += "<tr><td>" + val.entity + "</td><td>" + val.verification_code + "</td><td>" + val.certificate + "</td><td>";
+            html += val.anotation + '</td><td><span style="cursor:pointer" class="glyphicon glyphicon-remove" aria-hidden="true" onclick=obj.deleteAnotations(' + val.id + ')></span></td></tr>';
+        })
+        $("#tblAnotations tbody").html(html);
+    }
+
+    this.deleteAnotations = function (id) {
+        var token = $("input[name=_token]").val();
+        var param = {};
+        $.ajax({
+            url: 'traicing/anotations/' + id,
+            method: "DELETE",
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: 'JSON',
+            success: function (data) {
+                if (data.success == true) {
+                    obj.tableAnotations(data.detail);
+                }
+            }
+        })
+
+    }
+
+
+    this.loadJuridic = function () {
+        $.ajax({
+            url: 'traicing/juridic/' + $("#frmBiografic #order_id").val(),
+            method: "GET",
+            dataType: 'JSON',
+            success: function (data) {
+                $(".input-juridic").setFields({data: data.header});
+                obj.tableJuridic(data.detail)
+            }
+        })
+    }
+
+
+    this.tableJuridic = function (data) {
+        var html = "";
+        $("#tblJuridic tbody").empty();
+        $.each(data, function (i, val) {
+            val.si_no = (val.si_no == true) ? 'SI' : 'NO';
+            html += "<tr><td>" + val.question + "</td><td>" + val.si_no + "</td><td>" + val.description;
+            html += '</td><td><span style="cursor:pointer" class="glyphicon glyphicon-remove" aria-hidden="true" onclick=obj.deleteJuridic(' + val.id + ')></span></td></td></tr>';
+        })
+        $("#tblJuridic tbody").html(html);
+    }
+
+
+    this.deleteJuridic = function (id) {
+        var token = $("input[name=_token]").val();
+        var param = {};
+        $.ajax({
+            url: 'traicing/juridic/' + id,
+            method: "DELETE",
+            headers: {'X-CSRF-TOKEN': token},
+            dataType: 'JSON',
+            success: function (data) {
+                if (data.success == true) {
+                    obj.tableJuridic(data.detail);
+                }
+            }
+        })
+    }
+
     this.saveJuridic = function () {
         toastr.remove();
         var frm = $("#frmJuridic");
@@ -322,38 +395,43 @@ function Traicing() {
         }
     }
 
-    this.saveAcademic = function () {
+    this.savePhoto = function () {
         toastr.remove();
-        var frm = $("#frmAcademic");
-        var data = frm.serialize();
-        var url = "", method = "";
-        var id = $("#frmAcademic #id").val();
+        var url = "";
         var msg = '';
-
-        var validate = $(".input-academic").validate();
+        $("#frmPhoto #order_id").val($("#frmBiografic #order_id").val());
+        var validate = $(".input-photo").validate();
 
         if (validate.length == 0) {
-            url = "traicing/academic/";
+            method = 'POST';
+            url = "traicing/photo";
             msg = "Add Record";
 
             var token = $("input[name=_token]").val();
 
+            var formData = new FormData($("#frmPhoto")[0]);
+            console.log(url);
             $.ajax({
                 url: url,
-                method: "POST",
-                headers: {'X-CSRF-TOKEN': token},
-                data: data,
+                method: 'POST',
+                data: formData,
                 dataType: 'JSON',
+                processData: false,
+                cache: false,
+                contentType: false,
                 success: function (data) {
-                    if (data.success == true) {
-                        obj.tableAcademic(data.detail);
-                    }
+                    console.log(data);
+                    obj.tablePhoto(data.detail);
                 }
             })
         } else {
             toastr.error("Fields Required!");
         }
     }
+
+
+
+
 
     this.saveBiografic = function () {
         toastr.remove();

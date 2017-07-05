@@ -42,7 +42,12 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Concepto</label>
-                    <input type="text" class="form-control input-academic" id="concept" name='concept' >
+                    <select class="form-control input-domicile input-sm" id="concept_id" name="concept_id">
+                        <option value="0">Seleccione</option>
+                        @foreach($results as $val)
+                        <option value="{{$val->code}}">{{$val->description}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
         </div>
@@ -55,6 +60,7 @@
                             <th>Titulo Obtenido</th>
                             <th>Institución</th>
                             <th>Concepto</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody></tbody>

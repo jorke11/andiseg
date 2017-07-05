@@ -97,6 +97,7 @@
                             <th>Contacto</th>
                             <th>Concepto</th>
                             <th>Resultado</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody></tbody>

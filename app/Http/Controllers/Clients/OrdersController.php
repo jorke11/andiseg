@@ -66,6 +66,7 @@ class OrdersController extends Controller {
 
         $order = Orders::find($id);
         $order->responsible_id = $user->id;
+        $order->assigned = date("Y-m-d H:i:s");
         $order->status_id = 2;
         $order->event_id = 2;
         $order->save();

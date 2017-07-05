@@ -4,12 +4,16 @@ function Orders() {
         $("#btnNew").click(this.new);
         $("#btnSave").click(this.save);
         $("#btnAssociate").click(this.associateUser);
-
+        $("#tabManagement").click(function () {
+            $(".input-orders").cleanFields({disabled: true});
+            $("#btnSave").attr("disabled", true);
+        })
         table = obj.table();
     }
 
     this.new = function () {
         $(".input-orders").cleanFields();
+          $("#btnSave").attr("disabled", false);
     }
 
     this.associateUser = function () {
@@ -143,6 +147,7 @@ function Orders() {
                 {data: "department"},
                 {data: "responsible"},
                 {data: "event"},
+                {data: "minutes"},
                 {data: "status"},
             ],
 
@@ -160,6 +165,7 @@ function Orders() {
                     mRender: function (data, type, full) {
                         var role = $("#role_id").val();
                         if (data.event_id == 1) {
+                            console.log(role)
                             if (role == 1 || role == 2) {
                                 return '<button class="btn btn-success btn-xs" onclick="obj.associate(' + data.id + ')"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></button>';
                             } else {

@@ -40,15 +40,19 @@ Route::put('/traicing/biograficOk/{id}', 'Clients\TraicingController@updateBiogr
 
 Route::get('/traicing/academic/{id}', 'Clients\TraicingController@editAcademic');
 Route::post('/traicing/academic', 'Clients\TraicingController@storeAcademic');
+Route::delete('/traicing/academic/{id}', 'Clients\TraicingController@destroyAcademic');
 
 Route::get('/traicing/juridic/{id}', 'Clients\TraicingController@editJuridic');
 Route::post('/traicing/juridic', 'Clients\TraicingController@storeJuridic');
+Route::delete('/traicing/juridic/{id}', 'Clients\TraicingController@destroyJuridic');
 
 Route::get('/traicing/anotations/{id}', 'Clients\TraicingController@editAnotations');
 Route::post('/traicing/anotations', 'Clients\TraicingController@storeAnotations');
+Route::delete('/traicing/anotations/{id}', 'Clients\TraicingController@destroyAnotations');
 
 Route::get('/traicing/laboral/{id}', 'Clients\TraicingController@editLaboral');
 Route::post('/traicing/laboral', 'Clients\TraicingController@storeLaboral');
+Route::delete('/traicing/laboral/{id}', 'Clients\TraicingController@destroyLaboral');
 
 Route::get('/traicing/domicile/{id}', 'Clients\TraicingController@editDomicile');
 Route::put('/traicing/domicile/{id}', 'Clients\TraicingController@updateDomicile');

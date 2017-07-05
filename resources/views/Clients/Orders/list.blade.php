@@ -18,6 +18,7 @@
                             <th>Departamento</th>
                             <th>Responsable</th>
                             <th>Ultimo Evento</th>
+                            <th>Tiempo Asignación</th>
                             <th>Estado</th>
                             <th>Asociar</th>
                         </tr>

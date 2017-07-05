@@ -14,7 +14,7 @@ class AcademicDetail extends Model {
         "study_id",
         "obtained_title",
         "institution",
-        "concept",
+        "concept_id",
     ];
 
 }

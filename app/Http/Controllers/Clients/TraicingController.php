@@ -53,6 +53,7 @@ class TraicingController extends Controller {
     public function create() {
         return "create";
     }
+
     public function show() {
         return "create";
     }
@@ -138,6 +139,33 @@ class TraicingController extends Controller {
         }
     }
 
+    public function editAcademic($id) {
+        $header = Academic::where("order_id", $id)->first();
+        $detail = $this->getDetailAcademic($header->id);
+
+        return response()->json(["header" => $header, "detail" => $detail]);
+    }
+
+    public function destroyAcademic($id) {
+        $row = AcademicDetail::Find($id);
+        $order = $row->academic_id;
+        $result = $row->delete();
+        if ($result) {
+            $detail = $this->getDetailAcademic($order);
+            return response()->json(['success' => true, "detail" => $detail]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
+
+    public function getDetailAcademic($id_academic) {
+        return AcademicDetail::select("academic_detail.id", "p.description as study", "academic_detail.obtained_title", "academic_detail.institution", "res.description as concept")
+                        ->join(DB::raw("parameters as p"), "p.code", DB::raw("academic_detail.study_id and p.group='type_study'"))
+                        ->join(DB::raw("parameters as res"), "res.code", DB::raw("academic_detail.concept_id and res.group='results'"))
+                        ->where("academic_detail.academic_id", $id_academic)
+                        ->get();
+    }
+
     public function storeJuridic(Request $request) {
         if ($request->ajax()) {
             $input = $request->all();
@@ -155,6 +183,32 @@ class TraicingController extends Controller {
             } else {
                 return response()->json(['success' => false]);
             }
+        }
+    }
+
+    public function editJuridic($id) {
+        $header = Juridic::where("order_id", $id)->first();
+        $detail = $this->getDetailJuridic($header->id);
+        return response()->json(["header" => $header, "detail" => $detail]);
+    }
+
+    public function getDetailJuridic($id_juridic) {
+
+        return JuridicDetail::select("juridic_detail.id", "p.description as question", "juridic_detail.si_no", "juridic_detail.description")
+                        ->join(DB::raw("parameters as p"), "p.code", DB::raw("juridic_detail.question_id and p.group='questions'"))
+                        ->where("juridic_detail.juridic_id", $id_juridic)
+                        ->get();
+    }
+
+    public function destroyJuridic($id) {
+        $row = JuridicDetail::Find($id);
+        $order = $row->juridic_id;
+        $result = $row->delete();
+        if ($result) {
+            $detail = $this->getDetailJuridic($order);
+            return response()->json(['success' => true, "detail" => $detail]);
+        } else {
+            return response()->json(['success' => false]);
         }
     }
 
@@ -178,6 +232,25 @@ class TraicingController extends Controller {
         }
     }
 
+    public function destroyAnotations($id) {
+        $row = AnotationsDetail::Find($id);
+        $order = $row->anotation_id;
+        $result = $row->delete();
+        if ($result) {
+            $detail = $this->getDetailAnotations($order);
+            return response()->json(['success' => true, "detail" => $detail]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
+
+    public function getDetailAnotations($id_anotation) {
+        return AnotationsDetail::select("anotation_detail.id", "p.description as entity", "anotation_detail.verification_code", "anotation_detail.certificate", "anotation_detail.anotation")
+                        ->join(DB::raw("parameters as p"), "p.code", DB::raw("anotation_detail.entity_id and p.group='anotations'"))
+                        ->where("anotation_detail.anotation_id", $id_anotation)
+                        ->get();
+    }
+
     public function storeLaboral(Request $request) {
         if ($request->ajax()) {
             $input = $request->all();
@@ -195,6 +268,32 @@ class TraicingController extends Controller {
             } else {
                 return response()->json(['success' => false]);
             }
+        }
+    }
+
+    public function editLaboral($id) {
+        $header = Laboral::where("order_id", $id)->first();
+        $detail = $this->getDetailLaboral($header->id);
+        return response()->json(["header" => $header, "detail" => $detail]);
+    }
+
+    public function getDetailLaboral($id_laboral) {
+        return LaboralDetail::select("laboral_detail.id", "p.description as result", "laboral_detail.business", "laboral_detail.activity", "laboral_detail.phone"
+                                , "laboral_detail.position", "laboral_detail.fentry", "laboral_detail.fdeparture", "laboral_detail.contact", "laboral_detail.concept")
+                        ->join(DB::raw("parameters as p"), "p.code", DB::raw("laboral_detail.result_id and p.group='results'"))
+                        ->where("laboral_detail.laboral_id", $id_laboral)
+                        ->get();
+    }
+    
+    public function destroyLaboral($id) {
+        $row = LaboralDetail::Find($id);
+        $order = $row->laboral_id;
+        $result = $row->delete();
+        if ($result) {
+            $detail = $this->getDetailLaboral($order);
+            return response()->json(['success' => true, "detail" => $detail]);
+        } else {
+            return response()->json(['success' => false]);
         }
     }
 
@@ -219,24 +318,7 @@ class TraicingController extends Controller {
         return response()->json(["success" => true]);
     }
 
-    public function editAcademic($id) {
-        $header = Academic::where("order_id", $id)->first();
-        $detail = $this->getDetailAcademic($header->id);
-
-        return response()->json(["header" => $header, "detail" => $detail]);
-    }
-
-    public function editJuridic($id) {
-        $header = Juridic::where("order_id", $id)->first();
-        $detail = $this->getDetailJuridic($header->id);
-        return response()->json(["header" => $header, "detail" => $detail]);
-    }
-
-    public function editLaboral($id) {
-        $header = Laboral::where("order_id", $id)->first();
-        $detail = $this->getDetailLaboral($header->id);
-        return response()->json(["header" => $header, "detail" => $detail]);
-    }
+    
 
     public function editAnotations($id) {
         $header = Anotations::where("order_id", $id)->first();
@@ -249,40 +331,10 @@ class TraicingController extends Controller {
         return response()->json(["header" => $header]);
     }
 
-    public function getDetailLaboral($id_laboral) {
-        return LaboralDetail::select("laboral_detail.id", "p.description as result", "laboral_detail.business", "laboral_detail.activity", "laboral_detail.phone"
-                                , "laboral_detail.position", "laboral_detail.fentry", "laboral_detail.fdeparture", "laboral_detail.contact", "laboral_detail.concept")
-                        ->join(DB::raw("parameters as p"), "p.code", DB::raw("laboral_detail.result_id and p.group='results'"))
-                        ->where("laboral_detail.laboral_id", $id_laboral)
-                        ->get();
-    }
-
     public function getDetailPhoto($order_id) {
         return Photo::select("photo.id", "p.description as type_photo", "photo.img")
                         ->join(DB::raw("parameters as p"), "p.code", DB::raw("photo.photo_id and p.group='photo'"))
                         ->where("order_id", $order_id)->get();
-    }
-
-    public function getDetailAnotations($id_anotation) {
-        return AnotationsDetail::select("anotation_detail.id", "p.description as entity", "anotation_detail.verification_code", "anotation_detail.certificate", "anotation_detail.anotation")
-                        ->join(DB::raw("parameters as p"), "p.code", DB::raw("anotation_detail.entity_id and p.group='anotations'"))
-                        ->where("anotation_detail.anotation_id", $id_anotation)
-                        ->get();
-    }
-
-    public function getDetailJuridic($id_juridic) {
-
-        return JuridicDetail::select("juridic_detail.id", "p.description as question", "juridic_detail.si_no", "juridic_detail.description")
-                        ->join(DB::raw("parameters as p"), "p.code", DB::raw("juridic_detail.question_id and p.group='questions'"))
-                        ->where("juridic_detail.juridic_id", $id_juridic)
-                        ->get();
-    }
-
-    public function getDetailAcademic($id_academic) {
-        return AcademicDetail::select("academic_detail.id", "p.description as study", "academic_detail.obtained_title", "academic_detail.institution", "academic_detail.concept")
-                        ->join(DB::raw("parameters as p"), "p.code", DB::raw("academic_detail.study_id and p.group='type_study'"))
-                        ->where("academic_detail.academic_id", $id_academic)
-                        ->get();
     }
 
     public function update(Request $request, $id) {

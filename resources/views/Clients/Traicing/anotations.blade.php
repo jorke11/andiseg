@@ -57,6 +57,7 @@
                             <th>Codigo Verificación</th>
                             <th>Certificado</th>
                             <th>Anotación</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody></tbody>

@@ -50,9 +50,6 @@ class ClientsController extends Controller {
     }
 
     public function edit($id) {
-        
-        dd(Auth::user());
-        
         $row = Client::FindOrFail($id);
         return response()->json($row);
     }

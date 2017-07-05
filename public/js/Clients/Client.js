@@ -4,13 +4,42 @@ function Client() {
         $("#btnNew").click(this.new);
         $("#btnSave").click(this.save);
 
+        $("#tabManagement").click(function () {
+            $(".input-clients").cleanFields({disabled: true});
+            $("#btnSave").attr("disabled", true);
+        })
+
         $("#document").blur(this.verification)
         table = obj.table();
+
+        $("#btnUpload_code").click(this.uploadExcelCode)
+    }
+
+
+    this.uploadExcelCode = function () {
+        console.log("")
+        $("#frmFileCode #client_id").val($("#frm #id").val());
+        var formData = new FormData($("#frmFileCode")[0]);
+
+        $.ajax({
+            url: '/clients/uploadExcelCode',
+            method: 'POST',
+            data: formData,
+            dataType: 'JSON',
+            processData: false,
+            cache: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+                obj.setDetailExcel(data.data)
+            }
+        })
+
     }
 
     this.verification = function () {
         $("#verification").val(obj.calcularDigitoVerificacion(this.value));
-        
+
     }
 
     this.calcularDigitoVerificacion = function (myNit) {
@@ -70,6 +99,7 @@ function Client() {
 
     this.new = function () {
         $(".input-clients").cleanFields();
+        $("#btnSave").attr("disabled", false);
     }
 
     this.save = function () {
