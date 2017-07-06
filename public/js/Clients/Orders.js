@@ -159,15 +159,14 @@ function Orders() {
                     }
                 },
                 {
-                    targets: [13],
+                    targets: [14],
                     searchable: false,
                     mData: null,
                     mRender: function (data, type, full) {
                         var role = $("#role_id").val();
-                        if (data.event_id == 1) {
-                            console.log(role)
+                        if (full.event_id == 1) {
                             if (role == 1 || role == 2) {
-                                return '<button class="btn btn-success btn-xs" onclick="obj.associate(' + data.id + ')"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></button>';
+                                return '<button class="btn btn-success btn-xs" onclick="obj.associate(' + full.id + ')"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></button>';
                             } else {
                                 return '';
                             }
