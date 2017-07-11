@@ -820,15 +820,19 @@ function Traicing() {
                     searchable: false,
                     mData: null,
                     mRender: function (data, type, full) {
-                        var html = "";
+                        var html = ""
+			var role_id = $("#role_id").val();
                         if (data.status_id == 3) {
+				if(role_id==2 || role_id==1){
                             html = '<button class="btn btn-success btn-xs" onclick="obj.associate(' + full.id + ')"><span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>';
                             html += '&nbsp;&nbsp;<button class="btn btn-info btn-xs" onclick="obj.preview(' + full.id + ')"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>';
-                        }
-                        return html;
+			                        
+			}
                     }
+		return html;
                 }
-            ],
+		}
+            ]
 
         });
     }
