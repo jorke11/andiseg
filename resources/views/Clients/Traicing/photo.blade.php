@@ -7,7 +7,7 @@
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"> Terminar</span>
                 </button>
                 <button class="btn btn-success btn-sm" type="button" id="btnSavePhoto">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"> Save</span>
+                    <span class="glyphicon glyphicon-save" aria-hidden="true"> Save</span>
                 </button>
             </div>
         </div>
@@ -20,7 +20,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Tipo Album</label>
-                    <select class="form-control input-photo input-sm" id="photo_id" name="photo_id">
+                    <select class="form-control input-photo input-sm" id="photo_id" name="photo_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($photo as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>

@@ -1,0 +1,3 @@
+pg_dump -U postgres --column-inserts --data-only --table=users andiseg > /var/www/html/andiseg/sql/users.sql
+
+echo "finish backup info users";

@@ -19,7 +19,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Entidad</label>
-                    <select class="form-control input-anotations input-sm" id="entity_id" name="entity_id">
+                    <select class="form-control input-anotations input-sm" id="entity_id" name="entity_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($entities as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>

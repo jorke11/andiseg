@@ -19,7 +19,7 @@
             <div class="col-lg-5">
                 <div class="form-group">
                     <label for="email">Pregunta</label>
-                    <select class="form-control input-juridic input-sm" id="question_id" name="question_id">
+                    <select class="form-control input-juridic input-sm" id="question_id" name="question_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($questions as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>

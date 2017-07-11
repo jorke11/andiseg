@@ -12,7 +12,7 @@
                             </button>
                             @endif
                             <button class="btn btn-success btn-sm" type="button" id="btnSave">
-                                <span class="glyphicon glyphicon-plus" aria-hidden="true"> Guardar</span>
+                                <span class="glyphicon glyphicon-save" aria-hidden="true"> Guardar</span>
                             </button>
                         </div>
                     </div>

@@ -35,16 +35,24 @@ class ClientsController extends Controller {
 
     public function store(Request $request) {
         if ($request->ajax()) {
-            $input = $request->all();
-            unset($input["id"]);
-            $input["insert_id"] = Auth::User()->id;
-            $input["status_id"] = 1;
 
-            $result = Client::create($input);
-            if ($result) {
-                return response()->json(['success' => true, "data" => $result]);
-            } else {
-                return response()->json(['success' => false]);
+            try {
+                $input = $request->all();
+                unset($input["id"]);
+                $input["insert_id"] = Auth::User()->id;
+                $input["status_id"] = 1;
+
+                $cli = Client::where("document", $input["document"])->first();
+                if ($cli == null) {
+                    $result = Client::create($input);
+                    if ($result) {
+                        return response()->json(['success' => true, "data" => $result]);
+                    }
+                } else {
+                    return response()->json(['success' => false, "msg" => "Documento ya existe!"], 409);
+                }
+            } catch (Exception $exc) {
+                return response()->json(['success' => false, "msg" => "Problemas con l ejecución"], 409);
             }
         }
     }

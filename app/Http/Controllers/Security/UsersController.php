@@ -12,10 +12,10 @@ use Auth;
 
 class UsersController extends Controller {
 
-    public function __construct(){
+    public function __construct() {
         $this->middleware("auth");
     }
-    
+
     public function index() {
 
         $client_q = DB::table("clients");
@@ -38,23 +38,38 @@ class UsersController extends Controller {
 
     public function store(Request $request) {
         if ($request->ajax()) {
-            $input = $request->all();
-            unset($input["id"]);
-            unset($input["confirmation"]);
+            try {
+                $input = $request->all();
+                unset($input["id"]);
+                unset($input["confirmation"]);
 
-            if ($input["password"] != '') {
-                $input["password"] = bcrypt($input["password"]);
-            } else {
-                unset($input["password"]);
-            }
+                if ($input["password"] != '') {
+                    $input["password"] = bcrypt($input["password"]);
+                } else {
+                    unset($input["password"]);
+                }
 
-            $input["status_id"] = 1;
+                $input["status_id"] = 1;
 
-            $result = Users::create($input);
-            if ($result) {
-                return response()->json(['success' => true, "data" => $result]);
-            } else {
-                return response()->json(['success' => false]);
+                $user = Users::where("email", $input["email"])->first();
+
+                if ($user == null) {
+
+                    $user = Users::where("document", $input["document"])->first();
+
+                    if ($user == null) {
+                        $result = Users::create($input);
+                        if ($result) {
+                            return response()->json(['success' => true, "data" => $result]);
+                        }
+                    } else {
+                        return response()->json(['success' => false, "msg" => "Documento ya existe!"], 409);
+                    }
+                } else {
+                    return response()->json(['success' => false, "msg" => "email ya existe!"], 409);
+                }
+            } catch (Exception $exp) {
+                return response()->json(['success' => false, "msg" => "Problemas con l ejecución"], 409);
             }
         }
     }

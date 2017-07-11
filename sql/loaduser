@@ -1,0 +1,2 @@
+psql -U postgres andiseg < /var/www/html/andiseg/sql/users.sql
+echo "Users load!";

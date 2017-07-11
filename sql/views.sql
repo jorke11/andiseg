@@ -5,7 +5,6 @@ from cities c
 join departments d ON d.id=c.department_id;
 
 
-drop view vorders
 create view vorders as 
 select o.id,o.name,o.last_name,o.document,o.address,o.phone,o.mobil,c.description city,d.description department,
 p.description type_document,est.description status,cli.business_name as client,o.cost_center,sch.description as schema,

@@ -50,6 +50,8 @@ function Users() {
                         table.ajax.reload();
                         toastr.success(msg);
                     }
+                }, error: function (xhr, ajaxOptions, thrownError) {
+                    toastr.error(xhr.responseJSON.msg);
                 }
             })
         } else {

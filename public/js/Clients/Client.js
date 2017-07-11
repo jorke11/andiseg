@@ -39,7 +39,6 @@ function Client() {
 
     this.verification = function () {
         $("#verification").val(obj.calcularDigitoVerificacion(this.value));
-
     }
 
     this.calcularDigitoVerificacion = function (myNit) {
@@ -109,6 +108,7 @@ function Client() {
         var url = "", method = "";
         var id = $("#frm #id").val();
         var msg = '';
+        var token = $("input[name=_token]").val();
 
         var validate = $(".input-clients").validate();
 
@@ -126,6 +126,7 @@ function Client() {
             $.ajax({
                 url: url,
                 method: method,
+                headers: {'X-CSRF-TOKEN': token},
                 data: data,
                 dataType: 'JSON',
                 success: function (data) {
@@ -135,6 +136,8 @@ function Client() {
                         table.ajax.reload();
                         toastr.success(msg);
                     }
+                }, error: function (xhr, ajaxOptions, thrownError) {
+                    toastr.error(xhr.responseJSON.msg);
                 }
             })
         } else {

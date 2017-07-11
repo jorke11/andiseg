@@ -227,7 +227,7 @@ function Traicing() {
             }
         })
     }
-    
+
     this.deleteLaboral = function (id) {
         var token = $("input[name=_token]").val();
         var param = {};
@@ -403,29 +403,33 @@ function Traicing() {
         var validate = $(".input-photo").validate();
 
         if (validate.length == 0) {
-            method = 'POST';
-            url = "traicing/photo";
-            msg = "Add Record";
+            if ($("#frmPhoto #photo").val() != '') {
+                method = 'POST';
+                url = "traicing/photo";
+                msg = "Add Record";
 
-            var token = $("input[name=_token]").val();
+                var token = $("input[name=_token]").val();
 
-            var formData = new FormData($("#frmPhoto")[0]);
-            console.log(url);
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: formData,
-                dataType: 'JSON',
-                processData: false,
-                cache: false,
-                contentType: false,
-                success: function (data) {
-                    console.log(data);
-                    obj.tablePhoto(data.detail);
-                }
-            })
+                var formData = new FormData($("#frmPhoto")[0]);
+
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: formData,
+                    dataType: 'JSON',
+                    processData: false,
+                    cache: false,
+                    contentType: false,
+                    success: function (data) {
+                        
+                        obj.tablePhoto(data.detail);
+                    }
+                })
+            } else {
+                toastr.error("Archivo necesario!");
+            }
         } else {
-            toastr.error("Fields Required!");
+            toastr.error("Campos Obligatorios!");
         }
     }
 
