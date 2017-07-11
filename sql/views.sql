@@ -27,7 +27,7 @@ JOIN parameters ev ON ev.code=o.event_id and ev.group='events';
 create view vtraicing as 
 select o.id,o.name,o.last_name,o.document,o.address,o.phone,o.mobil,c.description city,d.description department,
 p.description type_document,est.description status,cli.business_name as client,o.cost_center,sch.description as schema,
-ev.description as event,aso.name || ' ' ||aso.last_name responsible,o.event_id,responsible_id
+ev.description as event,aso.name || ' ' ||aso.last_name responsible,o.event_id,responsible_id,o.status_id
 from orders o 
 JOIN cities c ON c.id=o.city_id
 JOIN users u ON u.id=o.insert_id

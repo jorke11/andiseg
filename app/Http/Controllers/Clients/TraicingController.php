@@ -29,6 +29,7 @@ class TraicingController extends Controller {
     public $path;
 
     public function __construct() {
+        $this->middleware("auth");
         $this->name = '';
         $this->path = '';
     }
@@ -56,6 +57,10 @@ class TraicingController extends Controller {
 
     public function show() {
         return "create";
+    }
+
+    public function preview($id) {
+        dd($id);
     }
 
     public function store(Request $request) {
@@ -137,6 +142,31 @@ class TraicingController extends Controller {
                 return response()->json(['success' => false]);
             }
         }
+    }
+
+    public function updateFinish($id) {
+        $academic = Academic::where("order_id", $id)->first();
+        $academic->status_id = 3;
+        $academic->save();
+        $juridic = Juridic::where("order_id", $id)->first();
+        $juridic->status_id = 3;
+        $juridic->save();
+        $Anotations = Anotations::where("order_id", $id)->first();
+        $Anotations->status_id = 3;
+        $Anotations->save();
+        $laboral = Laboral::where("order_id", $id)->first();
+        $laboral->status_id = 3;
+        $laboral->save();
+        $Photo = Photo::where("order_id", $id)->first();
+        $Photo->status_id = 3;
+        $Photo->save();
+
+        $order = Orders::find($id);
+        $order->status_id = 3;
+        $order->finalized = date("Y-m-d H:i:s");
+        $order->save();
+
+        return response()->json(["success" => true]);
     }
 
     public function editAcademic($id) {
@@ -284,7 +314,7 @@ class TraicingController extends Controller {
                         ->where("laboral_detail.laboral_id", $id_laboral)
                         ->get();
     }
-    
+
     public function destroyLaboral($id) {
         $row = LaboralDetail::Find($id);
         $order = $row->laboral_id;
@@ -307,8 +337,9 @@ class TraicingController extends Controller {
     }
 
     public function editPhoto($id) {
+        $header = Photo::where("order_id", $id)->first();
         $detail = $this->getDetailPhoto($id);
-        return response()->json(["detail" => $detail]);
+        return response()->json(["header" => $header, "detail" => $detail]);
     }
 
     public function deletePhoto($id) {
@@ -317,8 +348,6 @@ class TraicingController extends Controller {
         $photo->delete();
         return response()->json(["success" => true]);
     }
-
-    
 
     public function editAnotations($id) {
         $header = Anotations::where("order_id", $id)->first();
@@ -368,6 +397,71 @@ class TraicingController extends Controller {
 
         if ($result) {
             return response()->json(['success' => true]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
+
+    public function updateAcademicOk(Request $request, $id) {
+        $row = Academic::FindOrFail($id);
+        $input = $request->all();
+        $input["status_id"] = 3;
+        $result = $row->fill($input)->save();
+
+        if ($result) {
+            return response()->json(['success' => true]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
+
+    public function updateJuridicOk(Request $request, $id) {
+        $row = Juridic::FindOrFail($id);
+        $input = $request->all();
+        $input["status_id"] = 3;
+        $result = $row->fill($input)->save();
+
+        if ($result) {
+            return response()->json(['success' => true, "header" => $result]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
+
+    public function updateAnotationsOk(Request $request, $id) {
+        $row = Anotations::FindOrFail($id);
+        $input = $request->all();
+        $input["status_id"] = 3;
+        $result = $row->fill($input)->save();
+
+        if ($result) {
+            return response()->json(['success' => true, "header" => $result]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
+
+    public function updateLaboralOk(Request $request, $id) {
+        $row = Laboral::FindOrFail($id);
+        $input = $request->all();
+        $input["status_id"] = 3;
+        $result = $row->fill($input)->save();
+
+        if ($result) {
+            return response()->json(['success' => true, "header" => $result]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
+
+    public function updatePhotoOk(Request $request, $id) {
+        $row = Photo::FindOrFail($id);
+        $input = $request->all();
+        $input["status_id"] = 3;
+        $result = $row->fill($input)->save();
+
+        if ($result) {
+            return response()->json(['success' => true, "header" => $result]);
         } else {
             return response()->json(['success' => false]);
         }

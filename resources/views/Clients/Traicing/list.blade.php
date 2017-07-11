@@ -17,6 +17,7 @@
                             <th>Ciudad</th>
                             <th>Departamento</th>
                             <th>Estado</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>

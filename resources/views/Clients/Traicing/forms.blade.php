@@ -18,7 +18,9 @@
                 <li role="presentation" id="tabPhoto"><a href="#photo" aria-controls="special" role="tab" data-toggle="tab">Album Fotografico
                         <span class="badge">7</span>
                     </a></li>
-                <li role="presentation" id="finish"><a href="#photo" aria-controls="special" role="tab" data-toggle="tab">Finalizar</a></li>
+                @if(Auth::user()->role_id==1 || Auth::user()->role_id==2)
+                <li role="presentation" id="finish"><a href="#" aria-controls="special" role="tab" data-toggle="tab">Finalizar</a></li>
+                @endif
             </ul>
         </div>
         <div class="col-lg-9">

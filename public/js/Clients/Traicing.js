@@ -8,28 +8,48 @@ function Traicing() {
         $("#btnOkBiografic").click(this.saveBiograficOk);
 
         $("#btnSaveAcademic").click(this.saveAcademic);
+        $("#btnOkAcademic").click(this.saveAcademicOk);
         $("#tabAcademic").click(this.loadAcademic)
 
         $("#tabJuridic").click(this.loadJuridic)
+        $("#btnOkJuridic").click(this.saveJuridicOk);
         $("#btnSaveJurific").click(this.saveJuridic);
 
         $("#tabAnotations").click(this.loadAnotations)
         $("#btnSaveAnotations").click(this.saveAnotations);
+        $("#btnOkAnotations").click(this.saveAnotationsOk);
 
         $("#tabLaboral").click(this.loadLaboral)
         $("#btnSaveLaboral").click(this.saveLaboral);
+        $("#btnOkLaboral").click(this.saveLaboralOk);
 
         $("#tabDomicile").click(this.loadDomicile)
         $("#btnSaveDomicile").click(this.saveDomicile);
 
         $("#tabPhoto").click(this.loadPhoto)
         $("#btnSavePhoto").click(this.savePhoto);
-
+        $("#btnOkPhoto").click(this.savePhotoOk);
+        $("#finish").click(this.finish)
         table = obj.table();
     }
 
     this.new = function () {
         $(".input-traicing").cleanFields();
+    }
+    this.finish = function () {
+        var token = $("input[name=_token]").val();
+        $.ajax({
+            url: 'traicing/finish/' + $("#frmBiografic #order_id").val(),
+            method: "PUT",
+            dataType: 'JSON',
+            headers: {'X-CSRF-TOKEN': token},
+            success: function (data) {
+                if (data.success == true) {
+                    toastr.success("Estudio Finalizado!");
+                    table.ajax.reload();
+                }
+            }
+        })
     }
 
     this.loadPhoto = function () {
@@ -38,7 +58,13 @@ function Traicing() {
             method: "GET",
             dataType: 'JSON',
             success: function (data) {
-                $(".input-photo").setFields({data: data.header});
+                if (data.header.status_id == 3) {
+                    $(".input-photo").setFields({data: data.header, disabled: true});
+                } else {
+                    $(".input-photo").setFields({data: data.header});
+
+                }
+
                 obj.tablePhoto(data.detail)
             }
         })
@@ -95,7 +121,13 @@ function Traicing() {
             method: "GET",
             dataType: 'JSON',
             success: function (data) {
-                $(".input-academic").setFields({data: data.header});
+                if (data.header.status_id == 3) {
+                    $(".input-academic").setFields({data: data.header, disabled: true});
+                } else {
+                    $(".input-academic").setFields({data: data.header});
+
+                }
+
                 obj.tableAcademic(data.detail)
             }
         })
@@ -222,7 +254,12 @@ function Traicing() {
             method: "GET",
             dataType: 'JSON',
             success: function (data) {
-                $(".input-laboral").setFields({data: data.header});
+                if (data.header.status_id == 3) {
+                    $(".input-laboral").setFields({data: data.header, disabled: true});
+                } else {
+                    $(".input-laboral").setFields({data: data.header});
+                }
+
                 obj.tableLaboral(data.detail)
             }
         })
@@ -285,7 +322,11 @@ function Traicing() {
             method: "GET",
             dataType: 'JSON',
             success: function (data) {
-                $(".input-anotations").setFields({data: data.header});
+                if (data.header.status_id == 3) {
+                    $(".input-anotations").setFields({data: data.header, disabled: true});
+                } else {
+                    $(".input-anotations").setFields({data: data.header});
+                }
                 obj.tableAnotations(data.detail)
             }
         })
@@ -326,7 +367,12 @@ function Traicing() {
             method: "GET",
             dataType: 'JSON',
             success: function (data) {
-                $(".input-juridic").setFields({data: data.header});
+                if (data.header.status_id == 3) {
+                    $(".input-juridic").setFields({data: data.header, disabled: true});
+                } else {
+                    $(".input-juridic").setFields({data: data.header});
+                }
+
                 obj.tableJuridic(data.detail)
             }
         })
@@ -421,7 +467,7 @@ function Traicing() {
                     cache: false,
                     contentType: false,
                     success: function (data) {
-                        
+
                         obj.tablePhoto(data.detail);
                     }
                 })
@@ -432,9 +478,6 @@ function Traicing() {
             toastr.error("Campos Obligatorios!");
         }
     }
-
-
-
 
 
     this.saveBiografic = function () {
@@ -469,6 +512,140 @@ function Traicing() {
             toastr.error("Fields Required!");
         }
     }
+
+    this.savePhotoOk = function () {
+
+        toastr.remove();
+        var frm = $("#frmPhoto");
+        var data = frm.serialize();
+        var url = "", method = "";
+        var id = $("#frmPhoto #id").val();
+        var msg = '';
+
+        method = 'PUT';
+        url = "traicing/photoOk/" + id;
+        msg = "Datos Cerrados";
+
+        $.ajax({
+            url: url,
+            method: method,
+            data: data,
+            dataType: 'JSON',
+            success: function (data) {
+                $(".input-photo").setFields({data: data, disabled: true});
+                table.ajax.reload();
+                toastr.success(msg);
+            }
+        })
+    }
+
+    this.saveLaboralOk = function () {
+
+        toastr.remove();
+        var frm = $("#frmLaboral");
+        var data = frm.serialize();
+        var url = "", method = "";
+        var id = $("#frmLaboral #id").val();
+        var msg = '';
+
+        method = 'PUT';
+        url = "traicing/laboralOk/" + id;
+        msg = "Datos Cerrados";
+
+        $.ajax({
+            url: url,
+            method: method,
+            data: data,
+            dataType: 'JSON',
+            success: function (data) {
+                $(".input-laboral").setFields({data: data, disabled: true});
+                table.ajax.reload();
+                toastr.success(msg);
+            }
+        })
+    }
+
+    this.saveAnotationsOk = function () {
+
+        toastr.remove();
+        var frm = $("#frmAnotations");
+        var data = frm.serialize();
+        var url = "", method = "";
+        var id = $("#frmAnotations #id").val();
+        var msg = '';
+
+        method = 'PUT';
+        url = "traicing/anotationsOk/" + id;
+        msg = "Datos Cerrados";
+
+        $.ajax({
+            url: url,
+            method: method,
+            data: data,
+            dataType: 'JSON',
+            success: function (data) {
+                $(".input-anotatios").setFields({data: data, disabled: true});
+                table.ajax.reload();
+                toastr.success(msg);
+            }
+        })
+    }
+
+    this.saveJuridicOk = function () {
+
+        toastr.remove();
+        var frm = $("#frmJuridic");
+        var data = frm.serialize();
+        var url = "", method = "";
+        var id = $("#frmJuridic #id").val();
+        var msg = '';
+
+        method = 'PUT';
+        url = "traicing/juridicOk/" + id;
+        msg = "Datos Cerrados";
+
+        $.ajax({
+            url: url,
+            method: method,
+            data: data,
+            dataType: 'JSON',
+            success: function (data) {
+                if (data.success == true) {
+                    $(".input-juridic").setFields({data: data, disabled: true});
+                    table.ajax.reload();
+                    toastr.success(msg);
+                }
+            }
+        })
+    }
+
+    this.saveAcademicOk = function () {
+        toastr.remove();
+        var frm = $("#frmAcademic");
+        var data = frm.serialize();
+        var url = "", method = "";
+        var id = $("#frmAcademic #id").val();
+        var msg = '';
+
+        method = 'PUT';
+        url = "traicing/academicOk/" + id;
+        msg = "Datos Cerrados";
+
+        $.ajax({
+            url: url,
+            method: method,
+            data: data,
+            dataType: 'JSON',
+            success: function (data) {
+                if (data.success == true) {
+                    $(".input-academic").setFields({data: data, disabled: true});
+                    table.ajax.reload();
+                    toastr.success(msg);
+                }
+            }
+        })
+    }
+
     this.saveBiograficOk = function () {
         toastr.remove();
         var frm = $("#frmBiografic");
@@ -637,8 +814,29 @@ function Traicing() {
                         return '<a href="#" onclick="obj.show(' + full.id + ')">' + data + '</a>';
                     }
                 }
+                ,
+                {
+                    targets: [11],
+                    searchable: false,
+                    mData: null,
+                    mRender: function (data, type, full) {
+                        var html = "";
+                        if (data.status_id == 3) {
+                            html = '<button class="btn btn-success btn-xs" onclick="obj.associate(' + full.id + ')"><span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>';
+                            html += '&nbsp;&nbsp;<button class="btn btn-info btn-xs" onclick="obj.preview(' + full.id + ')"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>';
+                        }
+                        return html;
+                    }
+                }
             ],
+
         });
+    }
+
+    this.preview = function (id) {
+
+        window.open("/traicing/preview/" + id);
+
     }
 
     this.show = function (id) {
@@ -656,9 +854,11 @@ function Traicing() {
                 if (data.status_id == 3) {
                     $("#btnOkBiografic,#btnSaveBiografic").attr("disabled", true);
                     $(".input-biografic").setFields({data: data, disabled: true});
+                    $("#finish").addClass("hidden");
                 } else {
                     $("#btnOkBiografic,#btnSaveBiografic").attr("disabled", false);
                     $(".input-biografic").setFields({data: data});
+                    $("#finish").removeClass("hidden");
                 }
             }
         })

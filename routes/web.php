@@ -35,24 +35,27 @@ Route::resource('/users', 'Security\UsersController');
 
 Route::resource('/traicing', 'Clients\TraicingController');
 Route::put('/traicing/biografic/{id}', 'Clients\TraicingController@updateBiografic');
-
 Route::put('/traicing/biograficOk/{id}', 'Clients\TraicingController@updateBiograficOk');
 
 Route::get('/traicing/academic/{id}', 'Clients\TraicingController@editAcademic');
 Route::post('/traicing/academic', 'Clients\TraicingController@storeAcademic');
 Route::delete('/traicing/academic/{id}', 'Clients\TraicingController@destroyAcademic');
+Route::put('/traicing/academicOk/{id}', 'Clients\TraicingController@updateAcademicOk');
 
 Route::get('/traicing/juridic/{id}', 'Clients\TraicingController@editJuridic');
 Route::post('/traicing/juridic', 'Clients\TraicingController@storeJuridic');
 Route::delete('/traicing/juridic/{id}', 'Clients\TraicingController@destroyJuridic');
+Route::put('/traicing/juridicOk/{id}', 'Clients\TraicingController@updateJuridicOk');
 
 Route::get('/traicing/anotations/{id}', 'Clients\TraicingController@editAnotations');
 Route::post('/traicing/anotations', 'Clients\TraicingController@storeAnotations');
 Route::delete('/traicing/anotations/{id}', 'Clients\TraicingController@destroyAnotations');
+Route::put('/traicing/anotationsOk/{id}', 'Clients\TraicingController@updateAnotationsOk');
 
 Route::get('/traicing/laboral/{id}', 'Clients\TraicingController@editLaboral');
 Route::post('/traicing/laboral', 'Clients\TraicingController@storeLaboral');
 Route::delete('/traicing/laboral/{id}', 'Clients\TraicingController@destroyLaboral');
+Route::put('/traicing/laboralOk/{id}', 'Clients\TraicingController@updateLaboralOk');
 
 Route::get('/traicing/domicile/{id}', 'Clients\TraicingController@editDomicile');
 Route::put('/traicing/domicile/{id}', 'Clients\TraicingController@updateDomicile');
@@ -60,7 +63,9 @@ Route::put('/traicing/domicile/{id}', 'Clients\TraicingController@updateDomicile
 Route::get('/traicing/photo/{id}', 'Clients\TraicingController@editPhoto');
 Route::delete('/traicing/photo/{id}', 'Clients\TraicingController@deletePhoto');
 Route::post('/traicing/photo', 'Clients\TraicingController@storePhoto');
-
+Route::put('/traicing/photoOk/{id}', 'Clients\TraicingController@updatePhotoOk');
+Route::put('/traicing/finish/{id}', 'Clients\TraicingController@updateFinish');
+Route::get('/traicing/preview/{id}', 'Clients\TraicingController@preview');
 
 Route::resource('/cities', 'Administration\CitiesController');
 Route::resource('/department', 'Administration\DepartmentController');
@@ -122,7 +127,7 @@ Route::get('/api/listOrders', function() {
     $sql = DB::table("vorders");
 
     if (Auth::user()->role_id == 2) {
-        
+
         $sql->where("client_id", Auth::user()->id);
     }
 
@@ -131,7 +136,7 @@ Route::get('/api/listOrders', function() {
 Route::get('/api/listTraicing', function() {
     $sql = DB::table("vtraicing");
 
-    if (Auth::user()->role_id == 2) {
+    if (Auth::user()->role_id == 3) {
         $sql->where("responsible_id", Auth::user()->id);
     }
 

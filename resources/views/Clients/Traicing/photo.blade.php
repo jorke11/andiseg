@@ -15,7 +15,8 @@
     <div class="panel-body">
 
         {!! Form::open(['id'=>'frmPhoto','files'=>true]) !!}
-        <input type="hidden" id="order_id" name="order_id" class="input-courses">
+        <input type="hidden" id="id" name="id" class="input-photo">
+        <input type="hidden" id="order_id" name="order_id" class="input-photo">
         <div class="row">
             <div class="col-lg-3">
                 <div class="form-group">
