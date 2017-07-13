@@ -87,7 +87,7 @@ echo json_encode([
 
                         <!-- Branding Image -->
                         <a class="navbar-brand" href="{{ url('/') }}">
-                            {{ config('app.name', 'Laravel') }}
+                            <img src="{!!asset('img/65-01_50x50.png')!!}" class="img-login">
                         </a>
                     </div>
 
