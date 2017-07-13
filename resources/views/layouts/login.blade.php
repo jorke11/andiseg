@@ -9,7 +9,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
-
+        <link rel="shortcut icon" type="image/png" href="{!!asset('img/65-01_20x20.png')!!}"/>
         <!-- Styles -->
         <!--<link href="/css/app.css" rel="stylesheet">-->
 
