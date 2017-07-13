@@ -12,7 +12,7 @@
 
         <!-- Styles -->
         <!--<link href="/css/app.css" rel="stylesheet">-->
-
+        <link rel="shortcut icon" type="image/png" href="{!!asset('img/65-01_20x20.png')!!}"/>
 
         <!-- Styles -->
 
