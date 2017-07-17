@@ -7,7 +7,7 @@
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"> Terminar</span>
                 </button>
                 <button class="btn btn-success btn-sm" type="button" id="btnSaveBiografic">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"> Guardar</span>
+                    <span class="glyphicon glyphicon-save" aria-hidden="true"> Guardar</span>
                 </button>
             </div>
         </div>

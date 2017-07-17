@@ -83,37 +83,46 @@ class OrdersController extends Controller {
             $input["event_id"] = 1;
             $input["insert_id"] = Auth::User()->id;
 
-            $send = Email::where("description", "orders")->first();
-            $client = Client::find(Auth::User()->client_id);
+            try {
+                DB::beginTransaction();
 
-            $executive = Users::find($client->executive_id);
+                $send = Email::where("description", "orders")->first();
+                dd($input);
+                $client = Client::find(Auth::User()->client_id);
 
-            $this->email[] = $executive->email;
-            $this->email[] = Auth::user()->email;
+                $executive = Users::find($client->executive_id);
 
-            if ($send) {
-                $det = EmailDetail::where("email_id", $send->id)->get();
-                foreach ($det as $value) {
-                    $this->email[] = $value->description;
-                }
-            }
+                $this->email[] = $executive->email;
+                $this->email[] = Auth::user()->email;
 
-            $result = Orders::create($input);
-            if ($result) {
-
-                $in = (array) DB::table("vorders")->where("id", $result->id)->first();
-
-                if (count($this->email) > 0) {
-
-                    Mail::send("Notifications.order", $in, function($msj) {
-                        $msj->subject("notificacion");
-                        $msj->to($this->email);
-                    });
+                if ($send) {
+                    $det = EmailDetail::where("email_id", $send->id)->get();
+                    foreach ($det as $value) {
+                        $this->email[] = $value->description;
+                    }
                 }
 
-                return response()->json(['success' => true, "data" => $result]);
-            } else {
-                return response()->json(['success' => false]);
+                $result = Orders::create($input);
+                if ($result) {
+                    $in = (array) DB::table("vorders")->where("id", $result->id)->first();
+
+                    if (count($this->email) > 0) {
+
+                        Mail::send("Notifications.order", $in, function($msj) {
+                            $msj->subject("notificacion");
+                            $msj->to($this->email);
+                        });
+                    }
+
+                    return response()->json(['success' => true, "data" => $result]);
+                } else {
+                    return response()->json(['success' => false, "msg" => "Problemas con la ejecución"], 409);
+                }
+
+                DB::commit();
+            } catch (Exception $excep) {
+                DB::rollback();
+                return response()->json(['success' => false, "msg" => "Problemas con la ejecución"], 409);
             }
         }
     }

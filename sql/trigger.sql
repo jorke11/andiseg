@@ -7,6 +7,7 @@ CREATE OR REPLACE FUNCTION orders() RETURNS trigger AS $orders$
 		insert INTO anotations(order_id,status_id,created_at) values(NEW.id,1,now());
 		insert INTO laboral(order_id,status_id,created_at) values(NEW.id,1,now());
 		insert INTO domicile(order_id,status_id,created_at) values(NEW.id,1,now());
+                insert INTO photo(order_id,status_id,created_at) values(NEW.id,1,now());
 	return NEW;
 	END;
 $orders$ LANGUAGE plpgsql;
