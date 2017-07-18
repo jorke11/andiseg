@@ -13,10 +13,11 @@ function Orders() {
 
     this.new = function () {
         $(".input-orders").cleanFields();
-          $("#btnSave").attr("disabled", false);
+        $("#btnSave").attr("disabled", false);
     }
 
     this.associateUser = function () {
+        $("#btnAssociate").attr("disabled", true);
         var param = {};
         param.user_id = $("#frmAssociate #user_id").val();
         var token = $("input[name=_token]").val();
@@ -28,6 +29,7 @@ function Orders() {
             dataType: 'JSON',
             success: function (data) {
                 if (data.success == true) {
+                    $("#btnAssociate").attr("disabled", false);
                     $("#modalAssociate").modal("hide");
                     table.ajax.reload();
                     toastr.success("Usuario asignado");
@@ -43,6 +45,7 @@ function Orders() {
 
     this.save = function () {
         toastr.remove();
+        $("#btnSave").attr("disabled", true);
         var frm = $("#frm"), schem = 0;
         var data = frm.serialize();
         var url = "", method = "";
@@ -70,6 +73,7 @@ function Orders() {
                     dataType: 'JSON',
                     success: function (data) {
                         if (data.success == true) {
+                            $("#btnSave").attr("disabled", false);
                             $("#modalNew").modal("hide");
                             $(".input-orders").setFields({data: data});
                             table.ajax.reload();
@@ -78,9 +82,11 @@ function Orders() {
                     }
                 })
             } else {
+                $("#btnSave").attr("disabled", false);
                 toastr.error("Fields Required!");
             }
         } else {
+            $("#btnSave").attr("disabled", false);
             toastr.error("Plan no seleccionado");
         }
     }

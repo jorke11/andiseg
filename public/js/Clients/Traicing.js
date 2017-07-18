@@ -58,6 +58,7 @@ function Traicing() {
             method: "GET",
             dataType: 'JSON',
             success: function (data) {
+                console.log(data)
                 if (data.header.status_id == 3) {
                     $(".input-photo").setFields({data: data.header, disabled: true});
                 } else {
@@ -482,6 +483,7 @@ function Traicing() {
 
     this.saveBiografic = function () {
         toastr.remove();
+        $("#btnSaveBiografic").attr("disabled",true);
         var frm = $("#frmBiografic");
         var data = frm.serialize();
         var url = "", method = "";
@@ -503,12 +505,14 @@ function Traicing() {
                 success: function (data) {
                     if (data.success == true) {
                         $(".input-biografic").setFields({data: data});
+                        $("#btnSaveBiografic").attr("disabled",false);
                         table.ajax.reload();
                         toastr.success(msg);
                     }
                 }
             })
         } else {
+            $("#btnSaveBiografic").attr("disabled",false);
             toastr.error("Fields Required!");
         }
     }
