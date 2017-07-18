@@ -87,9 +87,8 @@ class OrdersController extends Controller {
                 DB::beginTransaction();
 
                 $send = Email::where("description", "orders")->first();
-                dd($input);
-                $client = Client::find(Auth::User()->client_id);
 
+                $client = Client::find(Auth::User()->client_id);
                 $executive = Users::find($client->executive_id);
 
                 $this->email[] = $executive->email;
@@ -102,6 +101,7 @@ class OrdersController extends Controller {
                     }
                 }
 
+
                 $result = Orders::create($input);
                 if ($result) {
                     $in = (array) DB::table("vorders")->where("id", $result->id)->first();
@@ -113,13 +113,12 @@ class OrdersController extends Controller {
                             $msj->to($this->email);
                         });
                     }
-
+                    DB::commit();
                     return response()->json(['success' => true, "data" => $result]);
                 } else {
+                    DB::rollback();
                     return response()->json(['success' => false, "msg" => "Problemas con la ejecución"], 409);
                 }
-
-                DB::commit();
             } catch (Exception $excep) {
                 DB::rollback();
                 return response()->json(['success' => false, "msg" => "Problemas con la ejecución"], 409);

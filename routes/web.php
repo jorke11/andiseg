@@ -121,9 +121,9 @@ Route::get('/api/listDepartment', function() {
 Route::get('/api/listOrders', function() {
     $sql = DB::table("vorders");
 
+    
     if (Auth::user()->role_id == 2) {
-
-        $sql->where("client_id", Auth::user()->id);
+        $sql->where("client_id", Auth::user()->client_id);
     }
 
     return Datatables::queryBuilder($sql)->make(true);

@@ -58,14 +58,6 @@ function Traicing() {
             method: "GET",
             dataType: 'JSON',
             success: function (data) {
-                console.log(data)
-                if (data.header.status_id == 3) {
-                    $(".input-photo").setFields({data: data.header, disabled: true});
-                } else {
-                    $(".input-photo").setFields({data: data.header});
-
-                }
-
                 obj.tablePhoto(data.detail)
             }
         })

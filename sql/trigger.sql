@@ -32,3 +32,31 @@ DROP TRIGGER  IF EXISTS biografic ON biografic;
 CREATE TRIGGER biografic BEFORE UPDATE ON biografic
     FOR EACH ROW EXECUTE PROCEDURE biografic();
 
+--actualizar estado de la order
+
+CREATE OR REPLACE FUNCTION academic() RETURNS trigger AS $academic$
+	BEGIN
+		UPDATE orders set status_id=2 , event_id=4 , updated_at=now() where id=NEW.order_id;
+	return NEW;
+	END;
+$academic$ LANGUAGE plpgsql;
+
+
+DROP TRIGGER  IF EXISTS academic ON academic;
+CREATE TRIGGER biografic BEFORE UPDATE ON academic
+    FOR EACH ROW EXECUTE PROCEDURE academic();
+
+
+--actualizar estado de la order
+
+CREATE OR REPLACE FUNCTION juridic() RETURNS trigger AS $juridic$
+	BEGIN
+		UPDATE orders set status_id=2 , event_id=6 , updated_at=now() where id=NEW.order_id;
+	return NEW;
+	END;
+$juridic$ LANGUAGE plpgsql;
+
+
+DROP TRIGGER  IF EXISTS juridic ON juridic;
+CREATE TRIGGER biografic BEFORE UPDATE ON juridic
+    FOR EACH ROW EXECUTE PROCEDURE juridic();
