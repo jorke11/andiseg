@@ -145,7 +145,7 @@ class TraicingController extends Controller {
     }
 
     public function updateFinish($id) {
-        $academic = Academic::where("order_id", $id)->first();
+        /*$academic = Academic::where("order_id", $id)->first();
         $academic->status_id = 3;
         $academic->save();
         $juridic = Juridic::where("order_id", $id)->first();
@@ -159,11 +159,11 @@ class TraicingController extends Controller {
         $laboral->save();
         $Photo = Photo::where("order_id", $id)->first();
         $Photo->status_id = 3;
-        $Photo->save();
+        $Photo->save()*/;
 
         $order = Orders::find($id);
         $order->status_id = 3;
-        $order->finalized = date("Y-m-d H:i:s");
+        //$order->finalized = date("Y-m-d H:i:s");
         $order->save();
 
         return response()->json(["success" => true]);
