@@ -14,8 +14,8 @@ class CreatePhotoDetailTable extends Migration
    public function up() {
         Schema::create('photo_detail', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('order_id');
             $table->integer('photo_id');
+            $table->integer('typephoto_id');
             $table->text('img')->nullable();
             $table->text('thumbnail')->nullable();
             $table->timestamps();

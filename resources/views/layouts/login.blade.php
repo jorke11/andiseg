@@ -69,7 +69,7 @@ echo json_encode([
         </script>
         <!--<link href="/css/app.css" rel="stylesheet">-->
     </head>
-    <body>
+    <body style="background-image: url(img/background2.png);background-repeat: no-repeat;">
         <div id="app">
             <div class="container-fluid">
 

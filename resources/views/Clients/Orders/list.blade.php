@@ -6,7 +6,7 @@
                 <table class="table table-bordered table-condensed" id="tbl" width="100%">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>#</th>
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Documento</th>

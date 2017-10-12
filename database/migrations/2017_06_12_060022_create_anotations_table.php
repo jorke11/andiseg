@@ -16,6 +16,7 @@ class CreateAnotationsTable extends Migration
             $table->increments('id');
             $table->integer('order_id');
             $table->integer('status_id');
+            $table->integer('concept_id');
             $table->timestamps();
         });
     }

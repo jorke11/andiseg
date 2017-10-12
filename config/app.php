@@ -142,6 +142,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -205,5 +206,6 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
 //        'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Image' => 'Intervention\Image\Facades\Image',
+        'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class
     ],
 ];

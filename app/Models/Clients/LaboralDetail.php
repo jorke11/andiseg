@@ -20,6 +20,7 @@ class LaboralDetail extends Model {
         "contact",
         "concept",
         "result_id",
+        "position_contact",
     ];
 
 }

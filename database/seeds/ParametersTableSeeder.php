@@ -29,10 +29,48 @@ class ParametersTableSeeder extends Seeder {
             'code' => 3,
         ]);
         DB::table('parameters')->insert([
+            'description' => "Revision academica",
+            'value' => null,
+            'group' => "events",
+            'code' => 4,
+        ]);
+        DB::table('parameters')->insert([
+            'description' => "Revision Juridica",
+            'value' => null,
+            'group' => "events",
+            'code' => 5,
+        ]);
+        DB::table('parameters')->insert([
+            'description' => "Revision anotaciones",
+            'value' => null,
+            'group' => "events",
+            'code' => 6,
+        ]);
+        DB::table('parameters')->insert([
+            'description' => "Revision Laboral",
+            'value' => null,
+            'group' => "events",
+            'code' => 6,
+        ]);
+        
+        DB::table('parameters')->insert([
+            'description' => "Visitar domiciliaria",
+            'value' => null,
+            'group' => "events",
+            'code' => 7,
+        ]);
+
+        DB::table('parameters')->insert([
             'description' => "cedula",
             'value' => null,
             'group' => "type_document",
             'code' => 1,
+        ]);
+        DB::table('parameters')->insert([
+            'description' => "nit",
+            'value' => null,
+            'group' => "type_document",
+            'code' => 2,
         ]);
         DB::table('parameters')->insert([
             'description' => "nuevo",
@@ -45,6 +83,12 @@ class ParametersTableSeeder extends Seeder {
             'value' => null,
             'group' => "status_order",
             'code' => 2,
+        ]);
+        DB::table('parameters')->insert([
+            'description' => "Finalizado",
+            'value' => null,
+            'group' => "status_order",
+            'code' => 3,
         ]);
 
         DB::table('parameters')->insert([

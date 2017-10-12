@@ -12,6 +12,7 @@ class Anotations extends Model {
         "id",
         "order_id",
         "status_id",
+        "concept_id",
     ];
 
 }

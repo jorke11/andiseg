@@ -70,7 +70,7 @@ echo json_encode([
         <!--<link href="/css/app.css" rel="stylesheet">-->
     </head>
     <!--<body style="background-color: #ef8002;">-->
-    <body>
+    <body style="background-image: url(img/background3.png);background-repeat: no-repeat;">
         <div id="app" >
             <input id="role_id" type="hidden" value="{{Auth::user()->role_id}}">
             <nav class="navbar navbar-default navbar-static-top">
@@ -118,7 +118,7 @@ echo json_encode([
                                     <li><a href="{{url('/clients') }}">Clientes</a></li>
                                     @endif
                                     @if(Auth::user()->role_id==1 ||Auth::user()->role_id==2 ||Auth::user()->role_id==4)
-                                    <li><a href="{{url('/orders') }}">Ordenes</a></li>
+                                    <li><a href="{{url('/orders') }}">Solicitudes</a></li>
                                     @endif
                                     @if(Auth::user()->role_id!=4)
                                     <li><a href="{{url('/traicing') }}">Seguimiento</a></li>

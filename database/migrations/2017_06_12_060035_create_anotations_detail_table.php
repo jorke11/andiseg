@@ -19,6 +19,7 @@ class CreateAnotationsDetailTable extends Migration {
             $table->string('verification_code')->nullable();
             $table->string('certificate')->nullable();
             $table->string('anotation')->nullable();
+            $table->text('img')->nullable();
             $table->timestamps();
         });
     }

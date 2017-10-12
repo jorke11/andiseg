@@ -2,8 +2,11 @@
     <div class="panel-heading">
         <div class="row">
             <div class="col-lg-12 text-right">
-                <button class="btn btn-warning btn-sm" type="button" id="btnOkAcademic">
+                <button class="btn btn-danger btn-sm" type="button" id="btnOkAcademic">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"> Terminar</span>
+                </button>
+                <button class="btn btn-warning btn-sm" type="button" id="btnNewAcademic">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"> Nuevo</span>
                 </button>
                 <button class="btn btn-success btn-sm" type="button" id="btnSaveAcademic">
                     <span class="glyphicon glyphicon-save" aria-hidden="true"> Guardar</span>

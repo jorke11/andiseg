@@ -1,5 +1,5 @@
 function Orders() {
-    var table;
+    var table, product = 0, cont = 0;
     this.init = function () {
         $("#btnNew").click(this.new);
         $("#btnSave").click(this.save);
@@ -9,6 +9,32 @@ function Orders() {
             $("#btnSave").attr("disabled", true);
         })
         table = obj.table();
+        var progress = 0;
+        $(".input-orders").blur(function () {
+            cont = 0;
+            $(".input-orders").each(function () {
+                var elem = $(this);
+
+                if (elem.attr('type') == 'text' && elem.val() != '') {
+                    cont++;
+                } else if (elem.get(0).tagName == 'SELECT' && elem.val() != 0) {
+                    cont++;
+                }
+            });
+            cont += product;
+            progress = cont * 7.7;
+            $("#bar-progress").css("width", progress + "%").html(progress + "% Complete");
+
+            if (cont == 13) {
+                $("#bar-progress").css("width", "100%").html("100% Completado").removeClass("progress-bar-info").addClass("progress-bar-success");
+            }
+
+//            $("#bar-progress").html(progress + "%");
+        })
+
+
+
+
     }
 
     this.new = function () {
@@ -92,6 +118,18 @@ function Orders() {
     }
 
     this.selectionProduct = function (id) {
+        var total = 0;
+        product = 1;
+        cont += product;
+
+        total = cont * 7.7;
+        $("#bar-progress").css("width", total + "%").html(total + "% Complete");
+
+        if (cont == 13) {
+            $("#bar-progress").css("width", "100%").html("100% Completado").removeClass("progress-bar-info").addClass("progress-bar-success");
+        }
+
+        $("#bar-progress").css("width", "7.7%");
         $(".thumbnail").removeClass("selectedItem");
         $("#item_" + id).toggleClass("selectedItem");
         $("#frm #schema_id").val(id);
@@ -153,10 +191,10 @@ function Orders() {
                 {data: "department"},
                 {data: "responsible"},
                 {data: "event"},
-                {data: "minutes"},
+                {data: "tiempo_transcurrido"},
                 {data: "status"},
             ],
-
+            order: [[1, 'ASC']],
             aoColumnDefs: [
                 {
                     aTargets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
@@ -202,6 +240,7 @@ function Orders() {
             success: function (data) {
                 $('#myTabs a[href="#manager"]').tab('show');
                 $(".input-orders").setFields({data: data});
+                $("#btnSave").attr("disabled", true);
             }
         })
     }

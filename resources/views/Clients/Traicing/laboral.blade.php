@@ -2,8 +2,11 @@
     <div class="panel-heading">
         <div class="row">
             <div class="col-lg-12 text-right">
-                <button class="btn btn-warning btn-sm" type="button" id="btnOkLaboral">
+                <button class="btn btn-danger btn-sm" type="button" id="btnOkLaboral">
                     <span class="glyphicon glyphicon-ok" aria-hidden="true"> Terminar</span>
+                </button>
+                <button class="btn btn-warning btn-sm" type="button" id="btnNewLaboral">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"> Nuevo</span>
                 </button>
                 <button class="btn btn-success btn-sm" type="button" id="btnSaveLaboral">
                     <span class="glyphicon glyphicon-save" aria-hidden="true"> Guardar</span>
@@ -64,6 +67,12 @@
 
         </div>
         <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email">Cargo Contacto</label>
+                    <input type="text" class="form-control input-laboral" id="position_contact" name="position_contact">
+                </div>
+            </div>
             <div class="col-lg-6">
                 <div class="form-group">
                     <label for="email">Concepto Emitido</label>

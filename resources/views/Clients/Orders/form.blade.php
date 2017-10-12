@@ -16,6 +16,23 @@
                     </div>
                 </div>
                 <div class="panel-body">
+
+
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
+                             aria-valuemin="0" aria-valuemax="100" style="width:0%" id="bar-progress">
+                            00% Complete
+                        </div>
+                    </div>
+
+
+<!--                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" role="progressbar"
+                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="bar-progress">
+                            <span class="sr-only">40% completado (éxito)</span>
+                        </div>
+                    </div>-->
+                    <br>
                     {!! Form::open(['id'=>'frm']) !!}
                     <input type="hidden" id="id" name="id" class="input-orders">
                     <input type="hidden" id="schema_id" name="schema_id" class="input-orders" required="">

@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="panel-body">
-        {!! Form::open(['id'=>'frmAnotations']) !!}
+        {!! Form::open(['id'=>'frmAnotations','files'=>true]) !!}
         <input type="hidden" id="id" name="id" class="input-anotations">
         <input type="hidden" id="order_id" name="order_id" class="input-anotations">
         <div class="row">
@@ -44,6 +44,25 @@
                 <div class="form-group">
                     <label for="email">Anotacion</label>
                     <input type="text" class="form-control input-anotations" id="anotation" name="anotation">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email">Concepto</label>
+                    <select class="form-control input-anotations input-sm" id="concept_id" name="concept_id" required="">
+                        <option value="0">Seleccione</option>
+                        @foreach($results as $val)
+                        <option value="{{$val->code}}">{{$val->description}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="form-group">
+                    <label for="email">Foto</label>
+                    <input type="file" class="form-control" id="photo" name="photo">
                 </div>
             </div>
         </div>

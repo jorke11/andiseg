@@ -18,20 +18,32 @@ use App\Models\Clients\Laboral;
 use App\Models\Clients\LaboralDetail;
 use App\Models\Clients\Domicile;
 use App\Models\Clients\Photo;
+use App\Models\Clients\PhotoDetail;
 use DB;
 use Illuminate\Support\Facades\Input;
+use App\Models\Security\Users;
 use Image;
 use File;
+use Auth;
+use Mail;
+use Log;
+use App\Models\Clients\Client;
 
 class TraicingController extends Controller {
 
     public $name;
     public $path;
+    public $file;
+    public $email;
+    public $order;
 
     public function __construct() {
         $this->middleware("auth");
         $this->name = '';
         $this->path = '';
+        $this->file = '';
+        $this->email = '';
+        $this->order = '';
     }
 
     public function index() {
@@ -46,9 +58,16 @@ class TraicingController extends Controller {
         $photo = Parameters::where("group", "photo")->get();
         $eps = Parameters::where("group", "eps_id")->get();
         $pensiones = Parameters::where("group", "pension_id")->get();
+        $features_home = Parameters::where("group", "features_home")->get();
+        $status_home = Parameters::where("group", "status_house")->get();
+        $service = Parameters::where("group", "service")->get();
+        $inventory = Parameters::where("group", "inventory")->get();
+        $property = Parameters::where("group", "property")->get();
+        $property_type = Parameters::where("group", "property_type")->get();
 
         $cities = Cities::all();
-        return view("Clients.Traicing.init", compact("type_document", "cities", "type_study", "questions", "entities", "results", "category", "civil_status", "class_military", "photo", "eps", "pensiones"));
+        return view("Clients.Traicing.init", compact("type_document", "cities", "type_study", "questions", "entities", "results", "category", "civil_status", "class_military", "photo"
+                        , "eps", "pensiones", "features_home", "status_home", "service", "inventory","property","property_type"));
     }
 
     public function create() {
@@ -59,8 +78,132 @@ class TraicingController extends Controller {
         return "create";
     }
 
+    public function send(Request $req) {
+        $in = $req->all();
+
+        $this->order = DB::table("vorders")->where("id", $in["id"])->first();
+
+        $pdf = \PDF::loadView('Clients.Traicing.pdf', [], (array) $this->order, ['title' => 'Invoice']);
+        $pdf->SetProtection(array(), "andiseg", '12345');
+        header('Content-Type: application/pdf');
+
+        $this->path = base_path() . '/public/uploads/studies/1/';
+        if (!file_exists($this->path)) {
+            mkdir($this->path);
+            chmod($this->path, 0777);
+        }
+
+        $this->file = $this->path . 'pdf_' . $this->order->name . '_' . $this->order->last_name . '.pdf';
+
+        if (!file_exists($this->file)) {
+            $pdf->save($this->file);
+            chmod($this->file, 0777);
+        }
+
+        $input = array();
+
+        $cli = Client::find($this->order->client_id);
+        $responsible = Users::find($cli->executive_id);
+        $this->email[] = $responsible->email;
+        $this->email[] = "jpinedom@hotmail.com";
+        $this->email[] = $in["email"];
+
+        Mail::send("Notifications.client", $input, function($msj) {
+            $msj->subject("Finalizacion de estudio");
+            $msj->to($this->email);
+            $msj->attach($this->file, [
+                'as' => 'pdf_' . $this->order->name . '_' . $this->order->last_name . '.pdf',
+                'mime' => 'application/pdf',
+            ]);
+        });
+        return response()->json(['success' => true]);
+    }
+
     public function preview($id) {
-        dd($id);
+        $sql = "
+                select o.id,o.name,o.last_name,o.document,bir.description city_birthday,exp.description city_expedition,o.client,o.position,
+                0.type_document,b.passport,b.militar_card,cla.description class_militar,b.district,b.age,civ.description civil_status,
+                b.profession,b.professional_card,o.address,o.neighborhood,cit.description city,o.phone,b.phone2,b.email,o.mobil,
+                b.driving_licence,cat.description category,pen.description pension,eps.description eps,o.comment
+                from vorders o
+                JOIN biografic b ON b.order_id=o.id
+                JOIN cities cit ON cit.id=o.city_id
+                JOIN cities bir ON bir.id=b.city_birth_id
+                JOIN cities exp ON exp.id=b.city_expedition_id
+                JOIN parameters cla ON cla.code=b.classes_id and cla.group='class_military'
+                LEFT JOIN parameters civ ON civ.code=b.civil_status_id and civ.group='civil_status'
+                JOIN parameters cat ON cat.code=b.category_id and cat.group='category'
+                LEFT JOIN parameters pen ON pen.code=b.pensiones_id and pen.group='pension_id'
+                JOIN parameters eps ON eps.code=b.eps_id and eps.group='eps_id'
+                WHERE o.id=" . $id;
+        $biog = DB::select($sql);
+        $biog = (array) $biog[0];
+
+        $sql = "
+            select d.id,es.description type_study,d.obtained_title,d.institution,res.description concept
+            from academic_detail d
+            JOIN academic a ON a.id=d.academic_id
+            JOIN parameters es ON es.code=d.study_id and es.group='type_study'
+            JOIN parameters res ON res.code=d.concept_id and res.group='results'
+            WHERE a.order_id=" . $id;
+        $aca = DB::select($sql);
+        $aca = (array) $aca;
+        $biog["academic"] = $aca;
+        $sql = "
+            select d.id,d.description,CASE WHEN si_no=true THEN 'SI' ELSE 'NO' END si_no,q.description question
+            from juridic_detail d   
+            JOIN juridic j ON j.id=d.juridic_id
+            JOIN parameters q ON q.code=d.question_id and q.group='results'
+            WHERE j.order_id=" . $id;
+        $jur = DB::select($sql);
+        $jur = (array) $jur;
+        $biog["juridic"] = $jur;
+
+        $sql = "
+            select d.id, p.description as entity, d.verification_code, d.certificate, d.anotation,d.img
+            from anotation_detail d
+            JOIN anotations a ON a.id=d.anotation_id
+            JOIN parameters as p ON p.code=d.entity_id and p.group='anotations'
+            WHERE a.order_id=" . $id;
+        $anotation = DB::select($sql);
+        $anotation = (array) $anotation;
+        $biog["anotations"] = $anotation;
+
+        $sql = "
+            SELECT d.id, p.description as result, d.business, d.activity, d.phone,d.position, d.fentry, d.fdeparture, d.contact, d.concept
+            from laboral_detail d
+            JOIN laboral l ON l.id=d.laboral_id
+            JOIN parameters as p ON p.code=d.result_id and p.group='results'
+            WHERE l.order_id=" . $id;
+        $laboral = DB::select($sql);
+        $laboral = (array) $laboral;
+        $biog["laboral"] = $laboral;
+
+        $sql = "
+            select d.img,f.description typephoto,d.thumbnail
+            from photo_detail  d
+            JOIN photo p ON p.id=d.photo_id
+            JOIN parameters as f ON f.code=d.typephoto_id and f.group='photo'
+            WHERE p.order_id=" . $id;
+
+        $photo = DB::select($sql);
+        $photo = (array) $photo;
+        $biog["photo"] = $photo;
+
+        $pdf = \PDF::loadView('Clients.Traicing.pdf', [], $biog, ['title' => 'Estudio seguridad']);
+//        $pdf->SetProtection(array(), $id, '12345');
+        header('Content-Type: application/pdf');
+//        return $pdf->download('factura_' . $dep["invoice"] . '_' . $cli["business_name"] . '.pdf');
+//        return view("Clients.Traicing.pdf");
+        return $pdf->stream('estudio.pdf');
+    }
+
+    public function getEmails($id) {
+        $order = DB::table("vorders")->where("id", $id)->first();
+        $cli = Client::find($order->client_id);
+        $responsible = Users::find($cli->executive_id);
+        $email[] = $responsible->email;
+        return response()->json(['success' => true, "data" => $order, "email" => implode($email, ',')]);
     }
 
     public function store(Request $request) {
@@ -98,24 +241,24 @@ class TraicingController extends Controller {
         if ($request->ajax()) {
             $input = $request->all();
 
-//            dd($input);
-
+            $photo = Photo::where("order_id", $input["order_id"])->first();
+            $input["photo_id"] = $photo->id;
             $file = Input::file('photo');
 
             $image = Image::make(Input::file('photo'));
-            $path = public_path() . '/uploads/' . $input["photo_id"] . "/";
+            $path = public_path() . '/uploads/' . $input["typephoto_id"] . "/";
 
             File::makeDirectory($path, $mode = 0777, true, true);
 
-            $input["img"] = 'uploads/' . $input["photo_id"] . '/' . $file->getClientOriginalName();
+            $input["img"] = 'uploads/' . $input["typephoto_id"] . '/' . $file->getClientOriginalName();
             $image->save($path . $file->getClientOriginalName());
 
             $image->resize(240, 200);
-            $input["thumbnail"] = 'uploads/' . $input["photo_id"] . '/thumb_' . $file->getClientOriginalName();
+            $input["thumbnail"] = 'uploads/' . $input["typephoto_id"] . '/thumb_' . $file->getClientOriginalName();
             $image->save($path . 'thumb_' . $file->getClientOriginalName());
 
-            $input["status_id"] = 1;
-            $result = Photo::create($input);
+            unset($input["id"]);
+            $result = PhotoDetail::create($input);
 
             if ($result) {
                 $detail = $this->getDetailPhoto($input["order_id"]);
@@ -144,8 +287,10 @@ class TraicingController extends Controller {
         }
     }
 
-    public function updateFinish($id) {
-        /*$academic = Academic::where("order_id", $id)->first();
+    public function updateFinish(Request $req, $id) {
+        $in = $req->all();
+
+        $academic = Academic::where("order_id", $id)->first();
         $academic->status_id = 3;
         $academic->save();
         $juridic = Juridic::where("order_id", $id)->first();
@@ -159,14 +304,17 @@ class TraicingController extends Controller {
         $laboral->save();
         $Photo = Photo::where("order_id", $id)->first();
         $Photo->status_id = 3;
-        $Photo->save()*/;
+        $Photo->save();
 
         $order = Orders::find($id);
         $order->status_id = 3;
-        //$order->finalized = date("Y-m-d H:i:s");
+        $order->comment = $in["comment"];
+        $order->finalized = date("Y-m-d H:i:s");
         $order->save();
 
-        return response()->json(["success" => true]);
+        $data = Orders::find($id);
+
+        return response()->json(["success" => true, "data" => $data]);
     }
 
     public function editAcademic($id) {
@@ -248,10 +396,19 @@ class TraicingController extends Controller {
             $input["anotation_id"] = $input["id"];
             unset($input["id"]);
 
-            unset($input["id"]);
-//            $user = Auth::User();
+            $file = Input::file('photo');
+
+            $image = Image::make(Input::file('photo'));
+            $path = public_path() . '/uploads/anotations/' . $input["anotation_id"] . "/";
+
+            File::makeDirectory($path, $mode = 0777, true, true);
+
+            $input["img"] = 'uploads/anotations/' . $input["anotation_id"] . '/' . $file->getClientOriginalName();
+            $image->save($path . $file->getClientOriginalName());
+            unset($input["photo"]);
 
             $result = AnotationsDetail::create($input);
+
             if ($result) {
                 $header = Anotations::where("order_id", $input["order_id"])->first();
                 $detail = $this->getDetailAnotations($header->id);
@@ -275,7 +432,7 @@ class TraicingController extends Controller {
     }
 
     public function getDetailAnotations($id_anotation) {
-        return AnotationsDetail::select("anotation_detail.id", "p.description as entity", "anotation_detail.verification_code", "anotation_detail.certificate", "anotation_detail.anotation")
+        return AnotationsDetail::select("anotation_detail.id", "p.description as entity", "anotation_detail.verification_code", "anotation_detail.certificate", "anotation_detail.anotation", "anotation_detail.img")
                         ->join(DB::raw("parameters as p"), "p.code", DB::raw("anotation_detail.entity_id and p.group='anotations'"))
                         ->where("anotation_detail.anotation_id", $id_anotation)
                         ->get();
@@ -305,6 +462,13 @@ class TraicingController extends Controller {
         $header = Laboral::where("order_id", $id)->first();
         $detail = $this->getDetailLaboral($header->id);
         return response()->json(["header" => $header, "detail" => $detail]);
+    }
+
+    public function editPoligraphy($id) {
+        $header = Orders::find($id);
+        $resp["order_id"] = $header->id;
+        $resp["img"] = $header->img;
+        return response()->json(["data" => $resp]);
     }
 
     public function getDetailLaboral($id_laboral) {
@@ -343,7 +507,7 @@ class TraicingController extends Controller {
     }
 
     public function deletePhoto($id) {
-        $photo = Photo::find($id);
+        $photo = PhotoDetail::find($id);
         \File::delete(array($photo->img, $photo->thumbnail));
         $photo->delete();
         return response()->json(["success" => true]);
@@ -357,12 +521,14 @@ class TraicingController extends Controller {
 
     public function editDomicile($id) {
         $header = Domicile::where("order_id", $id)->first();
+
         return response()->json(["header" => $header]);
     }
 
     public function getDetailPhoto($order_id) {
-        return Photo::select("photo.id", "p.description as type_photo", "photo.img")
-                        ->join(DB::raw("parameters as p"), "p.code", DB::raw("photo.photo_id and p.group='photo'"))
+        return PhotoDetail::select("photo_detail.id", "p.description as type_photo", "photo_detail.img")
+                        ->join("photo", "photo.id", "photo_detail.photo_id")
+                        ->join(DB::raw("parameters as p"), "p.code", DB::raw("photo_detail.typephoto_id and p.group='photo'"))
                         ->where("order_id", $order_id)->get();
     }
 
@@ -372,6 +538,30 @@ class TraicingController extends Controller {
         $result = $row->fill($input)->save();
         if ($result) {
             return response()->json(['success' => true]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
+
+    public function updatePoligraphy(Request $request) {
+        $in = $request->all();
+
+        $row = Orders::FindOrFail($in["order_id"]);
+        $file = Input::file('photo');
+
+        $image = Image::make(Input::file('photo'));
+        $path = public_path() . '/uploads/polygraphy/' . $in["order_id"] . "/";
+
+        File::makeDirectory($path, $mode = 0777, true, true);
+
+        $input["img"] = 'uploads/polygraphy/' . $in["order_id"] . '/' . $file->getClientOriginalName();
+        $image->save($path . $file->getClientOriginalName());
+
+        $row->img = $input["img"];
+        $result = $row->save();
+        if ($result) {
+            $row = Orders::Find($in["order_id"]);
+            return response()->json(['success' => true, "data" => $row]);
         } else {
             return response()->json(['success' => false]);
         }

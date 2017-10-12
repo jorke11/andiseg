@@ -6,10 +6,12 @@ function Traicing() {
 
         $("#btnSaveBiografic").click(this.saveBiografic);
         $("#btnOkBiografic").click(this.saveBiograficOk);
+        $("#btnNewBiografic").click(this.NewBiografic);
 
         $("#btnSaveAcademic").click(this.saveAcademic);
         $("#btnOkAcademic").click(this.saveAcademicOk);
         $("#tabAcademic").click(this.loadAcademic)
+        $("#btnNewAcademic").click(this.NewAcademic);
 
         $("#tabJuridic").click(this.loadJuridic)
         $("#btnOkJuridic").click(this.saveJuridicOk);
@@ -22,35 +24,103 @@ function Traicing() {
         $("#tabLaboral").click(this.loadLaboral)
         $("#btnSaveLaboral").click(this.saveLaboral);
         $("#btnOkLaboral").click(this.saveLaboralOk);
+        $("#btnNewLaboral").click(this.NewLaboral);
 
         $("#tabDomicile").click(this.loadDomicile)
         $("#btnSaveDomicile").click(this.saveDomicile);
+        
 
         $("#tabPhoto").click(this.loadPhoto)
         $("#btnSavePhoto").click(this.savePhoto);
         $("#btnOkPhoto").click(this.savePhotoOk);
         $("#finish").click(this.finish)
+        $("#btnModalFinish").click(this.confirmFinish)
+
+        $("#tabPoligrafia").click(this.loadPolygraphy)
+        $("#btnSavePoligrafia").click(this.savePoligraphy);
+
         table = obj.table();
+
+        $("#btnSend").click(this.send);
+        $("#fentry").datetimepicker({format: 'Y-m-d'});
+        $("#fdeparture").datetimepicker({format: 'Y-m-d'});
     }
 
-    this.new = function () {
-        $(".input-traicing").cleanFields();
+    this.NewBiografic = function () {
+        $(".input-biografic").cleanFields();
     }
-    this.finish = function () {
+    this.NewAcademic = function () {
+        var id = $("#frmAcademic #id").val();
+        var order_id = $("#frmAcademic #order_id").val();
+        $(".input-academic").cleanFields();
+        $("#frmAcademic #order_id").val(order_id)
+        $("#frmAcademic #id").val(id)
+    }
+    this.NewLaboral = function () {
+        var id = $("#frmLaboral #id").val();
+        var order_id = $("#frmLaboral #order_id").val();
+        $(".input-laboral").cleanFields();
+        $("#frmLaboral #order_id").val(order_id)
+        $("#frmLaboral #id").val(id)
+        
+    }
+
+    this.send = function () {
         var token = $("input[name=_token]").val();
+        var data = $("#frmSend").serialize();
         $.ajax({
-            url: 'traicing/finish/' + $("#frmBiografic #order_id").val(),
-            method: "PUT",
+            url: 'traicing/send',
+            method: "POST",
+            data: data,
             dataType: 'JSON',
             headers: {'X-CSRF-TOKEN': token},
             success: function (data) {
                 if (data.success == true) {
+                    toastr.success("Notificación Enviada!");
+                    $("#modalSend").modal("hide");
+                }
+            }
+        })
+    }
+    this.new = function () {
+        $(".input-traicing").cleanFields();
+    }
+    this.finish = function () {
+        $("#modalFinish").modal("show");
+    }
+
+    this.confirmFinish = function () {
+        var token = $("input[name=_token]").val();
+        var param = {};
+        param.comment = $("#frmFinish #comment").val();
+        $.ajax({
+            url: 'traicing/finish/' + $("#frmBiografic #order_id").val(),
+            method: "PUT",
+            data: param,
+            dataType: 'JSON',
+            headers: {'X-CSRF-TOKEN': token},
+            success: function (data) {
+                if (data.success == true) {
+                    $("#modalFinish").modal("hide");
                     toastr.success("Estudio Finalizado!");
                     table.ajax.reload();
                 }
             }
         })
     }
+
+    this.loadPolygraphy = function () {
+        $.ajax({
+            url: 'traicing/polygraphy/' + $("#frmBiografic #order_id").val(),
+            method: "GET",
+            dataType: 'JSON',
+            success: function (data) {
+                $(".input-poligrafia").setFields({data: data.header});
+                obj.tablePolygraphy(data)
+            }
+        })
+    }
+
 
     this.loadPhoto = function () {
         $.ajax({
@@ -138,18 +208,21 @@ function Traicing() {
 
     this.deleteAcademic = function (id) {
         var token = $("input[name=_token]").val();
-        var param = {};
-        $.ajax({
-            url: 'traicing/academic/' + id,
-            method: "DELETE",
-            headers: {'X-CSRF-TOKEN': token},
-            dataType: 'JSON',
-            success: function (data) {
-                if (data.success == true) {
-                    obj.tableAcademic(data.detail);
+        if (confirm("¿Seguro que Deseas eliminar?")) {
+            var param = {};
+            $.ajax({
+                url: 'traicing/academic/' + id,
+                method: "DELETE",
+                headers: {'X-CSRF-TOKEN': token},
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.success == true) {
+                        obj.tableAcademic(data.detail);
+                    }
                 }
-            }
-        })
+            })
+
+        }
     }
 
     this.tablePhoto = function (data) {
@@ -247,11 +320,13 @@ function Traicing() {
             method: "GET",
             dataType: 'JSON',
             success: function (data) {
-                if (data.header.status_id == 3) {
-                    $(".input-laboral").setFields({data: data.header, disabled: true});
-                } else {
-                    $(".input-laboral").setFields({data: data.header});
-                }
+//                if (data.header.status_id == 3) {
+//                    $(".input-laboral").setFields({data: data.header, disabled: true});
+//                } else {
+//                    $(".input-laboral").setFields({data: data.header});
+//                }
+
+                $(".input-laboral").setFields({data: data.header});
 
                 obj.tableLaboral(data.detail)
             }
@@ -261,17 +336,19 @@ function Traicing() {
     this.deleteLaboral = function (id) {
         var token = $("input[name=_token]").val();
         var param = {};
-        $.ajax({
-            url: 'traicing/laboral/' + id,
-            method: "DELETE",
-            headers: {'X-CSRF-TOKEN': token},
-            dataType: 'JSON',
-            success: function (data) {
-                if (data.success == true) {
-                    obj.tableLaboral(data.detail);
+        if (confirm("¿Seguro que Deseas eliminar?")) {
+            $.ajax({
+                url: 'traicing/laboral/' + id,
+                method: "DELETE",
+                headers: {'X-CSRF-TOKEN': token},
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.success == true) {
+                        obj.tableLaboral(data.detail);
+                    }
                 }
-            }
-        })
+            })
+        }
 
     }
 
@@ -292,14 +369,20 @@ function Traicing() {
 
             var token = $("input[name=_token]").val();
 
+            var formData = new FormData($("#frmAnotations")[0]);
+
             $.ajax({
                 url: url,
-                method: "POST",
-                headers: {'X-CSRF-TOKEN': token},
-                data: data,
+                method: 'POST',
+                data: formData,
                 dataType: 'JSON',
+                processData: false,
+                headers: {'X-CSRF-TOKEN': token},
+                cache: false,
+                contentType: false,
                 success: function (data) {
                     if (data.success == true) {
+                        toastr.success("Registro agregado");
                         obj.tableAnotations(data.detail);
                     }
                 }
@@ -309,17 +392,58 @@ function Traicing() {
         }
     }
 
+    this.savePoligraphy = function () {
+        toastr.remove();
+        var frm = $("#frmPoligrafia");
+        var data = frm.serialize();
+        var url = "";
+        var id = $("#frmBiografic #order_id").val();
+        var msg = '';
+
+        console.log($("#frmPoligrafia #order_id").val());
+
+        $("#frmPoligrafia #order_id").val($("#frmBiografic #id").val())
+
+        console.log($("#frmPoligrafia #order_id").val());
+
+        url = "traicing/poligrafia/";
+        msg = "Add Record";
+
+        var token = $("input[name=_token]").val();
+
+        var formData = new FormData($("#frmPoligrafia")[0]);
+        $.ajax({
+            url: url,
+            method: 'post',
+            data: formData,
+            dataType: 'JSON',
+            processData: false,
+            headers: {'X-CSRF-TOKEN': token},
+            cache: false,
+            contentType: false,
+            success: function (data) {
+                if (data.success == true) {
+                    toastr.success("Registro agregado");
+
+                    obj.tablePolygraphy(data);
+                }
+            }
+        })
+    }
+
     this.loadAnotations = function () {
         $.ajax({
             url: 'traicing/anotations/' + $("#frmBiografic #order_id").val(),
             method: "GET",
             dataType: 'JSON',
             success: function (data) {
-                if (data.header.status_id == 3) {
-                    $(".input-anotations").setFields({data: data.header, disabled: true});
-                } else {
-                    $(".input-anotations").setFields({data: data.header});
-                }
+//                if (data.header.status_id == 3) {
+//                    $(".input-anotations").setFields({data: data.header, disabled: true});
+//                } else {
+//                    $(".input-anotations").setFields({data: data.header});
+//                }
+
+                $(".input-anotations").setFields({data: data.header});
                 obj.tableAnotations(data.detail)
             }
         })
@@ -331,26 +455,40 @@ function Traicing() {
         $("#tblAnotations tbody").empty();
         $.each(data, function (i, val) {
             html += "<tr><td>" + val.entity + "</td><td>" + val.verification_code + "</td><td>" + val.certificate + "</td><td>";
-            html += val.anotation + '</td><td><span style="cursor:pointer" class="glyphicon glyphicon-remove" aria-hidden="true" onclick=obj.deleteAnotations(' + val.id + ')></span></td></tr>';
+            html += val.anotation + '</td><td>';
+
+            html += '<span style="cursor:pointer" class="glyphicon glyphicon-remove" aria-hidden="true" onclick=obj.deleteAnotations(' + val.id + ')></span>&nbsp;&nbsp';
+            if (val.img != null)
+                html += '<a href="' + val.img + '" target="_blank"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>';
+
+            html += '</td></tr>';
         })
         $("#tblAnotations tbody").html(html);
+    }
+
+    this.tablePolygraphy = function (data) {
+        if (data.data != undefined)
+            if (data.data.img != undefined) {
+                $("#poligraphy").html('<a href="' + data.data.img + '" target="_blank">Ver Poligrafia <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>');
+            }
     }
 
     this.deleteAnotations = function (id) {
         var token = $("input[name=_token]").val();
         var param = {};
-        $.ajax({
-            url: 'traicing/anotations/' + id,
-            method: "DELETE",
-            headers: {'X-CSRF-TOKEN': token},
-            dataType: 'JSON',
-            success: function (data) {
-                if (data.success == true) {
-                    obj.tableAnotations(data.detail);
+        if (confirm("¿Esta seguro de eliminar este registro?")) {
+            $.ajax({
+                url: 'traicing/anotations/' + id,
+                method: "DELETE",
+                headers: {'X-CSRF-TOKEN': token},
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.success == true) {
+                        obj.tableAnotations(data.detail);
+                    }
                 }
-            }
-        })
-
+            })
+        }
     }
 
 
@@ -387,17 +525,19 @@ function Traicing() {
     this.deleteJuridic = function (id) {
         var token = $("input[name=_token]").val();
         var param = {};
-        $.ajax({
-            url: 'traicing/juridic/' + id,
-            method: "DELETE",
-            headers: {'X-CSRF-TOKEN': token},
-            dataType: 'JSON',
-            success: function (data) {
-                if (data.success == true) {
-                    obj.tableJuridic(data.detail);
+        if (confirm("¿Seguro que Deseas eliminar?")) {
+            $.ajax({
+                url: 'traicing/juridic/' + id,
+                method: "DELETE",
+                headers: {'X-CSRF-TOKEN': token},
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.success == true) {
+                        obj.tableJuridic(data.detail);
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 
     this.saveJuridic = function () {
@@ -460,7 +600,6 @@ function Traicing() {
                     cache: false,
                     contentType: false,
                     success: function (data) {
-
                         obj.tablePhoto(data.detail);
                     }
                 })
@@ -475,7 +614,7 @@ function Traicing() {
 
     this.saveBiografic = function () {
         toastr.remove();
-        $("#btnSaveBiografic").attr("disabled",true);
+        $("#btnSaveBiografic").attr("disabled", true);
         var frm = $("#frmBiografic");
         var data = frm.serialize();
         var url = "", method = "";
@@ -497,14 +636,14 @@ function Traicing() {
                 success: function (data) {
                     if (data.success == true) {
                         $(".input-biografic").setFields({data: data});
-                        $("#btnSaveBiografic").attr("disabled",false);
+                        $("#btnSaveBiografic").attr("disabled", false);
                         table.ajax.reload();
                         toastr.success(msg);
                     }
                 }
             })
         } else {
-            $("#btnSaveBiografic").attr("disabled",false);
+            $("#btnSaveBiografic").attr("disabled", false);
             toastr.error("Fields Required!");
         }
     }
@@ -764,7 +903,7 @@ function Traicing() {
 
     this.delete = function (id) {
         toastr.remove();
-        if (confirm("Deseas eliminar")) {
+        if (confirm("¿Seguro que Deseas eliminar?")) {
             var token = $("input[name=_token]").val();
             var url = "/traicing/" + id;
             $.ajax({
@@ -802,7 +941,7 @@ function Traicing() {
                 {data: "department"},
                 {data: "status"},
             ],
-
+            order: [[1, 'ASC']],
             aoColumnDefs: [
                 {
                     aTargets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -817,25 +956,38 @@ function Traicing() {
                     mData: null,
                     mRender: function (data, type, full) {
                         var html = ""
-			var role_id = $("#role_id").val();
+                        var role_id = $("#role_id").val();
+
                         if (data.status_id == 3) {
-				if(role_id==2 || role_id==1){
-                            html = '<button class="btn btn-success btn-xs" onclick="obj.associate(' + full.id + ')"><span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>';
-                            html += '&nbsp;&nbsp;<button class="btn btn-info btn-xs" onclick="obj.preview(' + full.id + ')"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>';
-			                        
-			}
+                            if (role_id == 2 || role_id == 1) {
+                                html = '<button class="btn btn-success btn-xs" onclick="obj.associate(' + full.id + ')"><span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>';
+                                html += '&nbsp;&nbsp;<button class="btn btn-info btn-xs" onclick="obj.preview(' + full.id + ')"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>';
+
+                            }
+                        }
+                        return html;
                     }
-		return html;
                 }
-		}
             ]
 
         });
     }
 
     this.preview = function (id) {
-
         window.open("/traicing/preview/" + id);
+    }
+
+    this.associate = function (id) {
+        $("#modalSend").modal("show");
+        $.ajax({
+            url: "traicing/getEmails/" + id,
+            method: "GET",
+            dataType: 'JSON',
+            success: function (data) {
+                $(".input-send").setFields({data: data.data});
+            }
+        })
+
 
     }
 
@@ -851,15 +1003,16 @@ function Traicing() {
             dataType: 'JSON',
             success: function (data) {
                 $('#myTabs a[href="#manager"]').tab('show');
-                if (data.status_id == 3) {
-                    $("#btnOkBiografic,#btnSaveBiografic").attr("disabled", true);
-                    $(".input-biografic").setFields({data: data, disabled: true});
-                    $("#finish").addClass("hidden");
-                } else {
-                    $("#btnOkBiografic,#btnSaveBiografic").attr("disabled", false);
-                    $(".input-biografic").setFields({data: data});
-                    $("#finish").removeClass("hidden");
-                }
+                $(".input-biografic").setFields({data: data});
+//                if (data.status_id == 3) {
+//                    $("#btnOkBiografic,#btnSaveBiografic").attr("disabled", true);
+//                    $(".input-biografic").setFields({data: data, disabled: true});
+////                    $("#finish").addClass("hidden");
+//                } else {
+//                    $("#btnOkBiografic,#btnSaveBiografic").attr("disabled", false);
+//                    $(".input-biografic").setFields({data: data});
+////                    $("#finish").removeClass("hidden");
+//                }
             }
         })
     }
@@ -868,3 +1021,4 @@ function Traicing() {
 
 var obj = new Traicing();
 obj.init();
+

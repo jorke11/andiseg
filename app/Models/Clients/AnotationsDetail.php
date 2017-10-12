@@ -15,6 +15,7 @@ class AnotationsDetail extends Model {
         "verification_code",
         "certificate",
         "anotation",
+        "img",
     ];
 
 }

@@ -51,7 +51,7 @@ CREATE TRIGGER biografic BEFORE UPDATE ON academic
 
 CREATE OR REPLACE FUNCTION juridic() RETURNS trigger AS $juridic$
 	BEGIN
-		UPDATE orders set status_id=2 , event_id=6 , updated_at=now() where id=NEW.order_id;
+		UPDATE orders set status_id=2 , event_id=5 , updated_at=now() where id=NEW.order_id;
 	return NEW;
 	END;
 $juridic$ LANGUAGE plpgsql;
@@ -60,3 +60,46 @@ $juridic$ LANGUAGE plpgsql;
 DROP TRIGGER  IF EXISTS juridic ON juridic;
 CREATE TRIGGER biografic BEFORE UPDATE ON juridic
     FOR EACH ROW EXECUTE PROCEDURE juridic();
+
+--actualizar estado de la order
+
+CREATE OR REPLACE FUNCTION juridic() RETURNS trigger AS $anotations$
+	BEGIN
+		UPDATE orders set status_id=2 , event_id=6 , updated_at=now() where id=NEW.order_id;
+	return NEW;
+	END;
+$anotations$ LANGUAGE plpgsql;
+
+
+DROP TRIGGER  IF EXISTS anotations ON anotations;
+CREATE TRIGGER anotations BEFORE UPDATE ON anotations
+    FOR EACH ROW EXECUTE PROCEDURE anotations();
+
+--actualizar estado de la order
+
+CREATE OR REPLACE FUNCTION laboral() RETURNS trigger AS $laboral$
+	BEGIN
+		UPDATE orders set status_id=2 , event_id=7, updated_at=now() where id=NEW.order_id;
+	return NEW;
+	END;
+$laboral$ LANGUAGE plpgsql;
+
+
+DROP TRIGGER  IF EXISTS laboral ON laboral;
+CREATE TRIGGER laboral BEFORE UPDATE ON laboral
+    FOR EACH ROW EXECUTE PROCEDURE laboral();
+
+--actualizar estado de la order
+
+CREATE OR REPLACE FUNCTION domicile() RETURNS trigger AS $domicile$
+	BEGIN
+		UPDATE orders set status_id=2 , event_id=8 , updated_at=now() where id=NEW.order_id;
+	return NEW;
+	END;
+$domicile$ LANGUAGE plpgsql;
+
+
+DROP TRIGGER  IF EXISTS domicile ON domicile;
+CREATE TRIGGER domicile BEFORE UPDATE ON domicile
+    FOR EACH ROW EXECUTE PROCEDURE domicile();
+

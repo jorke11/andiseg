@@ -61,6 +61,11 @@ Route::post('/traicing/photo', 'Clients\TraicingController@storePhoto');
 Route::put('/traicing/photoOk/{id}', 'Clients\TraicingController@updatePhotoOk');
 Route::put('/traicing/finish/{id}', 'Clients\TraicingController@updateFinish');
 Route::get('/traicing/preview/{id}', 'Clients\TraicingController@preview');
+Route::post('/traicing/send', 'Clients\TraicingController@send');
+Route::get('/traicing/getEmails/{id}', 'Clients\TraicingController@getEmails');
+
+Route::get('/traicing/polygraphy/{id}', 'Clients\TraicingController@editPoligraphy');
+Route::post('/traicing/poligrafia', 'Clients\TraicingController@updatePoligraphy');
 
 Route::resource('/cities', 'Administration\CitiesController');
 Route::resource('/department', 'Administration\DepartmentController');
@@ -121,9 +126,13 @@ Route::get('/api/listDepartment', function() {
 Route::get('/api/listOrders', function() {
     $sql = DB::table("vorders");
 
-    
-    if (Auth::user()->role_id == 2) {
-        $sql->where("client_id", Auth::user()->client_id);
+
+    /* if (Auth::user()->role_id == 2) {
+      $sql->where("executive_id", Auth::user()->id);
+      } */
+
+    if (Auth::user()->role_id == 4) {
+        $sql->where("insert_id", Auth::user()->id);
     }
 
     return Datatables::queryBuilder($sql)->make(true);
@@ -132,7 +141,7 @@ Route::get('/api/listTraicing', function() {
     $sql = DB::table("vtraicing");
 
     if (Auth::user()->role_id == 3) {
-        $sql->where("responsible_id", Auth::user()->id);
+        $sql->where("status_id", 2);
     }
 
     return Datatables::queryBuilder($sql)->make(true);

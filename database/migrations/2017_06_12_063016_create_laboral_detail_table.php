@@ -24,6 +24,7 @@ class CreateLaboralDetailTable extends Migration {
             $table->datetime('fdeparture');
             $table->string('contact');
             $table->string('concept');
+            $table->string('position_contact');
 
             $table->timestamps();
         });

@@ -21,7 +21,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Tipo Album</label>
-                    <select class="form-control input-photo input-sm" id="photo_id" name="photo_id" required="">
+                    <select class="form-control input-photo input-sm" id="typephoto_id" name="typephoto_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($photo as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>

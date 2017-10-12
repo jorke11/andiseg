@@ -4,13 +4,13 @@ select c.id,c.description city,d.description department,c.code
 from cities c
 join departments d ON d.id=c.department_id;
 
-
+drop view vorders
 create view vorders as 
 select o.id,o.name,o.last_name,o.document,o.address,o.phone,o.mobil,c.description city,d.description department,
 p.description type_document,est.description status,cli.business_name as client,o.cost_center,sch.description as schema,
 ev.description as event,coalesce((aso.name || ' ' ||aso.last_name),'') as responsible,o.event_id,cli.id as client_id,o.created_at,
-o.assigned,
-date_part('minutes',(o.created_at)-now())||' Minutos' as minutes
+o.assigned,now()- o.created_at as tiempo_transcurrido,
+cli.executive_id,o.insert_id,o.position,o.neighborhood,o.city_id,o.comment
 from orders o 
 JOIN cities c ON c.id=o.city_id
 JOIN users u ON u.id=o.insert_id
@@ -20,7 +20,7 @@ JOIN schedules sch ON sch.id=o.schema_id
 JOIN departments d ON d.id=o.department_id
 JOIN parameters p ON p.code=o.document_id and p.group='type_document'
 JOIN parameters est ON est.code=o.status_id and est.group='status_order'
-JOIN parameters ev ON ev.code=o.event_id and ev.group='events';
+JOIN parameters ev ON ev.code=o.event_id and ev.group='events' Order BY o.created_at desc;
 
 
 
