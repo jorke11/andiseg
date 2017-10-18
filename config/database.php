@@ -71,7 +71,7 @@ return [
             'host' => env('DB_HOST', 'alhemmar.ccsaxgpyu8ng.us-east-2.rds.amazonaws.com'),
             'port' => env('DB_PORT', '5432'),
             'database' => env('DB_DATABASE', 'andiseg'),
-            'username' => env('DB_USERNAME', 'alhemmar'),
+            'username' => env('DB_USERNAME', 'andiseg'),
             'password' => env('DB_PASSWORD', 'ALDANa316'),
             'charset' => 'utf8',
             'prefix' => '',
