@@ -1,9 +1,9 @@
 function Traicing() {
-    var table, idorder;
+    var table, idorder, dataOrder = null;
     this.init = function () {
 
         $("#s1").click(function () {
-            
+
         })
 
         $("#btnNew").click(this.new);
@@ -263,8 +263,9 @@ function Traicing() {
     }
 
     this.loadPolygraphy = function () {
+        
         $.ajax({
-            url: 'traicing/polygraphy/' + $("#frmBiografic #order_id").val(),
+            url: 'traicing/polygraphy/' +dataOrder.id,
             method: "GET",
             dataType: 'JSON',
             success: function (data) {
@@ -551,7 +552,6 @@ function Traicing() {
         var frm = $("#frmPoligrafia");
         var data = frm.serialize();
         var url = "";
-        var id = $("#frmBiografic #order_id").val();
         var msg = '';
 
         url = "traicing/poligrafia";
@@ -1045,6 +1045,7 @@ function Traicing() {
             dataType: 'JSON',
             success: function (data) {
                 $(".input-biografic").setFields({data: data});
+                dataOrder = data;
             }
         })
     }
@@ -1152,6 +1153,7 @@ function Traicing() {
             success: function (data) {
                 $('#myTabs a[href="#manager"]').tab('show');
                 $(".input-biografic").setFields({data: data});
+                dataOrder=data;
 //                if (data.status_id == 3) {
 //                    $("#btnOkBiografic,#btnSaveBiografic").attr("disabled", true);
 //                    $(".input-biografic").setFields({data: data, disabled: true});

@@ -586,7 +586,7 @@ class TraicingController extends Controller {
 
     public function updatePoligraphy(Request $request) {
         $in = $request->all();
-        dd($in);
+        
         $row = Orders::FindOrFail($in["order_id"]);
         $file = Input::file('photo');
 
