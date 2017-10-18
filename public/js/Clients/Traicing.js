@@ -554,7 +554,7 @@ function Traicing() {
         var id = $("#frmBiografic #order_id").val();
         var msg = '';
 
-        url = "traicing/poligrafia/";
+        url = "traicing/poligrafia";
         msg = "Add Record";
 
         var token = $("input[name=_token]").val();
