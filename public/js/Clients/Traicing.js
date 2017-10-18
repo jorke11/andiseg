@@ -263,9 +263,9 @@ function Traicing() {
     }
 
     this.loadPolygraphy = function () {
-        
+console.log(dataOrder);
         $.ajax({
-            url: 'traicing/polygraphy/' +dataOrder.id,
+            url: 'traicing/polygraphy/' + dataOrder.id,
             method: "GET",
             dataType: 'JSON',
             success: function (data) {
@@ -1153,7 +1153,7 @@ function Traicing() {
             success: function (data) {
                 $('#myTabs a[href="#manager"]').tab('show');
                 $(".input-biografic").setFields({data: data});
-                dataOrder=data;
+                dataOrder = data;
 //                if (data.status_id == 3) {
 //                    $("#btnOkBiografic,#btnSaveBiografic").attr("disabled", true);
 //                    $(".input-biografic").setFields({data: data, disabled: true});
