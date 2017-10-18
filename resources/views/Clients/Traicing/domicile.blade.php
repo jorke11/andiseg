@@ -581,7 +581,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Area</label>
-                    <select class="form-control input-photo input-sm" id="typephoto_id" name="typephoto_id" required="">
+                    <select class="form-control input-area input-sm" id="typephoto_id" name="typephoto_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($photo as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>
@@ -592,13 +592,13 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Unidad</label>
-                    <input type="text" class="form-control input-domicile" id="unit" name='unit'>
+                    <input type="text" class="form-control input-area" id="unit" name='unit'>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Estado</label>
-                    <select class="form-control input-photo input-sm" id="typephoto_id" name="typephoto_id" required="">
+                    <select class="form-control input-area input-sm" id="typephoto_id" name="typephoto_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($status_home as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>
@@ -610,7 +610,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Aseo</label>
-                    <select class="form-control input-photo input-sm" id="typephoto_id" name="typephoto_id" required="">
+                    <select class="form-control input-area input-sm" id="typephoto_id" name="typephoto_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($status_home as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>
@@ -654,7 +654,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Enseres</label>
-                    <select class="form-control input-photo input-sm" id="typephoto_id" name="typephoto_id" required="">
+                    <select class="form-control input-inventory input-sm" id="typephoto_id" name="typephoto_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($inventory as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>
@@ -671,7 +671,7 @@
             <div class="col-lg-6">
                 <div class="form-group">
                     <label for="email">Servicios</label>
-                    <select class="form-control input-photo input-sm" id="typephoto_id" name="typephoto_id" required="">
+                    <select class="form-control input-inventory input-sm" id="typephoto_id" name="typephoto_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($service as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>
@@ -736,7 +736,7 @@
                         <tr>
                             <td>Nivel de Hacinamiento</td>
                             <td>
-                                <select class="form-control input-photo input-sm" id="typephoto_id" name="typephoto_id" required="">
+                                <select class="form-control input-ponderacion input-sm" id="typephoto_id" name="typephoto_id" required="">
                                     <option value="0">Seleccione</option>
                                     @foreach($status_home as $val)
                                     <option value="{{$val->code}}">{{$val->description}}</option>
@@ -747,7 +747,7 @@
                         <tr>
                             <td>Nivel de Humedad</td>
                             <td>
-                                <select class="form-control input-photo input-sm" id="typephoto_id" name="typephoto_id" required="">
+                                <select class="form-control input-ponderacion input-sm" id="typephoto_id" name="typephoto_id" required="">
                                     <option value="0">Seleccione</option>
                                     @foreach($status_home as $val)
                                     <option value="{{$val->code}}">{{$val->description}}</option>
@@ -758,7 +758,7 @@
                         <tr>
                             <td>Nivel delincuencial</td>
                             <td>
-                                <select class="form-control input-photo input-sm" id="typephoto_id" name="typephoto_id" required="">
+                                <select class="form-control input-ponderacion input-sm" id="typephoto_id" name="typephoto_id" required="">
                                     <option value="0">Seleccione</option>
                                     @foreach($status_home as $val)
                                     <option value="{{$val->code}}">{{$val->description}}</option>
@@ -769,7 +769,7 @@
                         <tr>
                             <td>Vias de acceso</td>
                             <td>
-                                <select class="form-control input-photo input-sm" id="typephoto_id" name="typephoto_id" required="">
+                                <select class="form-control input-ponderacion input-sm" id="typephoto_id" name="typephoto_id" required="">
                                     <option value="0">Seleccione</option>
                                     @foreach($status_home as $val)
                                     <option value="{{$val->code}}">{{$val->description}}</option>
@@ -1043,7 +1043,23 @@
                 </table>
             </div>
         </div>
-
+        <hr>
+        <div class="row">
+            <div class="col-lg-12"><h3 class="text-center">Concepto Final visitador</h3></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <textarea class="form-control"></textarea>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <button id="btnDocmentPresent" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>

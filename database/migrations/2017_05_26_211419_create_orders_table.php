@@ -34,6 +34,7 @@ class CreateOrdersTable extends Migration {
             $table->integer('schema_id')->nullable();
             $table->datetime("assigned")->nullable();
             $table->datetime("finalized")->nullable();
+            $table->text("comment")->nullable();
             $table->timestamps();
         });
     }
