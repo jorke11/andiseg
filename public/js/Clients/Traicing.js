@@ -547,17 +547,12 @@ function Traicing() {
 
     this.savePoligraphy = function () {
         toastr.remove();
+        $("#frmPoligrafia #order_id").val($("#frmBiografic #id").val())
         var frm = $("#frmPoligrafia");
         var data = frm.serialize();
         var url = "";
         var id = $("#frmBiografic #order_id").val();
         var msg = '';
-
-        console.log($("#frmPoligrafia #order_id").val());
-
-        $("#frmPoligrafia #order_id").val($("#frmBiografic #id").val())
-
-        console.log($("#frmPoligrafia #order_id").val());
 
         url = "traicing/poligrafia/";
         msg = "Add Record";
