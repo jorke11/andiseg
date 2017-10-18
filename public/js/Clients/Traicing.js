@@ -548,7 +548,7 @@ function Traicing() {
 
     this.savePoligraphy = function () {
         toastr.remove();
-        $("#frmPoligrafia #order_id").val($("#frmBiografic #id").val())
+        $("#frmPoligrafia #order_id").val(dataOrder.order_id);
         var frm = $("#frmPoligrafia");
         var data = frm.serialize();
         var url = "";
