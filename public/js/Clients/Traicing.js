@@ -263,9 +263,9 @@ function Traicing() {
     }
 
     this.loadPolygraphy = function () {
-console.log(dataOrder);
+
         $.ajax({
-            url: 'traicing/polygraphy/' + dataOrder.id,
+            url: 'traicing/polygraphy/' + dataOrder.order_id,
             method: "GET",
             dataType: 'JSON',
             success: function (data) {
