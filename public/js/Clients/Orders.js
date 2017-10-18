@@ -129,7 +129,6 @@ function Orders() {
                 $("#bar-progress").css("width", "100%").html("100% Completado").removeClass("progress-bar-info").addClass("progress-bar-success");
             }
 
-            $("#bar-progress").css("width", "7.7%");
         }
         $(".thumbnail").removeClass("selectedItem");
         $("#item_" + id).toggleClass("selectedItem");
