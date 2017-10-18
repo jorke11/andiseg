@@ -68,7 +68,7 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'host' => env('DB_HOST', 'alhemmar.ccsaxgpyu8ng.us-east-2.rds.amazonaws.com'),
+            'host' => env('DB_HOST', 'andiseg.ccsaxgpyu8ng.us-east-2.rds.amazonaws.com'),
             'port' => env('DB_PORT', '5432'),
             'database' => env('DB_DATABASE', 'andiseg'),
             'username' => env('DB_USERNAME', 'andiseg'),
