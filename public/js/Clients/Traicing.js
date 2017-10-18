@@ -1154,6 +1154,7 @@ console.log(dataOrder);
                 $('#myTabs a[href="#manager"]').tab('show');
                 $(".input-biografic").setFields({data: data});
                 dataOrder = data;
+                console.log(dataOrder);
 //                if (data.status_id == 3) {
 //                    $("#btnOkBiografic,#btnSaveBiografic").attr("disabled", true);
 //                    $(".input-biografic").setFields({data: data, disabled: true});
