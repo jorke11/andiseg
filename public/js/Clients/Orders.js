@@ -129,9 +129,9 @@ function Orders() {
             }
 
             $("#bar-progress").css("width", "7.7%");
-            $(".thumbnail").removeClass("selectedItem");
-            $("#item_" + id).toggleClass("selectedItem");
         }
+        $(".thumbnail").removeClass("selectedItem");
+        $("#item_" + id).toggleClass("selectedItem");
         $("#service-selected").html('<li class="list-group-item"><b>' + description + '</b></li>');
 
         $("#frm #schema_id").val(id);
