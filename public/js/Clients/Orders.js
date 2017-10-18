@@ -12,6 +12,7 @@ function Orders() {
         var progress = 0;
         $(".input-orders").blur(function () {
             cont = 0;
+            product = (product > 1) ? 1 : 0;
             $(".input-orders").each(function () {
                 var elem = $(this);
 
