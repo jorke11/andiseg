@@ -49,7 +49,7 @@
                             <select class="form-control input-laboral input-sm" id="user_id" name="user_id" required="">
                                 <option value="0">Seleccione</option>
                                 @foreach($users as $val)
-                                <option value="{{$val->id}}">{{$val->name. " " .$val->last_name." ".$val->email}}</option>
+                                <option value="{{$val->id}}">{{$val->name. " " .$val->last_name." - ".$val->email}}</option>
                                 @endforeach
                             </select>
                         </div>
