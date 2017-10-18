@@ -1,6 +1,11 @@
 function Traicing() {
     var table, idorder;
     this.init = function () {
+
+        $("#s1").click(function () {
+            
+        })
+
         $("#btnNew").click(this.new);
         $("#btnSave").click(this.save);
 
@@ -28,7 +33,7 @@ function Traicing() {
 
         $("#tabDomicile").click(this.loadDomicile)
         $("#btnSaveDomicile").click(this.saveDomicile);
-        
+
 
         $("#tabPhoto").click(this.loadPhoto)
         $("#btnSavePhoto").click(this.savePhoto);
@@ -44,7 +49,155 @@ function Traicing() {
         $("#btnSend").click(this.send);
         $("#fentry").datetimepicker({format: 'Y-m-d'});
         $("#fdeparture").datetimepicker({format: 'Y-m-d'});
+        $(".calendar").datetimepicker({format: 'Y-m-d'});
+
+        $("#addDocumentPresent").click(this.documentPresent);
+        $("#btnDocumentLive").click(this.documentLive);
+        $("#btnDocumentNoLive").click(this.documentNoLive);
     }
+
+
+    this.documentNoLive = function () {
+        toastr.remove();
+        $("#frmDomicileNoLive #order_id").val($("#frmDomicile #order_id").val())
+        var frm = $("#frmDomicileNoLive");
+        var data = frm.serialize();
+        var url = "", method = "";
+
+        var msg = '';
+
+        var validate = $(".input-domicile-nolive").validate();
+
+        if (validate.length == 0) {
+            url = "traicing/domicile/nolive";
+            msg = "Add Record";
+
+            var token = $("input[name=_token]").val();
+
+            $.ajax({
+                url: url,
+                method: "POST",
+                headers: {'X-CSRF-TOKEN': token},
+                data: data,
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.success == true) {
+                        obj.tableDomicileNoLive(data.detail);
+                    }
+                }
+            })
+        } else {
+            toastr.error("Fields Required!");
+        }
+    }
+
+    this.tableDomicileNoLive = function (data) {
+        var html = "";
+        $("#tblFamiliarNoLive tbody").empty();
+
+        $.each(data, function (i, val) {
+            html += "<tr><td>" + val.name + "</td><td>" + val.relationship + "</td><td>" + val.age + "</td><td>" + val.occupation;
+            html += '</td><td><span style="cursor:pointer" class="glyphicon glyphicon-remove" aria-hidden="true" onclick=obj.deleteAcademic(' + val.id + ')></span></td></tr>';
+        })
+
+        $("#tblFamiliarNoLive tbody").html(html);
+    }
+
+
+    this.documentLive = function () {
+        toastr.remove();
+        $("#frmDomicileLive #order_id").val($("#frmDomicile #order_id").val())
+        var frm = $("#frmDomicileLive");
+        var data = frm.serialize();
+        var url = "", method = "";
+        var id = $("#frmAcademic #id").val();
+        var msg = '';
+
+        var validate = $(".input-domicile-live").validate();
+
+        if (validate.length == 0) {
+            url = "traicing/domicile/live";
+            msg = "Add Record";
+
+            var token = $("input[name=_token]").val();
+
+            $.ajax({
+                url: url,
+                method: "POST",
+                headers: {'X-CSRF-TOKEN': token},
+                data: data,
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.success == true) {
+
+                        obj.tableDomicileLive(data.detail);
+                    }
+                }
+            })
+        } else {
+            toastr.error("Fields Required!");
+        }
+    }
+
+    this.tableDomicileLive = function (data) {
+        var html = "";
+        $("#tblFamiliarLive tbody").empty();
+
+        $.each(data, function (i, val) {
+            html += "<tr><td>" + val.name + "</td><td>" + val.relationship + "</td><td>" + val.age + "</td><td>" + val.occupation;
+            html += '</td><td><span style="cursor:pointer" class="glyphicon glyphicon-remove" aria-hidden="true" onclick=obj.deleteAcademic(' + val.id + ')></span></td></tr>';
+        })
+
+        $("#tblFamiliarLive tbody").html(html);
+    }
+
+    this.documentPresent = function () {
+        toastr.remove();
+        $("#frmDomicileDocument #order_id").val($("#frmDomicile #order_id").val())
+        var frm = $("#frmDomicileDocument");
+        var data = frm.serialize();
+        var url = "", method = "";
+        var id = $("#frmAcademic #id").val();
+        var msg = '';
+
+        var validate = $(".input-domicile-pre").validate();
+
+        if (validate.length == 0) {
+            url = "traicing/domicile/document";
+            msg = "Add Record";
+
+            var token = $("input[name=_token]").val();
+
+            $.ajax({
+                url: url,
+                method: "POST",
+                headers: {'X-CSRF-TOKEN': token},
+                data: data,
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data.success == true) {
+
+                        obj.tableDomicileDocument(data.detail);
+                    }
+                }
+            })
+        } else {
+            toastr.error("Fields Required!");
+        }
+    }
+
+    this.tableDomicileDocument = function (data) {
+        var html = "";
+        $("#tblDocumentacionPresenter tbody").empty();
+
+        $.each(data, function (i, val) {
+            html += "<tr><td>" + val.document_id + "</td><td>" + val.document + "</td><td>" + val.expedition_date + "</td><td>" + val.classes_id;
+            html += '</td><td>' + val.district + '</td><td>' + val.category_id + '</td><td><span style="cursor:pointer" class="glyphicon glyphicon-remove" aria-hidden="true" onclick=obj.deleteAcademic(' + val.id + ')></span></td></tr>';
+        })
+
+        $("#tblDocumentacionPresenter tbody").html(html);
+    }
+
 
     this.NewBiografic = function () {
         $(".input-biografic").cleanFields();
@@ -62,7 +215,7 @@ function Traicing() {
         $(".input-laboral").cleanFields();
         $("#frmLaboral #order_id").val(order_id)
         $("#frmLaboral #id").val(id)
-        
+
     }
 
     this.send = function () {

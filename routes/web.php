@@ -55,6 +55,10 @@ Route::put('/traicing/laboralOk/{id}', 'Clients\TraicingController@updateLaboral
 Route::get('/traicing/domicile/{id}', 'Clients\TraicingController@editDomicile');
 Route::put('/traicing/domicile/{id}', 'Clients\TraicingController@updateDomicile');
 
+Route::post('/traicing/domicile/document', 'Clients\TraicingController@addDomicileDocument');
+Route::post('/traicing/domicile/live', 'Clients\TraicingController@addDomicileLive');
+Route::post('/traicing/domicile/nolive', 'Clients\TraicingController@addDomicileNoLive');
+
 Route::get('/traicing/photo/{id}', 'Clients\TraicingController@editPhoto');
 Route::delete('/traicing/photo/{id}', 'Clients\TraicingController@deletePhoto');
 Route::post('/traicing/photo', 'Clients\TraicingController@storePhoto');

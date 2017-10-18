@@ -28,6 +28,9 @@ use Auth;
 use Mail;
 use Log;
 use App\Models\Clients\Client;
+use App\Models\Clients\DomicileDocumentation;
+use App\Models\Clients\DomicileLive;
+use App\Models\Clients\DomicileNoLive;
 
 class TraicingController extends Controller {
 
@@ -64,10 +67,14 @@ class TraicingController extends Controller {
         $inventory = Parameters::where("group", "inventory")->get();
         $property = Parameters::where("group", "property")->get();
         $property_type = Parameters::where("group", "property_type")->get();
+        $financial_obligation = Parameters::where("group", "financial_obligation")->get();
+        $finantial_entities = Parameters::where("group", "finantial_entities")->get();
+        $investment_type = Parameters::where("group", "investment_type")->get();
+        $cities = Cities::all();
 
         $cities = Cities::all();
         return view("Clients.Traicing.init", compact("type_document", "cities", "type_study", "questions", "entities", "results", "category", "civil_status", "class_military", "photo"
-                        , "eps", "pensiones", "features_home", "status_home", "service", "inventory","property","property_type"));
+                        , "eps", "pensiones", "features_home", "status_home", "service", "inventory", "property", "property_type", "financial_obligation", "finantial_entities", "investment_type", "cities"));
     }
 
     public function create() {
@@ -525,6 +532,40 @@ class TraicingController extends Controller {
         return response()->json(["header" => $header]);
     }
 
+    public function addDomicileDocument(Request $req) {
+        $in = $req->all();
+        $result = DomicileDocumentation::create($in);
+
+        if ($result) {
+            $detail = DomicileDocumentation::where("order_id", $in["order_id"])->get();
+            return response()->json(['success' => true, "detail" => $detail]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
+    public function addDomicileLive(Request $req) {
+        $in = $req->all();
+        $result = DomicileLive::create($in);
+
+        if ($result) {
+            $detail = DomicileLive::where("order_id", $in["order_id"])->get();
+            return response()->json(['success' => true, "detail" => $detail]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
+    public function addDomicileNoLive(Request $req) {
+        $in = $req->all();
+        $result = DomicileNoLive::create($in);
+
+        if ($result) {
+            $detail = DomicileNoLive::where("order_id", $in["order_id"])->get();
+            return response()->json(['success' => true, "detail" => $detail]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
+
     public function getDetailPhoto($order_id) {
         return PhotoDetail::select("photo_detail.id", "p.description as type_photo", "photo_detail.img")
                         ->join("photo", "photo.id", "photo_detail.photo_id")
@@ -661,6 +702,8 @@ class TraicingController extends Controller {
         $row = Domicile::FindOrFail($id);
 
         $input = $request->all();
+        $input["quantity_child"] = ($input["quantity_child"] == "") ? null : $input["quantity_child"];
+        $input["time_married"] = ($input["time_married"] == "") ? null : $input["time_married"];
         $result = $row->fill($input)->save();
         if ($result) {
             return response()->json(['success' => true]);

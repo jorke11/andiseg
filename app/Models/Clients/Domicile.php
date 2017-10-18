@@ -14,6 +14,28 @@ class Domicile extends Model {
         "status_id",
         "result_id",
         "concept",
+        "name",
+        "last_name",
+        "document_id",
+        "document",
+        "city_expedition_id",
+        "expedition_date",
+        "city_birth_id",
+        "birth_date",
+        "blood_group",
+        "age",
+        "civil_status_id",
+        "time_married",
+        "quantity_child",
+        "address",
+        "neighborhood",
+        "location",
+        "stratum",
+        "email",
+        "mobil",
+        "aspiration",
+        "phone",
+        
     ];
 
 }

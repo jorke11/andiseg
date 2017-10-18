@@ -40,7 +40,9 @@ class OrdersController extends Controller {
                             ->where("schedules_detail.schedule_id", $value->id)
                             ->join("courses", "courses.id", "schedules_detail.course_id")->get();
         }
-
+        
+        
+        
         return view("Clients.Orders.init", compact("esquemas", "type_document", "department", "cities", "users"));
     }
 

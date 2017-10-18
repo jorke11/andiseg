@@ -31,15 +31,13 @@ function Orders() {
 
 //            $("#bar-progress").html(progress + "%");
         })
-
-
-
-
     }
 
     this.new = function () {
         $(".input-orders").cleanFields();
         $("#btnSave").attr("disabled", false);
+        $("#bar-progress").css("width", "0%").html("0% Complete");
+        product = 0;
     }
 
     this.associateUser = function () {
@@ -117,21 +115,25 @@ function Orders() {
         }
     }
 
-    this.selectionProduct = function (id) {
+    this.selectionProduct = function (id, description) {
         var total = 0;
-        product = 1;
-        cont += product;
+        product++;
+        $("#service-selected").empty()
+        if (product == 1) {
+            cont += product;
+            total = cont * 7.7;
+            $("#bar-progress").css("width", total + "%").html(total + "% Complete");
 
-        total = cont * 7.7;
-        $("#bar-progress").css("width", total + "%").html(total + "% Complete");
+            if (cont == 13) {
+                $("#bar-progress").css("width", "100%").html("100% Completado").removeClass("progress-bar-info").addClass("progress-bar-success");
+            }
 
-        if (cont == 13) {
-            $("#bar-progress").css("width", "100%").html("100% Completado").removeClass("progress-bar-info").addClass("progress-bar-success");
+            $("#bar-progress").css("width", "7.7%");
+            $(".thumbnail").removeClass("selectedItem");
+            $("#item_" + id).toggleClass("selectedItem");
         }
+        $("#service-selected").html('<li class="list-group-item"><b>' + description + '</b></li>');
 
-        $("#bar-progress").css("width", "7.7%");
-        $(".thumbnail").removeClass("selectedItem");
-        $("#item_" + id).toggleClass("selectedItem");
         $("#frm #schema_id").val(id);
     }
 

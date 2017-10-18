@@ -66,7 +66,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Fecha de exped. Documento</label>
-                    <input type="text" class="form-control input-domicile" id="expedition_date" name='expedition_date' required>
+                    <input type="text" class="form-control input-domicile calendar" id="expedition_date" name='expedition_date' required>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -83,7 +83,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Fecha de Nacimiento</label>
-                    <input type="text" class="form-control input-domicile" id="birth_date" name='birth_date' required>
+                    <input type="text" class="form-control input-domicile calendar" id="birth_date" name='birth_date' required>
                 </div>
             </div>
         </div>
@@ -124,7 +124,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Tiempo Casado</label>
-                    <input type="text" class="form-control input-domicile" id="time_married" name='time_married' required data-type="number">
+                    <input type="text" class="form-control input-domicile" id="time_married" name='time_married' >
                 </div>
             </div>
         </div>
@@ -132,7 +132,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Numero de hijos</label>
-                    <input type="text" class="form-control input-domicile" id="quantity_child" name='quantity_child' required data-type="number">
+                    <input type="text" class="form-control input-domicile" id="quantity_child" name='quantity_child'>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -188,6 +188,7 @@
                 </div>
             </div>
         </div>
+        {!!Form::close()!!}
         <br>
         <hr>
         <br>
@@ -195,11 +196,13 @@
             <div class="col-lg-12"><h3 class="text-center">Documentación presentada por el Candidato</h3></div>
         </div>
         <br>
+        {!! Form::open(['id'=>'frmDomicileDocument']) !!}
+        <input id="order_id" name="order_id" type="hidden">
         <div class="row">
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Tipo Documento</label>
-                    <select class="form-control input-biografic input-sm" id="document_id" name="document_id" required="">
+                    <select class="form-control input-domicile-pre input-sm" id="document_id" name="document_id">
                         <option value="0">Seleccione</option>
                         @foreach($type_document as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>
@@ -210,19 +213,19 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Numero de documento</label>
-                    <input type="text" class="form-control input-domicile" id="document" name='document'>
+                    <input type="text" class="form-control input-domicile-pre" id="document" name='document' data-type="number">
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Fecha expedición</label>
-                    <input type="text" class="form-control input-domicile" id="fexpedition" name='fexpedition'>
+                    <input type="text" class="form-control input-domicile-pre calendar" id="expedition_date" name='expedition_date'>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Clase</label>
-                    <select class="form-control input-domicile input-sm" id="classes_id" name="classes_id" required="">
+                    <select class="form-control input-domicile-pre input-sm" id="classes_id" name="classes_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($class_military as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>
@@ -235,13 +238,13 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Distrito</label>
-                    <input type="text" class="form-control input-domicile" id="district" name='district'>
+                    <input type="text" class="form-control input-domicile-pre" id="district" name='district'>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Categoria</label>
-                    <select class="form-control input-domicile input-sm" id="category_id" name="category_id" >
+                    <select class="form-control input-domicile-pre input-sm" id="category_id" name="category_id" >
                         <option value="0">Seleccione</option>
                         @foreach($category as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>
@@ -251,10 +254,11 @@
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
-                    <button id="btnDocmentPresent" class="btn btn-success">Agregar</button>
+                    <button type="button" class="btn btn-success" id="addDocumentPresent">Agregar</button>
                 </div>
             </div>
         </div>
+        {!!Form::close()!!}
         <div class="row">
             <div class="col-lg-12">
                 <table class="table table-hover" id="tblDocumentacionPresenter">
@@ -268,6 +272,7 @@
                             <th>Categoria</th>
                         </tr>
                     </thead>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
@@ -279,36 +284,39 @@
             <div class="col-lg-12"><h3 class="text-center">NÚCLEO FAMILIAR(padres, hermanos, esposa e hijos) personas con la cuales vive</h3></div>
         </div>
         <br>
+        {!! Form::open(['id'=>'frmDomicileLive']) !!}
+        <input id="order_id" name="order_id" type="hidden">
         <div class="row">
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Nombres y apellidos</label>
-                    <input type="text" class="form-control input-domicile" id="name" name='name'>
+                    <input type="text" class="form-control input-domicile-live" id="name" name='name'>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Parentesco</label>
-                    <input type="text" class="form-control input-domicile" id="relationship" name='relationship'>
+                    <input type="text" class="form-control input-domicile-live" id="relationship" name='relationship'>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Edad</label>
-                    <input type="text" class="form-control input-domicile" id="age" name='age'>
+                    <input type="text" class="form-control input-domicile-live" id="age" name='age'>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Ocupación</label>
-                    <input type="text" class="form-control input-domicile" id="occupation" name='occupation'>
+                    <input type="text" class="form-control input-domicile-live" id="occupation" name='occupation'>
                 </div>
             </div>
         </div>
+        {!!Form::close()!!}
         <div class="row">
             <div class="col-lg-3">
                 <div class="form-group">
-                    <button id="btnDocmentPresent" class="btn btn-success">Agregar</button>
+                    <button type='button' id="btnDocumentLive" class="btn btn-success">Agregar</button>
                 </div>
             </div>
         </div>
@@ -321,9 +329,9 @@
                             <th>Parentesco</th>
                             <th>Edad</th>
                             <th>Ocupación</th>
-                            <th>Telefono</th>
                         </tr>
                     </thead>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
@@ -334,36 +342,39 @@
             <div class="col-lg-12"><h3 class="text-center">NÚCLEO FAMILIAR(padres, hermanos, esposa e hijos) personas con la cuales No vive</h3></div>
         </div>
         <br>
+        {!! Form::open(['id'=>'frmDomicileNoLive']) !!}
+        <input id="order_id" name="order_id" type="hidden">
         <div class="row">
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Nombres y apellidos</label>
-                    <input type="text" class="form-control input-domicile" id="name" name='name'>
+                    <input type="text" class="form-control input-domicile-nolive" id="name" name='name'>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Parentesco</label>
-                    <input type="text" class="form-control input-domicile" id="relationship" name='relationship'>
+                    <input type="text" class="form-control input-domicile-nolive" id="relationship" name='relationship'>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Edad</label>
-                    <input type="text" class="form-control input-domicile" id="age" name='age'>
+                    <input type="text" class="form-control input-domicile-nolive" id="age" name='age'>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Ocupación</label>
-                    <input type="text" class="form-control input-domicile" id="occupation" name='occupation'>
+                    <input type="text" class="form-control input-domicile-nolive" id="occupation" name='occupation'>
                 </div>
             </div>
         </div>
+        {!!Form::close()!!}
         <div class="row">
             <div class="col-lg-3">
                 <div class="form-group">
-                    <button id="btnDocmentPresent" class="btn btn-success">Agregar</button>
+                    <button type="button" id="btnDocumentNoLive" class="btn btn-success">Agregar</button>
                 </div>
             </div>
         </div>
@@ -376,9 +387,9 @@
                             <th>Parentesco</th>
                             <th>Edad</th>
                             <th>Ocupación</th>
-                            <th>Telefono</th>
                         </tr>
                     </thead>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
@@ -399,7 +410,7 @@
         <br>
         <div class="row">
             <div class="col-lg-12">
-                <table class="table table-hover table-bordered" id="tblFamiliarNoLive">
+                <table class="table table-hover table-bordered" id="tblsalud">
                     <thead>
                         <tr>
                             <th></th>
@@ -411,15 +422,15 @@
                     <tbody>
                         <tr>
                             <td>¿Usted sufre o sufrio algún tipo de enfermedada?</td>
-                            <td><input type="radio" name="si" ></td>
-                            <td><input type="radio" name="si"></td>
-                            <td><input type="text" name="description" class="form-control"></td>
+                            <td><input type="radio" name="si" id="si1"></td>
+                            <td><input type="radio" name="no" id="no1"></td>
+                            <td><input type="text" name="description1" class="form-control"></td>
                         </tr>
                         <tr>
-                            <td>¿Algún integrante de la familia sufre o sufrio algún tupo de enfermedad?</td>
-                            <td><input type="radio" name="no"></td>
-                            <td><input type="radio" name="no"></td>
-                            <td><input type="text" name="description" class="form-control"></td>
+                            <td>¿Algún integrante de la familia sufre o sufrio algún tipo de enfermedad?</td>
+                            <td><input type="radio" name="no" id="si2"></td>
+                            <td><input type="radio" name="no" id="no2"></td>
+                            <td><input type="text" name="description2" class="form-control"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -713,13 +724,6 @@
             <div class="col-lg-12"><h3 class="text-center">PONDERACIÓN DE LA VIVIENDA</h3></div>
         </div>
         <div class="row">
-            <div class="col-lg-3">
-                <div class="form-group">
-                    <button id="btnDocmentPresent" class="btn btn-success">Guardar</button>
-                </div>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-lg-6">
                 <table class="table table-hover" id="tblFamiliarNoLive">
                     <thead>
@@ -777,6 +781,13 @@
                 </table>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <button id="btnDocmentPresent" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        </div>
         <br><br>
         <hr>
         <br>
@@ -805,6 +816,14 @@
                 </table>
             </div>
         </div>
+        <br>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <button id="btnDocmentPresent" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        </div>
         <br><br>
         <hr>
         <br>
@@ -815,7 +834,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Activos</label>
-                    <select class="form-control input-photo input-sm" id="typephoto_id" name="typephoto_id" required="">
+                    <select class="form-control input-domicile-fin input-sm" id="typephoto_id" name="typephoto_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($property as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>
@@ -826,7 +845,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Tipo</label>
-                    <select class="form-control input-photo input-sm" id="typephoto_id" name="typephoto_id" required="">
+                    <select class="form-control input-domicile-fin input-sm" id="typephoto_id" name="typephoto_id" required="">
                         <option value="0">Seleccione</option>
                         @foreach($property_type as $val)
                         <option value="{{$val->code}}">{{$val->description}}</option>
@@ -837,13 +856,13 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Avaluo</label>
-                    <input type="text" class="form-control input-domicile" id="document" name='document' required>
+                    <input type="text" class="form-control input-domicile-fin" id="document" name='document' required>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Dirección</label>
-                    <input type="text" class="form-control input-domicile" id="document" name='document' required>
+                    <input type="text" class="form-control input-domicile-fin" id="document" name='document' required>
                 </div>
             </div>
         </div>
@@ -851,29 +870,34 @@
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Marca</label>
-                    <input type="text" class="form-control input-domicile" id="document" name='document' required>
+                    <input type="text" class="form-control input-domicile-fin" id="document" name='document' required>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Modelo</label>
-                    <input type="text" class="form-control input-domicile" id="document" name='document' required>
+                    <input type="text" class="form-control input-domicile-fin" id="document" name='document' required>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
                     <label for="email">Estado</label>
-                    <select class="form-control input-photo input-sm" id="typephoto_id" name="typephoto_id" required="">
+                    <select class="form-control input-domicile-fin input-sm" id="typephoto_id" name="typephoto_id" required="">
                         <option value="1">Cancelado</option>
                         <option value="2">Deuda</option>
                     </select>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <button id="btnDocmentPresent" class="btn btn-success">Guardar</button>
                 </div>
             </div>
         </div>
         <br>
         <div class="row">
             <div class="col-lg-12">
-                <table>
+                <table class="table table-bordered table-condensed">
                     <thead>
                         <tr>
                             <th>Activo</th>
@@ -886,17 +910,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
+
                     </tbody>
                 </table>
             </div>
         </div>
         <br>
-               <br><br>
+        <br><br>
         <hr>
         <br>
         <div class="row">
-            <div class="col-lg-12"><h3 class="text-center">CONCEPTO DE VECINDARIO (en caso de no encontrar vecino, tomar datos de una referencia personal)</h3></div>
+            <div class="col-lg-12"><h3 class="text-center">Datos bancarios</h3></div>
         </div>
         <div class="row">
             <div class="col-lg-12">
@@ -920,7 +944,106 @@
                 </table>
             </div>
         </div>
-        
-        {!!Form::close()!!}
+        <br>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <button id="btnDocmentPresent" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-lg-12"><h3 class="text-center">Obligaciones Financiera</h3></div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email">Item</label>
+                    <select class="form-control input-domicile-oblig input-sm" id="typephoto_id" name="typephoto_id" required="">
+                        <option value="0">Seleccione</option>
+                        @foreach($financial_obligation as $val)
+                        <option value="{{$val->code}}">{{$val->description}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email">Entidad</label>
+                    <select class="form-control input-domicile-oblig input-sm" id="typephoto_id" name="typephoto_id" required="">
+                        <option value="0">Seleccione</option>
+                        @foreach($finantial_entities as $val)
+                        <option value="{{$val->code}}">{{$val->description}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email">Tipo Invensión</label>
+                    <select class="form-control input-domicile-oblig input-sm" id="typephoto_id" name="typephoto_id" required="">
+                        <option value="0">Seleccione</option>
+                        @foreach($investment_type as $val)
+                        <option value="{{$val->code}}">{{$val->description}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email">Ciudad</label>
+                    <select class="form-control input-domicile-oblig input-sm" id="typephoto_id" name="typephoto_id" required="">
+                        <option value="0">Seleccione</option>
+                        @foreach($cities as $val)
+                        <option value="{{$val->id}}">{{$val->description}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email">Deuda Actual</label>
+                    <input type="text" class="form-control input-domicile-oblig" id="document" name='document' required>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label for="email">Pago cuota x Mes</label>
+                    <input type="text" class="form-control input-domicile-oblig" id="document" name='document' required>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <button id="btnDocmentPresent" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Entidad</th>
+                            <th>Tipo Inversion</th>
+                            <th>Ciudad</th>
+                            <th>Deuda Actual</th>
+                            <th>Pago couta x Mes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
     </div>
 </div>

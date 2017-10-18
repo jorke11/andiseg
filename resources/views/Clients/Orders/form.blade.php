@@ -26,12 +26,12 @@
                     </div>
 
 
-<!--                    <div class="progress">
-                        <div class="progress-bar progress-bar-success" role="progressbar"
-                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="bar-progress">
-                            <span class="sr-only">40% completado (éxito)</span>
-                        </div>
-                    </div>-->
+                    <!--                    <div class="progress">
+                                            <div class="progress-bar progress-bar-success" role="progressbar"
+                                                 aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="bar-progress">
+                                                <span class="sr-only">40% completado (éxito)</span>
+                                            </div>
+                                        </div>-->
                     <br>
                     {!! Form::open(['id'=>'frm']) !!}
                     <input type="hidden" id="id" name="id" class="input-orders">
@@ -133,10 +133,19 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
+                        <div class="col-lg-2">
+                            <label for="email">Servicio:</label>
+                        </div>
+                        <div class="col-lg-10">
+                            <ul class="list-group" id="service-selected" >
 
-
+                            </ul>
+                        </div>
                     </div>
+
+
                     {!!Form::close()!!}
                 </div>
             </div>
@@ -158,7 +167,7 @@
                             <li class="list-group-item">{{$value->course}}</li>
                             @endforeach
                         </ul>
-                        <p class="text-center"><button type="button" class="btn btn-success" onclick=obj.selectionProduct({{$val->id}})>Seleccionar</button></p>
+                        <p class="text-center"><button type="button" class="btn btn-success" onclick="obj.selectionProduct({{$val->id}},'{{$val->description}}')">Seleccionar</button></p>
                     </div>
                 </div>
             </div>
