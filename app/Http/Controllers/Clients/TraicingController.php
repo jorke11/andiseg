@@ -133,15 +133,15 @@ class TraicingController extends Controller {
                 b.profession,b.professional_card,o.address,o.neighborhood,cit.description city,o.phone,b.phone2,b.email,o.mobil,
                 b.driving_licence,cat.description category,pen.description pension,eps.description eps,o.comment
                 from vorders o
-                JOIN biografic b ON b.order_id=o.id
-                JOIN cities cit ON cit.id=o.city_id
-                JOIN cities bir ON bir.id=b.city_birth_id
-                JOIN cities exp ON exp.id=b.city_expedition_id
-                JOIN parameters cla ON cla.code=b.classes_id and cla.group='class_military'
+                LEFT JOIN biografic b ON b.order_id=o.id
+                LEFT JOIN cities cit ON cit.id=o.city_id
+                LEFT JOIN cities bir ON bir.id=b.city_birth_id
+                LEFT JOIN cities exp ON exp.id=b.city_expedition_id
+                LEFT JOIN parameters cla ON cla.code=b.classes_id and cla.group='class_military'
                 LEFT JOIN parameters civ ON civ.code=b.civil_status_id and civ.group='civil_status'
-                JOIN parameters cat ON cat.code=b.category_id and cat.group='category'
+                LEFT JOIN parameters cat ON cat.code=b.category_id and cat.group='category'
                 LEFT JOIN parameters pen ON pen.code=b.pensiones_id and pen.group='pension_id'
-                JOIN parameters eps ON eps.code=b.eps_id and eps.group='eps_id'
+                LEFT JOIN parameters eps ON eps.code=b.eps_id and eps.group='eps_id'
                 WHERE o.id=" . $id;
         $biog = DB::select($sql);
         $biog = (array) $biog[0];
