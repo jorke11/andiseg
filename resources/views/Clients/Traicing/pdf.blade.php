@@ -191,13 +191,14 @@
                 <td class="row-color">Profesion u Ocupación</td>
             </tr>
             <tr>
-                <td colspan="4">{{$city_birthday}}</td>
+                <td colspan="4">>{{(isset($city_birthday))?$city_birthday:''}}</td>
+
                 <td>dia</td>
                 <td>mes</td>
                 <td>año</td>
-                <td>{{$age}}</td>
-                <td>{{$civil_status}}</td>
-                <td>{{$profession}}</td>
+                <td>{{(isset($age))?$age:''}}</td>
+                <td>{{(isset($civil_status))?$civil_status:''}}</td>
+                <td>{{(isset($profession))?$profession:''}}</td>
             </tr>
             <tr>
                 <td colspan="4" class="row-color">Tarjeta Profesional</td>
@@ -206,10 +207,10 @@
                 <td colspan="2" class="row-color">Ciudad</td>
             </tr>
             <tr>
-                <td colspan="4">{{$professional_card}}</td>
-                <td colspan="3">{{$address}}</td>
-                <td colspan="2">{{$neighborhood}}</td>
-                <td colspan="2">{{$city}}</td>
+                <td colspan="4">{{(isset($professional_card))?$professional_card:''}}</td>
+                <td colspan="3">{{(isset($address))?$address:''}}</td>
+                <td colspan="2">{{(isset($neighborhood))?$neighborhood:''}}</td>
+                <td colspan="2">{{(isset($city))?$city:''}}</td>
             </tr>
 
             <tr>
