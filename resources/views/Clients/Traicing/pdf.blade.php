@@ -257,15 +257,17 @@
                 <td class="row-color">Concepto</td>
             </tr>
             <?php
-            foreach ($academic as $val) {
-                ?>
-                <tr>
-                    <td><?php echo $val->type_study ?></td>
-                    <td><?php echo $val->obtained_title ?></td>
-                    <td><?php echo $val->institution ?></td>
-                    <td><?php echo $val->concept ?></td>
-                </tr>
-                <?php
+            if (isset($academic)) {
+                foreach ($academic as $val) {
+                    ?>
+                    <tr>
+                        <td><?php echo $val->type_study ?></td>
+                        <td><?php echo $val->obtained_title ?></td>
+                        <td><?php echo $val->institution ?></td>
+                        <td><?php echo $val->concept ?></td>
+                    </tr>
+                    <?php
+                }
             }
             ?>
 
