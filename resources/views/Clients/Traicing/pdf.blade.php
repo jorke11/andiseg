@@ -291,15 +291,17 @@
                 <td class="row-color">Descripcion</td>
             </tr>
             <?php
-            foreach ($juridic as $val) {
-                ?>
-                <tr>
-                    <td><?php echo $val->question ?></td>
-                    <td><?php echo $val->si_no ?></td>
-                    <td><?php echo $val->description ?></td>
+            if (isset($juridic)) {
+                foreach ($juridic as $val) {
+                    ?>
+                    <tr>
+                        <td><?php echo $val->question ?></td>
+                        <td><?php echo $val->si_no ?></td>
+                        <td><?php echo $val->description ?></td>
 
-                </tr>
-                <?php
+                    </tr>
+                    <?php
+                }
             }
             ?>
         </table>
@@ -345,15 +347,17 @@
                 <td class="row-color">Anotación</td>
             </tr>
             <?php
-            foreach ($anotations as $value) {
-                ?>
-                <tr>
-                    <td><?php echo $value->entity ?></td>
-                    <td><?php echo $value->verification_code ?></td>
-                    <td><?php echo $value->certificate ?></td>
-                    <td><?php echo $value->anotation ?></td>
-                </tr>
-                <?php
+            if (isset($anotations)) {
+                foreach ($anotations as $value) {
+                    ?>
+                    <tr>
+                        <td><?php echo $value->entity ?></td>
+                        <td><?php echo $value->verification_code ?></td>
+                        <td><?php echo $value->certificate ?></td>
+                        <td><?php echo $value->anotation ?></td>
+                    </tr>
+                    <?php
+                }
             }
             ?>
 
@@ -403,41 +407,43 @@
         <br>
         <?php
 //            print_r($laboral);exit;
-        foreach ($laboral as $val) {
-            ?>
-            <table style="width:100%;border-collapse: collapse;" align="center" class="componente">
-                <tr>
-                    <td colspan="2" class="row-color">Empresa</td>
-                    <td class="row-color">Actividad</td>
-                    <td class="row-color">Telefono</td>
-                </tr>
-                <tr>
-                    <td colspan="2">{{$val->business}}</td>
-                    <td>{{$val->activity}}</td>
-                    <td>{{$val->phone}}</td>
-                </tr>
-                <tr>
-                    <td class="row-color">Cargo desempeñado</td>
-                    <td class="row-color">Fecha Ingreso</td>
-                    <td class="row-color">Fecha Retiro</td>
-                    <td class="row-color">Nombre Persona Contactada</td> 
-                </tr>
-                <tr>
-                    <td>{{$val->position}}</td>
-                    <td>{{date("Y-m-d",strtotime($val->fentry))}}</td>
-                    <td>{{date("Y-m-d",strtotime($val->fdeparture))}}</td>
-                    <td>{{$val->contact}}</td>
-                </tr>
-                <tr>
-                    <td class="row-color">Concepto Emitido</td>
-                    <td colspan="3">{{$val->concept}}</td>
-                </tr>
-                <tr>
-                    <td class="row-color">Resultado</td>
-                    <td colspan="3">{{$val->result}}</td>
-                </tr>
-            </table>
-            <?php
+        if (isset($laboral)) {
+            foreach ($laboral as $val) {
+                ?>
+                <table style="width:100%;border-collapse: collapse;" align="center" class="componente">
+                    <tr>
+                        <td colspan="2" class="row-color">Empresa</td>
+                        <td class="row-color">Actividad</td>
+                        <td class="row-color">Telefono</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">{{$val->business}}</td>
+                        <td>{{$val->activity}}</td>
+                        <td>{{$val->phone}}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-color">Cargo desempeñado</td>
+                        <td class="row-color">Fecha Ingreso</td>
+                        <td class="row-color">Fecha Retiro</td>
+                        <td class="row-color">Nombre Persona Contactada</td> 
+                    </tr>
+                    <tr>
+                        <td>{{$val->position}}</td>
+                        <td>{{date("Y-m-d",strtotime($val->fentry))}}</td>
+                        <td>{{date("Y-m-d",strtotime($val->fdeparture))}}</td>
+                        <td>{{$val->contact}}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-color">Concepto Emitido</td>
+                        <td colspan="3">{{$val->concept}}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-color">Resultado</td>
+                        <td colspan="3">{{$val->result}}</td>
+                    </tr>
+                </table>
+                <?php
+            }
         }
         ?>
 
@@ -485,10 +491,12 @@
         <table style="width:100%;border-collapse: collapse;" align="center" class="componente">
             <tr>
                 <?php
-                foreach ($anotations as $value) {
-                    ?>
-                    <td><img src='<?php echo $value->img ?>' width="300px"></td>
-                    <?php
+                if (isset($anotations)) {
+                    foreach ($anotations as $value) {
+                        ?>
+                        <td><img src='<?php echo $value->img ?>' width="300px"></td>
+                        <?php
+                    }
                 }
                 ?>
             </tr>
@@ -537,10 +545,12 @@
         <table class="componente">
             <tr>
                 <?php
-                foreach ($photo as $value) {
-                    ?>
-                    <td><b><?php echo $value->typephoto ?></b><br><img src='<?php echo $value->thumbnail ?>'></td>
-                    <?php
+                if (isset($photo)) {
+                    foreach ($photo as $value) {
+                        ?>
+                        <td><b><?php echo $value->typephoto ?></b><br><img src='<?php echo $value->thumbnail ?>'></td>
+                        <?php
+                    }
                 }
                 ?>
             </tr>
