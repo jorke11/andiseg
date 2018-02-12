@@ -93,6 +93,8 @@ class OrdersController extends Controller {
                 $client = Client::find(Auth::User()->client_id);
                 $executive = Users::find($client->executive_id);
 
+//                echo "<pre>";print_r($executive);exit;
+                
                 $this->email[] = $executive->email;
                 $this->email[] = Auth::user()->email;
 

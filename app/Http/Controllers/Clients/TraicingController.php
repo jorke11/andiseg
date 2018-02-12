@@ -543,6 +543,7 @@ class TraicingController extends Controller {
             return response()->json(['success' => false]);
         }
     }
+
     public function addDomicileLive(Request $req) {
         $in = $req->all();
         $result = DomicileLive::create($in);
@@ -554,6 +555,7 @@ class TraicingController extends Controller {
             return response()->json(['success' => false]);
         }
     }
+
     public function addDomicileNoLive(Request $req) {
         $in = $req->all();
         $result = DomicileNoLive::create($in);
@@ -586,20 +588,40 @@ class TraicingController extends Controller {
 
     public function updatePoligraphy(Request $request) {
         $in = $request->all();
-        
+
         $row = Orders::Find($in["order_id"]);
         $file = Input::file('photo');
 
-        $image = Image::make(Input::file('photo'));
+//        $image = Image::make(Input::file('photo'));
+        $mime = Input::file('photo')->getMimeType();
+        $extension = strtolower(Input::file('photo')->getClientOriginalExtension());
+        $fileName = uniqid() . '.' . $extension;
+
         $path = public_path() . '/uploads/polygraphy/' . $in["order_id"] . "/";
 
         File::makeDirectory($path, $mode = 0777, true, true);
 
         $input["img"] = 'uploads/polygraphy/' . $in["order_id"] . '/' . $file->getClientOriginalName();
-        $image->save($path . $file->getClientOriginalName());
 
-        $row->img = $input["img"];
-        $result = $row->save();
+        switch ($mime) {
+            case "image/jpeg":
+            case "image/png":
+            case "image/gif":
+            case "application/pdf":
+                if (\Request::file('photo')->isValid()) {
+                    \Request::file('photo')->move($path, $file->getClientOriginalName());
+                    $row->img = $input["img"];
+                    $result = $row->save();
+                }
+                break;
+            default:
+                return response()->json(['success' => true, "msg" => "Extension file is not valid"]);
+        }
+
+
+//        $image->save($path . $file->getClientOriginalName());
+
+
         if ($result) {
             $row = Orders::Find($in["order_id"]);
             return response()->json(['success' => true, "data" => $row]);

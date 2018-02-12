@@ -112,6 +112,8 @@ function Client() {
 
         var validate = $(".input-clients").validate();
 
+console.log(validate)
+
         if (validate.length == 0) {
             if (id == '') {
                 method = 'POST';

@@ -20,9 +20,9 @@ class CreateDomicileTable extends Migration {
             $table->integer('document_id');
             $table->integer('document');
             $table->integer('city_expedition_id');
-            $table->datetime('expedition_date');
+            $table->date('expedition_date');
             $table->integer('city_birth_id');
-            $table->datetime('birth_date');
+            $table->date('birth_date');
             $table->integer('blood_group');
             $table->integer('age');
             $table->integer('civil_status_id');

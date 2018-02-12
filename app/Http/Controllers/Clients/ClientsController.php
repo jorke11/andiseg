@@ -10,6 +10,7 @@ use App\Models\Administration\Department;
 use App\Models\Clients\Client;
 use App\Models\Security\Users;
 use Auth;
+use App\Models\Administration\Courses;
 
 class ClientsController extends Controller {
 
@@ -25,8 +26,8 @@ class ClientsController extends Controller {
         $cities = Cities::all();
         $department = Department::all();
         $executive = Users::where("role_id", 2)->get();
-
-        return view("Clients.Client.init", compact("type_document", "cities", "department", "person_id", "regimen_id", "executive"));
+        $courses=Courses::all();
+        return view("Clients.Client.init", compact("type_document", "cities", "department", "person_id", "regimen_id", "executive","courses"));
     }
 
     public function create() {

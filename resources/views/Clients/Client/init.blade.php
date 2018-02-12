@@ -7,6 +7,7 @@
         <ul class="nav nav-tabs" role="tablist" id='myTabs'>
             <li role="presentation" class="active" id="tabList"><a href="#list" aria-controls="home" role="tab" data-toggle="tab">List</a></li>
             <li role="presentation" id="tabManagement"><a href="#manager" aria-controls="special" role="tab" data-toggle="tab">Gestión</a></li>
+            <li role="presentation" id="tabSpecial"><a href="#special" aria-controls="special" role="tab" data-toggle="tab">Precios Especiales</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -22,6 +23,10 @@
                 @include('Clients.Client.form')
             </div>
 
+            <div role="tabpanel" class="tab-pane " id="special">
+                @include('Clients.Client.special')
+            </div>
+            
         </div>
     </div>
 </div>
