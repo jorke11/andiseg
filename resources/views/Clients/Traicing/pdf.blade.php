@@ -220,10 +220,10 @@
                 <td colspan="3" class="row-color">Correo Electronico</td>
             </tr>
             <tr>
-                <td colspan="4">{{$phone}}</td>
-                <td colspan="2">{{$phone2}}</td>
-                <td colspan="2">{{$mobil}}</td>
-                <td colspan="3">{{$email}}</td>
+                <td colspan="4">{{(isset($phone))?$phone:''}}</td>
+                <td colspan="2">{{(isset($phone2))?$phone2:''}}</td>
+                <td colspan="2">{{(isset($mobil))?$mobil:''}}</td>
+                <td colspan="3">{{(isset($email))?$email:''}}</td>
             </tr>
             <tr>
                 <td colspan="4" class="row-color">Licencia de Conducción</td>
@@ -232,10 +232,10 @@
                 <td colspan="2" class="row-color">Fondo de pensiones</td>
             </tr>
             <tr>
-                <td colspan="4">{{$driving_licence}}</td>
-                <td colspan="2">{{$category}}</td>
-                <td colspan="3">{{$eps}}</td>
-                <td colspan="2">{{$pension}}</td>
+                <td colspan="4">{{(isset($driving_licence))?$driving_licence:''}}</td>
+                <td colspan="2">{{(isset($category))?$category:''}}</td>
+                <td colspan="3">{{(isset($eps))?$eps:''}}</td>
+                <td colspan="2">{{(isset($pension))?$pension:''}}</td>
             </tr>
         </table>
 
