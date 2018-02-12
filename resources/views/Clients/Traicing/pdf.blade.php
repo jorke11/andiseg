@@ -174,7 +174,7 @@
             <tr>
                 <td colspan="2">{{$type_document}}</td>
                 <td colspan="2">{{$document}}</td>
-                <td>{{$city_expedition}}</td>
+                <td>{{(isset($city_expedition))?$city_expedition:''}}</td>
                 <td colspan="2">{{$passport}}</td>
                 <td>{{$militar_card}}</td>
                 <td>{{$class_militar}}</td>
