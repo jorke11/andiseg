@@ -175,10 +175,11 @@
                 <td colspan="2">{{$type_document}}</td>
                 <td colspan="2">{{$document}}</td>
                 <td>{{(isset($city_expedition))?$city_expedition:''}}</td>
-                <td colspan="2">{{$passport}}</td>
-                <td>{{$militar_card}}</td>
-                <td>{{$class_militar}}</td>
-                <td>{{$district}}</td>
+                <td colspan="2">{{(isset($passport))?$passport:''}}</td>
+                <td>{{(isset($passport))?$passport:''}}</td>
+                <td>{{(isset($militar_card))?$militar_card:''}}</td>
+                <td>{{(isset($class_militar))?$class_militar:''}}</td>
+                <td>{{(isset($district))?$district:''}}</td>
             </tr>
             <tr>
                 <td colspan="4" class="row-color">Lugar de Nacimiento</td>
